@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#03050a"/>
+      <stop offset="100%" stop-color="#0a0e17"/>
+    </linearGradient>
+    <linearGradient id="glow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0066ff"/>
+      <stop offset="100%" stop-color="#0044cc"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="900" cy="315" r="300" fill="#0066ff" opacity="0.08"/>
+  <circle cx="300" cy="200" r="200" fill="#0066ff" opacity="0.05"/>
+  <rect x="40" y="40" width="80" height="80" rx="18" fill="url(#glow)"/>
+  <text x="80" y="92" font-family="Arial,sans-serif" font-size="48" font-weight="bold" fill="white" text-anchor="middle">B</text>
+  <text x="140" y="85" font-family="Arial,sans-serif" font-size="40" font-weight="800" fill="white">BRUSK</text>
+  <text x="140" y="118" font-family="Arial,sans-serif" font-size="40" font-weight="800" fill="#0066ff">APP</text>
+  <text x="60" y="200" font-family="Arial,sans-serif" font-size="52" font-weight="bold" fill="white">Isletmenizi Yapay Zeka ile</text>
+  <text x="60" y="270" font-family="Arial,sans-serif" font-size="52" font-weight="bold" fill="#0066ff">Otomatiklestirin</text>
+  <text x="60" y="340" font-family="Arial,sans-serif" font-size="22" fill="#6b7280">WhatsApp, Instagram, cagri merkezi ve musteri yonetimi tek platformda</text>
+  <rect x="60" y="400" width="200" height="50" rx="25" fill="url(#glow)"/>
+  <text x="160" y="432" font-family="Arial,sans-serif" font-size="18" font-weight="bold" fill="white" text-anchor="middle">Demoyu Incele</text>
+  <rect x="280" y="400" width="200" height="50" rx="25" fill="#1a2332" opacity="0.8"/>
+  <text x="380" y="432" font-family="Arial,sans-serif" font-size="18" font-weight="bold" fill="white" text-anchor="middle">Ucretsiz Basla</text>
+  <text x="60" y="520" font-family="Arial,sans-serif" font-size="14" fill="#4b5563">2,847+ isletme kullaniyor</text>
+  <rect x="900" y="100" width="240" height="430" rx="30" fill="#0a0e17" stroke="#1a2332" stroke-width="2"/>
+  <rect x="915" y="115" width="210" height="30" rx="8" fill="#1a2332"/>
+  <circle cx="930" cy="130" r="10" fill="url(#glow)"/>
+  <rect x="920" y="165" width="160" height="36" rx="18" fill="#1a2332"/>
+  <rect x="960" y="240" width="120" height="36" rx="18" fill="url(#glow)"/>
+  <rect x="920" y="320" width="160" height="36" rx="18" fill="#1a2332"/>
+  <rect x="960" y="400" width="120" height="36" rx="18" fill="url(#glow)"/>
+  <rect x="920" y="480" width="160" height="36" rx="18" fill="#1a2332"/>
+</svg>
