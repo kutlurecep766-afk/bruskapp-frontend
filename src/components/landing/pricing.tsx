@@ -1,4 +1,4 @@
-const DODO_CHECKOUT_URL = 'https://test.checkout.dodopayments.com/buy/pdt_0NisD0fIY6VpqQLWE2UDh?quantity=5&redirect_url=https://bruskapp.com'
+const DODO_CHECKOUT_URL = 'https://test.checkout.dodopayments.com/buy/pdt_0NisD0fIY6VpqQLWE2UDh?quantity=1&redirect_url=https://bruskapp.com'
 
 const plans = [
   {
