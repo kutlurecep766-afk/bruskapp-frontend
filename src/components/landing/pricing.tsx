@@ -1,3 +1,5 @@
+const DODO_CHECKOUT_URL = 'https://test.checkout.dodopayments.com/buy/pdt_0NisD0fIY6VpqQLWE2UDh?quantity=7&redirect_url=https://bruskapp.com'
+
 const plans = [
   {
     name: 'Starter',
@@ -6,14 +8,16 @@ const plans = [
     features: ['1 Web Chat', '2.500 mesaj/ay', 'QR Menu', 'Temel müşteri yönetimi', 'E-posta destek'],
     popular: false,
     waMsg: 'Merhaba, Bruskapp Starter paketi (999 TL/ay) hakkında bilgi almak istiyorum. İlgi alanlarım: 1 Web Chat, 2.500 mesaj/ay, QR Menu, Temel müşteri yönetimi, E-posta destek',
+    checkoutUrl: null,
   },
   {
     name: 'Professional',
-    price: '2.499',
+    price: '2.999',
     desc: 'Büyüyen işletmeler için profesyonel çözüm',
-    features: ['Web Chat + AI Asistan', '5.000 mesaj', 'Sesli AI asistan', 'QR Menu + Sipariş', 'CRM yönetimi', 'Randevu sistemi', 'Öncelikli destek'],
+    features: ['Web Chat + AI Asistan', 'WhatsApp & Instagram AI', 'Pazaryeri Entegrasyonu', 'Stok & Fiyat Senkronizasyonu', 'Kargo Entegrasyonu', 'Sesli AI asistan', 'Öncelikli destek'],
     popular: true,
-    waMsg: 'Merhaba, Bruskapp Professional paketi (2.499 TL/ay) hakkında bilgi almak istiyorum. İlgi alanlarım: Web Chat + AI Asistan, 5.000 mesaj, Sesli AI asistan, QR Menu + Sipariş, CRM yönetimi, Randevu sistemi, Öncelikli destek',
+    waMsg: 'Merhaba, Bruskapp Professional paketi (2.999 TL/ay) hakkında bilgi almak istiyorum.',
+    checkoutUrl: DODO_CHECKOUT_URL,
   },
   {
     name: 'Enterprise',
@@ -21,7 +25,8 @@ const plans = [
     desc: 'Kurumsal işletmeler için tam kapsamlı çözüm',
     features: ['Sınırsız AI Chatbot', '10.000 mesaj', 'Sesli AI asistan', 'QR Menu + Online Sipariş', 'CRM + Kasa + Personel', 'Randevu + Takvim', 'Özel entegrasyon', '7/24 destek'],
     popular: false,
-    waMsg: 'Merhaba, Bruskapp Enterprise paketi (4.999 TL/ay) hakkında bilgi almak istiyorum. İlgi alanlarım: Sınırsız AI Chatbot, 10.000 mesaj, Sesli AI asistan, QR Menu + Online Sipariş, CRM + Kasa + Personel, Randevu + Takvim, Özel entegrasyon, 7/24 destek',
+    waMsg: 'Merhaba, Bruskapp Enterprise paketi (4.999 TL/ay) hakkında bilgi almak istiyorum.',
+    checkoutUrl: null,
   },
 ]
 
@@ -54,7 +59,14 @@ export default function Pricing() {
                     <li key={j} className="flex items-center gap-3 text-sm text-gray-300"><span className="w-5 h-5 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xs font-bold flex-shrink-0">✓</span>{f}</li>
                   ))}
                 </ul>
-                <a href={`https://wa.me/905442566476?text=${encodeURIComponent(plan.waMsg)}`} className={'block w-full py-3 rounded-2xl text-center text-sm font-semibold transition-all ' + (plan.popular ? 'bg-gradient-to-r from-blue-600 to-blue-500 text-white hover:shadow-lg hover:shadow-blue-500/25' : 'glass text-white hover:bg-white/10')}>Başlayın</a>
+                {plan.checkoutUrl ? (
+                  <div className="space-y-2">
+                    <a href={plan.checkoutUrl} target="_blank" className={'block w-full py-3 rounded-2xl text-center text-sm font-semibold transition-all bg-gradient-to-r from-blue-600 to-blue-500 text-white hover:shadow-lg hover:shadow-blue-500/25'}>Hemen Satın Al</a>
+                    <a href={`https://wa.me/905442566476?text=${encodeURIComponent(plan.waMsg)}`} className="block w-full py-2 rounded-2xl text-center text-xs text-gray-400 hover:text-white transition-all border border-[#1a2332] hover:border-gray-600">WhatsApp'tan sorun</a>
+                  </div>
+                ) : (
+                  <a href={`https://wa.me/905442566476?text=${encodeURIComponent(plan.waMsg)}`} className={'block w-full py-3 rounded-2xl text-center text-sm font-semibold transition-all ' + (plan.popular ? 'bg-gradient-to-r from-blue-600 to-blue-500 text-white hover:shadow-lg hover:shadow-blue-500/25' : 'glass text-white hover:bg-white/10')}>Başlayın</a>
+                )}
               </div>
             </div>
           ))}
