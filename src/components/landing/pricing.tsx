@@ -1,5 +1,3 @@
-const DODO_CHECKOUT_URL = 'https://test.checkout.dodopayments.com/buy/pdt_0NisD0fIY6VpqQLWE2UDh?quantity=1&redirect_url=https://bruskapp.com'
-
 const plans = [
   {
     name: 'Starter',
@@ -17,7 +15,7 @@ const plans = [
     features: ['Web Chat + AI Asistan', 'WhatsApp & Instagram AI', 'Pazaryeri Entegrasyonu', 'Stok & Fiyat Senkronizasyonu', 'Kargo Entegrasyonu', 'Sesli AI asistan', 'Öncelikli destek'],
     popular: true,
     waMsg: 'Merhaba, Bruskapp Professional paketi (2.999 TL/ay) hakkında bilgi almak istiyorum.',
-    checkoutUrl: DODO_CHECKOUT_URL,
+    checkoutUrl: null,
   },
   {
     name: 'Enterprise',
