@@ -1,30 +1,30 @@
 const plans = [
   {
     name: 'Starter',
-    price: '999',
+    price: '69',
     desc: 'Küçük işletmeler için ideal başlangıç paketi',
     features: ['1 Web Chat', '2.500 mesaj/ay', 'QR Menu', 'Temel müşteri yönetimi', 'E-posta destek'],
     popular: false,
-    waMsg: 'Merhaba, Bruskapp Starter paketi (999 TL/ay) hakkında bilgi almak istiyorum. İlgi alanlarım: 1 Web Chat, 2.500 mesaj/ay, QR Menu, Temel müşteri yönetimi, E-posta destek',
-    checkoutUrl: null,
+    waMsg: 'Merhaba, Bruskapp Starter paketi ($69/ay) hakkında bilgi almak istiyorum. İlgi alanlarım: 1 Web Chat, 2.500 mesaj/ay, QR Menu, Temel müşteri yönetimi, E-posta destek',
+    checkoutUrl: 'https://checkout.dodopayments.com/buy/pdt_0Nj6CJU5ERA8VkhSACIpo?quantity=1',
   },
   {
     name: 'Professional',
-    price: '2.999',
+    price: '130',
     desc: 'Büyüyen işletmeler için profesyonel çözüm',
     features: ['Web Chat + AI Asistan', 'WhatsApp & Instagram AI', 'Pazaryeri Entegrasyonu', 'Stok & Fiyat Senkronizasyonu', 'Kargo Entegrasyonu', 'Sesli AI asistan', 'Öncelikli destek'],
     popular: true,
-    waMsg: 'Merhaba, Bruskapp Professional paketi (2.999 TL/ay) hakkında bilgi almak istiyorum.',
-    checkoutUrl: null,
+    waMsg: 'Merhaba, Bruskapp Professional paketi ($130/ay) hakkında bilgi almak istiyorum.',
+    checkoutUrl: 'https://checkout.dodopayments.com/buy/pdt_0Nj6D7Dbx50uQmwsGlHfi?quantity=1',
   },
   {
     name: 'Enterprise',
-    price: '4.999',
+    price: '217',
     desc: 'Kurumsal işletmeler için tam kapsamlı çözüm',
     features: ['Sınırsız AI Chatbot', '10.000 mesaj', 'Sesli AI asistan', 'QR Menu + Online Sipariş', 'CRM + Kasa + Personel', 'Randevu + Takvim', 'Özel entegrasyon', '7/24 destek'],
     popular: false,
-    waMsg: 'Merhaba, Bruskapp Enterprise paketi (4.999 TL/ay) hakkında bilgi almak istiyorum.',
-    checkoutUrl: null,
+    waMsg: 'Merhaba, Bruskapp Enterprise paketi ($217/ay) hakkında bilgi almak istiyorum.',
+    checkoutUrl: 'https://checkout.dodopayments.com/buy/pdt_0Nj6DY2wFtyTMRMWK6qjJ?quantity=1',
   },
 ]
 
@@ -37,7 +37,7 @@ export default function Pricing() {
         <div className="text-center mb-16">
           <span className="text-gradient text-sm font-semibold tracking-widest uppercase">Fiyatlandırma</span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mt-4">Her Ölçeğe Uygun Planlar</h2>
-          <p className="text-gray-400 text-lg mt-4">Aylık 999 TL'den başlayan fiyatlarla başlayın, büyüdükçe genişletin</p>
+          <p className="text-gray-400 text-lg mt-4">Aylık $69'dan başlayan fiyatlarla başlayın, büyüdükçe genişletin</p>
         </div>
         <div className="grid md:grid-cols-3 gap-6 lg:gap-8 max-w-5xl mx-auto">
           {plans.map((plan, i) => (
@@ -49,8 +49,8 @@ export default function Pricing() {
                 <h3 className="text-white text-xl font-bold mb-1">{plan.name}</h3>
                 <p className="text-gray-500 text-sm mb-6">{plan.desc}</p>
                 <div className="flex items-baseline gap-1 mb-8">
-                  <span className="text-4xl sm:text-5xl font-bold text-white">{plan.price}</span>
-                  <span className="text-gray-500">TL/ay</span>
+                  <span className="text-4xl sm:text-5xl font-bold text-white">${plan.price}</span>
+                  <span className="text-gray-500">/ay</span>
                 </div>
                 <ul className="space-y-3 mb-8">
                   {plan.features.map((f, j) => (

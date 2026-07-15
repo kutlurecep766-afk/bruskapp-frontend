@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <footer className="relative pt-20 pb-10 border-t border-[#1a2332]">
+    <footer id="iletişim" className="relative pt-20 pb-10 border-t border-[#1a2332]">
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-500/50 to-transparent" />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
@@ -24,7 +24,7 @@ export default function Footer() {
               <li className="text-sm text-gray-500">bruskappdestek@gmail.com</li>
               <li className="text-sm text-gray-500">+90 544 256 64 76</li>
               <li className="flex items-center gap-3 mt-4">
-                <a href="#" className="group">
+                <a href="https://www.instagram.com/bruskapp" target="_blank" rel="noopener noreferrer" className="group">
                   <div className="w-9 h-9 rounded-xl bg-[#1a2332] flex items-center justify-center text-gray-400 hover:bg-blue-500/20 hover:text-blue-400 transition-all">
                     <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                       <rect x="2" y="2" width="20" height="20" rx="5" /><circle cx="12" cy="12" r="5" /><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none" />
@@ -38,7 +38,7 @@ export default function Footer() {
                     </svg>
                   </div>
                 </a>
-                <a href="#" className="group">
+                <a href="tel:+905442566476" className="group">
                   <div className="w-9 h-9 rounded-xl bg-[#1a2332] flex items-center justify-center text-gray-400 hover:bg-blue-500/20 hover:text-blue-400 transition-all">
                     <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                       <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z" />
@@ -50,8 +50,8 @@ export default function Footer() {
           </div>
         </div>
         <div className="pt-8 border-t border-[#1a2332] flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-gray-600">2025 BRUSKAPP. Tüm hakları saklıdır.</p>
-          <div className="flex gap-6 text-sm text-gray-600"><a href="#" className="hover:text-white">Gizlilik</a><a href="#" className="hover:text-white">Koşullar</a></div>
+          <p className="text-sm text-gray-600">2026 BRUSKAPP. Tüm hakları saklıdır.</p>
+          <div className="flex gap-6 text-sm text-gray-600"><a href="/gizlilik" className="hover:text-white">Gizlilik</a><a href="/kosullar" className="hover:text-white">Koşullar</a><a href="/iade" className="hover:text-white">İade</a></div>
         </div>
       </div>
     </footer>

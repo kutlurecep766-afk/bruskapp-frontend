@@ -1,7 +1,6 @@
 import Navbar from '@/components/landing/navbar'
 import Hero from '@/components/landing/hero'
 import ChatbotDemo from '@/components/landing/chatbot-demo'
-import Demos from '@/components/landing/demos'
 import VoiceAI from '@/components/landing/voice-ai'
 import Features from '@/components/landing/features'
 import Sectors from '@/components/landing/sectors'
@@ -16,7 +15,6 @@ export default function Home() {
       <Navbar />
       <Hero />
       <ChatbotDemo />
-      <Demos />
       <VoiceAI />
       <Features />
       <Sectors />

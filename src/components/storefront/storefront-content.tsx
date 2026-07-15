@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback, useRef } from 'react'
-import { ShoppingBag, X, Plus, Minus, Trash2, Search, SlidersHorizontal, ChevronDown } from 'lucide-react'
+import { ShoppingBag, X, Plus, Minus, Trash2, Search, SlidersHorizontal, ChevronDown, MapPin, Clock } from 'lucide-react'
 
 interface Product {
   id: string
@@ -59,6 +59,12 @@ export default function StorefrontContent({ tenant, products, mode, tableNumber 
   const [orderSuccess, setOrderSuccess] = useState(false)
   const [paying, setPaying] = useState(false)
   const [payError, setPayError] = useState('')
+  const [sessionExpired, setSessionExpired] = useState(false)
+  const [geoError, setGeoError] = useState('')
+  const [geoChecking, setGeoChecking] = useState(false)
+  const [timeLeft, setTimeLeft] = useState<number>(15 * 60)
+  const [lockedTable, setLockedTable] = useState<string | undefined>(undefined)
+  const lastActivityRef = useRef<number>(Date.now())
   const searchInputRef = useRef<HTMLInputElement>(null)
   const sortRef = useRef<HTMLDivElement>(null)
 
@@ -97,6 +103,57 @@ export default function StorefrontContent({ tenant, products, mode, tableNumber 
     return () => document.removeEventListener('mousedown', handleClick)
   }, [])
 
+  useEffect(() => {
+    if (mode !== 'qr' || !tableNumber) return
+    const storageKey = `qr-table-${tenant.slug}`
+    const stored = sessionStorage.getItem(storageKey)
+    if (!stored) {
+      sessionStorage.setItem(storageKey, tableNumber)
+      setLockedTable(tableNumber)
+    } else {
+      setLockedTable(stored)
+      if (stored !== tableNumber) {
+        setOrderError(`Bu QR kod Masa ${stored}'a ait. Lütfen doğru QR kodu okutun.`)
+      }
+    }
+  }, [mode, tenant.slug])
+
+  const updateActivity = useCallback(() => {
+    lastActivityRef.current = Date.now()
+    setSessionExpired(false)
+  }, [])
+
+  useEffect(() => {
+    if (mode !== 'qr') return
+    const handler = () => updateActivity()
+    window.addEventListener('mousedown', handler)
+    window.addEventListener('touchstart', handler)
+    window.addEventListener('scroll', handler, { passive: true })
+    window.addEventListener('keydown', handler)
+    return () => {
+      window.removeEventListener('mousedown', handler)
+      window.removeEventListener('touchstart', handler)
+      window.removeEventListener('scroll', handler)
+      window.removeEventListener('keydown', handler)
+    }
+  }, [mode, updateActivity])
+
+  useEffect(() => {
+    if (mode !== 'qr') return
+    updateActivity()
+    const interval = setInterval(() => {
+      const elapsed = Math.floor((Date.now() - lastActivityRef.current) / 1000)
+      const remaining = 15 * 60 - elapsed
+      setTimeLeft(Math.max(0, remaining))
+      if (remaining <= 0) {
+        setSessionExpired(true)
+        setCart([])
+        localStorage.removeItem(`cart-${tenant.slug}`)
+      }
+    }, 1000)
+    return () => clearInterval(interval)
+  }, [mode, tenant.slug, updateActivity])
+
   const addToCart = useCallback((product: Product) => {
     setCart(prev => {
       const existing = prev.find(item => item.product.id === product.id)
@@ -114,12 +171,55 @@ export default function StorefrontContent({ tenant, products, mode, tableNumber 
     setCart(prev => prev.filter(item => item.product.id !== productId))
   }, [])
 
-  const placeOrder = useCallback(async () => {
+  const checkGeoAndPlace = useCallback(async (attemptGeo = true) => {
     if (cart.length === 0) return
     if (mode === 'qr' && !customerName.trim()) {
       setOrderError('Lütfen adınızı girin')
       return
     }
+
+    updateActivity()
+
+    if (sessionExpired) {
+      setOrderError('Oturum süreniz doldu. Lütfen sayfayı yenileyin.')
+      return
+    }
+
+    const restLat = cfg.latitude
+    const restLng = cfg.longitude
+
+    if (mode === 'qr' && restLat && restLng && attemptGeo) {
+      setGeoChecking(true)
+      setGeoError('')
+      try {
+        const pos = await new Promise<GeolocationPosition>((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(resolve, reject, {
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 60000,
+          })
+        })
+        const dist = getDistance(
+          pos.coords.latitude,
+          pos.coords.longitude,
+          restLat,
+          restLng
+        )
+        if (dist > 200) {
+          setGeoError('Sipariş vermek için işletmeye yakın olmalısınız. (Uzaklık: ' + Math.round(dist) + 'm)')
+          setGeoChecking(false)
+          return
+        }
+      } catch (e: any) {
+        if (e.code === 1) {
+          setGeoError('Konum izni vermezseniz sipariş veremezsiniz. Lütfen konum iznini açın.')
+          setGeoChecking(false)
+          return
+        }
+      }
+      setGeoChecking(false)
+    }
+
     setOrderPlacing(true)
     setOrderError('')
     try {
@@ -131,10 +231,11 @@ export default function StorefrontContent({ tenant, products, mode, tableNumber 
         products: cart.map(item => ({ productId: item.product.id, name: item.product.name, price: item.product.price, quantity: item.quantity })),
         totalAmount: total,
         currency: 'TRY',
-        note: mode === 'qr' ? `Masa ${tableNumber}` : '',
+        note: mode === 'qr' ? `Masa ${lockedTable || tableNumber}` : '',
         status: 'pending',
       }
-      if (tableNumber) body.tableNumber = parseInt(tableNumber, 10)
+      const activeTable = lockedTable || tableNumber
+      if (activeTable) body.tableNumber = parseInt(activeTable, 10)
       const res = await fetch('/api/orders', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -149,7 +250,21 @@ export default function StorefrontContent({ tenant, products, mode, tableNumber 
     } finally {
       setOrderPlacing(false)
     }
-  }, [cart, customerName, mode, tableNumber, tenant.id])
+  }, [cart, customerName, mode, tableNumber, lockedTable, tenant.id, sessionExpired, updateActivity, cfg.latitude, cfg.longitude])
+
+  const placeOrder = useCallback(() => {
+    checkGeoAndPlace(true)
+  }, [checkGeoAndPlace])
+
+  function getDistance(lat1: number, lng1: number, lat2: number, lng2: number) {
+    const R = 6371000
+    const dLat = (lat2 - lat1) * Math.PI / 180
+    const dLng = (lng2 - lng1) * Math.PI / 180
+    const a = Math.sin(dLat / 2) ** 2 +
+      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+      Math.sin(dLng / 2) ** 2
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+  }
 
   const payWithCard = async () => {
     setPaying(true)
@@ -218,7 +333,7 @@ export default function StorefrontContent({ tenant, products, mode, tableNumber 
               )}
               <div>
                 <h1 className="text-sm sm:text-base font-semibold leading-tight" style={{ color: headerText }}>{tenant.siteTitle || tenant.name}</h1>
-                <p className="text-[10px] sm:text-xs" style={{ color: headerMuted }}>{mode === 'qr' ? `Masa ${tableNumber} · QR Sipariş` : (headerSubtitle || 'Çevrimiçi mağaza')}</p>
+                <p className="text-[10px] sm:text-xs" style={{ color: headerMuted }}>{mode === 'qr' ? `Masa ${lockedTable || tableNumber} · QR Sipariş` : (headerSubtitle || 'Çevrimiçi mağaza')}</p>
               </div>
             </div>
 
@@ -313,8 +428,8 @@ export default function StorefrontContent({ tenant, products, mode, tableNumber 
                   </div>
                   <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold leading-[1.1] tracking-tight" style={{ color: '#f1f5f9' }}>
                     {heroTitle || tenant.siteTitle || tenant.name}
-                    {mode === 'qr' && tableNumber && (
-                      <span className="inline-block ml-3 sm:ml-4 px-2.5 py-1 rounded-lg text-sm sm:text-base font-medium align-middle" style={{ backgroundColor: `${pc}20`, color: pc }}>Masa {tableNumber}</span>
+                    {mode === 'qr' && (lockedTable || tableNumber) && (
+                      <span className="inline-block ml-3 sm:ml-4 px-2.5 py-1 rounded-lg text-sm sm:text-base font-medium align-middle" style={{ backgroundColor: `${pc}20`, color: pc }}>Masa {lockedTable || tableNumber}</span>
                     )}
                   </h2>
                   <p className="mt-3 sm:mt-4 text-sm sm:text-base max-w-lg leading-relaxed" style={{ color: headerMuted }}>
@@ -616,39 +731,78 @@ export default function StorefrontContent({ tenant, products, mode, tableNumber 
             {cart.length > 0 && (
               <div className="border-t shrink-0 px-5 sm:px-6 py-4 sm:py-5 space-y-3" style={{ borderColor: 'rgba(148,163,184,0.08)' }}>
                 {mode === 'qr' && (
-                  <div>
-                    <label className="text-xs font-medium mb-1.5 block" style={{ color: headerMuted }}>Adınız</label>
-                    <input
-                      type="text"
-                      value={customerName}
-                      onChange={(e) => setCustomerName(e.target.value)}
-                      placeholder="Adınızı girin"
-                      className="w-full px-3.5 py-2.5 rounded-xl text-sm outline-none border"
-                      style={{
-                        backgroundColor: 'rgba(255,255,255,0.04)',
-                        borderColor: 'rgba(148,163,184,0.1)',
-                        color: '#f1f5f9',
-                      }}
-                    />
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between text-xs" style={{ color: headerMuted }}>
+                      <div className="flex items-center gap-1.5">
+                        <Clock className="w-3.5 h-3.5" />
+                        <span>Oturum: {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, '0')}</span>
+                      </div>
+                      {cfg.latitude && cfg.longitude && (
+                        <div className="flex items-center gap-1.5">
+                          <MapPin className="w-3.5 h-3.5" />
+                          <span>Konum korumalı</span>
+                        </div>
+                      )}
+                    </div>
+                    <div>
+                      <label className="text-xs font-medium mb-1.5 block" style={{ color: headerMuted }}>Adınız</label>
+                      <input
+                        type="text"
+                        value={customerName}
+                        onChange={(e) => setCustomerName(e.target.value)}
+                        placeholder="Adınızı girin"
+                        className="w-full px-3.5 py-2.5 rounded-xl text-sm outline-none border"
+                        style={{
+                          backgroundColor: 'rgba(255,255,255,0.04)',
+                          borderColor: 'rgba(148,163,184,0.1)',
+                          color: '#f1f5f9',
+                        }}
+                      />
+                    </div>
                   </div>
                 )}
                 <div className="flex items-center justify-between">
                   <span className="text-sm" style={{ color: headerMuted }}>Toplam</span>
                   <span className="text-lg font-bold" style={{ color: '#f1f5f9' }}>{formatPrice(cartTotal)}</span>
                 </div>
+                {geoError && (
+                  <p className="text-xs text-amber-400 text-center flex items-center justify-center gap-1">
+                    <MapPin className="w-3 h-3" /> {geoError}
+                  </p>
+                )}
                 {orderError && (
                   <p className="text-xs text-rose-400 text-center">{orderError}</p>
                 )}
                 <button
                   onClick={placeOrder}
-                  disabled={orderPlacing}
+                  disabled={orderPlacing || geoChecking}
                   className="w-full py-3 sm:py-3.5 rounded-xl text-sm font-semibold text-white shadow-lg active:scale-[0.98] transition-all hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
                   style={{ backgroundColor: pc }}
                 >
-                  {orderPlacing ? 'Sipariş oluşturuluyor...' : 'Siparişi Tamamla'}
+                  {geoChecking ? 'Konum doğrulanıyor...' : (orderPlacing ? 'Sipariş oluşturuluyor...' : 'Siparişi Tamamla')}
                 </button>
               </div>
             )}
+          </div>
+        </div>
+      )}
+
+      {sessionExpired && mode === 'qr' && (
+        <div className="fixed inset-0 z-[70] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+          <div className="relative w-full max-w-sm rounded-2xl border p-8 text-center shadow-2xl animate-scale-in" style={{ backgroundColor: '#0a0e1a', borderColor: 'rgba(148,163,184,0.1)' }}>
+            <div className="w-16 h-16 mx-auto mb-5 rounded-full flex items-center justify-center" style={{ backgroundColor: '#f59e0b20' }}>
+              <Clock className="w-8 h-8 text-amber-400" />
+            </div>
+            <h3 className="text-lg font-semibold mb-2" style={{ color: '#f1f5f9' }}>Oturum Süreniz Doldu</h3>
+            <p className="text-sm mb-6" style={{ color: headerMuted }}>Güvenliğiniz için oturumunuz 15 dakika sonunda sıfırlandı. Lütfen QR kodu tekrar okutun.</p>
+            <button
+              onClick={() => window.location.reload()}
+              className="px-6 py-2.5 rounded-xl text-sm font-semibold text-white shadow-lg transition-all hover:opacity-90"
+              style={{ backgroundColor: '#f59e0b' }}
+            >
+              Sayfayı Yenile
+            </button>
           </div>
         </div>
       )}

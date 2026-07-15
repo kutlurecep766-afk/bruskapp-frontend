@@ -47,6 +47,10 @@ export default async function MasaPage({ params }: { params: { slug: string; mas
   const cfg = typeof tenant.storefrontConfig === 'string' ? JSON.parse(tenant.storefrontConfig) : (tenant.storefrontConfig || {})
   if (cfg.qrEnabled === false) return <QrDisabled />
 
+  const allowedTables: number[] = cfg.masaNumbers || []
+  const tableNum = parseInt(masaNo, 10)
+  if (allowedTables.length > 0 && !allowedTables.includes(tableNum)) return <InvalidTable />
+
   return <StorefrontContent tenant={tenant} products={products} mode="qr" tableNumber={masaNo} />
 }
 
@@ -75,6 +79,20 @@ function QrDisabled() {
         </div>
         <h1 className="text-xl font-semibold text-[#f1f5f9] mb-2">QR Menü Pasif</h1>
         <p className="text-sm text-white/40 leading-relaxed">Bu mağazanın QR menü özelliği şu anda aktif değil.</p>
+      </div>
+    </main>
+  )
+}
+
+function InvalidTable() {
+  return (
+    <main className="min-h-screen bg-[#080b12] flex items-center justify-center px-4">
+      <div className="text-center max-w-sm">
+        <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-white/[0.03] border border-white/[0.06] flex items-center justify-center">
+          <QrCode className="w-8 h-8 text-white/30" />
+        </div>
+        <h1 className="text-xl font-semibold text-[#f1f5f9] mb-2">Geçersiz Masa</h1>
+        <p className="text-sm text-white/40 leading-relaxed">Bu QR kod geçerli bir masaya ait değil. Lütfen işletme yetkilisiyle iletişime geçin.</p>
       </div>
     </main>
   )
