@@ -1,4 +1,4 @@
-import { MessageCircle, Instagram, Facebook, Send, Globe, ShoppingBag, BarChart3, Database, MessageSquare, ClipboardList, CalendarCheck, Users, Tag, Bell, FileText, Clock } from 'lucide-react'
+import { Send, BarChart3, Database, MessageSquare, Users, Bell, Clock } from 'lucide-react'
 
 const services = [
   {
@@ -20,16 +20,16 @@ const services = [
     items: ['Otomatik müşteri takibi', 'Lead toplama ve segmentasyon', 'Müşteri geçmişi kaydı'],
   },
   {
-    title: 'Sipariş & Rezervasyon',
-    icon: ClipboardList,
+    title: 'Toplu Mesaj & Dönüşüm',
+    icon: Send,
     color: 'from-orange-500 to-red-500',
-    items: ['Sipariş yönetimi paneli', 'Randevu & rezervasyon sistemi', { text: 'Hatırlatma Şablonları', badge: 'Çok Yakında' }],
+    items: [{ text: 'Toplu Mesaj Kampanyası', badge: 'Çok Yakında' }, { text: 'Dönüşüm Analizi', badge: 'Çok Yakında' }, 'Hedef kitle segmentasyonu'],
   },
   {
     title: 'Kampanya & Bildirim',
     icon: Bell,
     color: 'from-pink-500 to-rose-500',
-    items: ['Chatbot kampanya modülü', 'Telegram anlık bildirim', { text: 'Toplu Mesaj Kampanyası + Dönüşüm Analizi', badge: 'Çok Yakında' }],
+    items: ['Chatbot kampanya modülü', 'Telegram anlık bildirim', { text: 'Hatırlatma Şablonları', badge: 'Çok Yakında' }],
   },
   {
     title: 'Analiz & Raporlama',

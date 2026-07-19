@@ -31,7 +31,7 @@ export default function ChatWidget() {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
-  const [sessionId] = useState(() => 'web_' + Math.random().toString(36).slice(2, 10))
+  const [sessionId] = useState(() => 'default:web_' + Math.random().toString(36).slice(2, 10))
   const [welcome, setWelcome] = useState('')
   const bottomRef = useRef<HTMLDivElement>(null)
 

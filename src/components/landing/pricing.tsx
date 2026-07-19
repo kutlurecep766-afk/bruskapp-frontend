@@ -1,70 +1,196 @@
+import { MessageCircle, CheckCircle, ShoppingCart, ShoppingBag, Package, Store } from 'lucide-react'
+import type { ElementType } from 'react'
+
+const platforms: { name: string; img?: string; icon?: ElementType }[] = [
+  { name: 'Instagram', img: 'https://cdn.simpleicons.org/instagram/ffffff' },
+  { name: 'WhatsApp', img: 'https://cdn.simpleicons.org/whatsapp/ffffff' },
+  { name: 'Messenger', img: 'https://cdn.simpleicons.org/messenger/ffffff' },
+  { name: 'Telegram', img: 'https://cdn.simpleicons.org/telegram/ffffff' },
+  { name: 'Web Chat', img: 'https://cdn.simpleicons.org/googlechat/ffffff' },
+  { name: 'Trendyol', icon: ShoppingBag },
+  { name: 'Hepsiburada', icon: Package },
+  { name: 'n11', icon: Store },
+]
+
 const plans = [
   {
-    name: 'Starter',
-    price: '69',
-    desc: 'Küçük işletmeler için ideal başlangıç paketi',
-    features: ['1 Web Chat', '2.500 mesaj/ay', 'QR Menu', 'Temel müşteri yönetimi', 'E-posta destek'],
-    popular: false,
-    waMsg: 'Merhaba, Bruskapp Starter paketi ($69/ay) hakkında bilgi almak istiyorum. İlgi alanlarım: 1 Web Chat, 2.500 mesaj/ay, QR Menu, Temel müşteri yönetimi, E-posta destek',
-    checkoutUrl: 'https://checkout.dodopayments.com/buy/pdt_0Nj6CJU5ERA8VkhSACIpo?quantity=1',
+    nameBase: 'Brusk',
+    nameSuffix: 'Go',
+    subtitle: 'BAŞLANGIÇ PAKETİ',
+    price: '49.99',
+    period: 'AYLIK',
+    messageLimit: '20.000',
+    platformLabel: '2 PLATFORM SEÇİM HAKKI',
+    platformDesc: '8 platform arasından 2 tanesini seçebilirsiniz.',
+    waMsg: 'Merhaba, BruskGo paketi ($49.99/ay) hakkında bilgi almak istiyorum.',
+    checkoutUrl: null,
   },
   {
-    name: 'Professional',
-    price: '130',
-    desc: 'Büyüyen işletmeler için profesyonel çözüm',
-    features: ['Web Chat + AI Asistan', 'WhatsApp & Instagram AI', 'Pazaryeri Entegrasyonu', 'Stok & Fiyat Senkronizasyonu', 'Kargo Entegrasyonu', 'Sesli AI asistan', 'Öncelikli destek'],
-    popular: true,
-    waMsg: 'Merhaba, Bruskapp Professional paketi ($130/ay) hakkında bilgi almak istiyorum.',
-    checkoutUrl: 'https://checkout.dodopayments.com/buy/pdt_0Nj6D7Dbx50uQmwsGlHfi?quantity=1',
+    nameBase: 'Brusk',
+    nameSuffix: 'Pro',
+    subtitle: 'PROFESYONEL PAKETİ',
+    price: '99.99',
+    period: 'AYLIK',
+    messageLimit: '50.000',
+    platformLabel: '4 PLATFORM SEÇİM HAKKI',
+    platformDesc: '8 platform arasından 4 tanesini seçebilirsiniz.',
+    waMsg: 'Merhaba, BruskPro paketi ($99.99/ay) hakkında bilgi almak istiyorum.',
+    checkoutUrl: null,
   },
   {
-    name: 'Enterprise',
-    price: '217',
-    desc: 'Kurumsal işletmeler için tam kapsamlı çözüm',
-    features: ['Sınırsız AI Chatbot', '10.000 mesaj', 'Sesli AI asistan', 'QR Menu + Online Sipariş', 'CRM + Kasa + Personel', 'Randevu + Takvim', 'Özel entegrasyon', '7/24 destek'],
-    popular: false,
-    waMsg: 'Merhaba, Bruskapp Enterprise paketi ($217/ay) hakkında bilgi almak istiyorum.',
-    checkoutUrl: 'https://checkout.dodopayments.com/buy/pdt_0Nj6DY2wFtyTMRMWK6qjJ?quantity=1',
+    nameBase: 'Brusk',
+    nameSuffix: 'Max',
+    subtitle: 'SINIRSIZ GÜÇ PAKETİ',
+    price: '169.99',
+    period: 'AYLIK',
+    messageLimit: '150.000',
+    platformLabel: '8 PLATFORM TÜMÜ',
+    platformDesc: 'Tüm platformları sınırsız kullanabilirsiniz.',
+    waMsg: 'Merhaba, BruskMax paketi ($169.99/ay) hakkında bilgi almak istiyorum.',
+    checkoutUrl: null,
   },
+]
+
+const featuresLeft = [
+  'Raporlama & Analiz',
+  'Chatbot Bilgi Havuzu',
+  'Lead Yönetimi & CRM',
+  'Chatbot Kampanya Modülü',
+  'Anlık Bildirim (Telegram)',
+  'Gün Sonu Rapor & Analiz',
+]
+
+const featuresRight = [
+  'Sipariş, Randevu, Rezervasyon Modülü',
+  'Hatırlatma Şablonları',
+  'Toplu Mesaj Kampanyası + Dönüşüm Analizi',
+  'Yorum Yönetimi',
+  'Mesajları Tek Ekrandan Yönetme',
+  'Öncelikli Destek',
+  '7/24 Kurulum Desteği',
+  'Çoklu Dil Desteği (Otomatik Algılar)',
 ]
 
 export default function Pricing() {
   return (
-    <section id="fiyatlandırma" className="relative py-24 lg:py-32">
+    <section id="fiyatlandırma" className="relative py-24 lg:py-32 overflow-hidden">
       <div className="absolute inset-0 grid-bg opacity-20" />
-      <div className="absolute top-1/3 left-0 w-96 h-96 bg-blue-500/10 rounded-full blur-[150px]" />
+      <div className="absolute top-1/3 -left-48 w-96 h-96 bg-blue-500/10 rounded-full blur-[150px]" />
+      <div className="absolute bottom-1/4 -right-48 w-80 h-80 bg-purple-500/8 rounded-full blur-[120px]" />
+
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <span className="text-gradient text-sm font-semibold tracking-widest uppercase">Fiyatlandırma</span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mt-4">Her Ölçeğe Uygun Planlar</h2>
-          <p className="text-gray-400 text-lg mt-4">Aylık $69'dan başlayan fiyatlarla başlayın, büyüdükçe genişletin</p>
+        <div className="text-center mb-12 animate-fade-in">
+          <span className="text-blue-400 text-sm font-semibold tracking-[0.2em] uppercase">Fiyatlandırma</span>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mt-4">Her İşletmeye Uygun Planlar</h2>
+          <p className="text-gray-400 text-lg mt-4 max-w-2xl mx-auto">
+            Aşağıdaki platformlardan ihtiyacınıza göre seçim yapın
+          </p>
         </div>
-        <div className="grid md:grid-cols-3 gap-6 lg:gap-8 max-w-5xl mx-auto">
+
+        <div className="flex flex-wrap justify-center gap-4 mb-14 animate-fade-in" style={{ animationDelay: '0.1s' }}>
+          {platforms.map((p, i) => (
+            <div
+              key={i}
+              className="flex items-center gap-2.5 bg-white/[0.04] border border-white/[0.06] rounded-xl px-4 py-2.5 hover:bg-white/[0.08] hover:border-blue-500/20 transition-all duration-300 hover:scale-105"
+            >
+                    {p.img ? <img src={p.img} alt={p.name} className="w-5 h-5" /> : p.icon && <p.icon className="w-5 h-5 text-white" />}
+              <span className="text-sm font-medium text-gray-300">{p.name}</span>
+            </div>
+          ))}
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {plans.map((plan, i) => (
-            <div key={i} className={'relative rounded-3xl p-8 transition-all duration-500 animate-fade-in ' + (plan.popular ? 'neon-glow scale-100 md:scale-105 lg:scale-110 z-10' : 'glass hover:neon-glow')} style={{animationDelay: (i * 0.15) + 's'}}>
-              {plan.popular && (
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-blue-600 to-blue-500 rounded-full text-xs text-white font-medium">En Popüler</div>
-              )}
-              <div className={plan.popular ? '' : ''} style={plan.popular ? {background:'rgba(13,17,23,0.9)', backdropFilter:'blur(20px)', border:'1px solid rgba(26,35,50,0.5)', borderRadius:'24px', padding:'32px'} : {}}>
-                <h3 className="text-white text-xl font-bold mb-1">{plan.name}</h3>
-                <p className="text-gray-500 text-sm mb-6">{plan.desc}</p>
-                <div className="flex items-baseline gap-1 mb-8">
-                  <span className="text-4xl sm:text-5xl font-bold text-white">${plan.price}</span>
-                  <span className="text-gray-500">/ay</span>
+            <div
+              key={i}
+              className="group bg-[#0d1117]/80 backdrop-blur-xl border border-[#1a2332] rounded-2xl hover:-translate-y-2 hover:border-blue-500/30 hover:shadow-2xl hover:shadow-blue-500/5 transition-all duration-500 animate-fade-in flex flex-col"
+              style={{ animationDelay: `${0.2 + i * 0.15}s` }}
+            >
+              <div className="p-6 lg:p-8 flex flex-col flex-1">
+                <div className="flex items-baseline gap-0.5 mb-1">
+                  <span className="text-2xl lg:text-3xl font-bold text-white tracking-tight">{plan.nameBase}</span>
+                  <span className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-blue-400 to-blue-500 bg-clip-text text-transparent">{plan.nameSuffix}</span>
                 </div>
-                <ul className="space-y-3 mb-8">
-                  {plan.features.map((f, j) => (
-                    <li key={j} className="flex items-center gap-3 text-sm text-gray-300"><span className="w-5 h-5 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xs font-bold flex-shrink-0">✓</span>{f}</li>
-                  ))}
-                </ul>
-                {plan.checkoutUrl ? (
-                  <div className="space-y-2">
-                    <a href={plan.checkoutUrl} target="_blank" className={'block w-full py-3 rounded-2xl text-center text-sm font-semibold transition-all bg-gradient-to-r from-blue-600 to-blue-500 text-white hover:shadow-lg hover:shadow-blue-500/25'}>Hemen Satın Al</a>
-                    <a href={`https://wa.me/905442566476?text=${encodeURIComponent(plan.waMsg)}`} className="block w-full py-2 rounded-2xl text-center text-xs text-gray-400 hover:text-white transition-all border border-[#1a2332] hover:border-gray-600">WhatsApp'tan sorun</a>
+                <p className="text-[11px] text-gray-500 tracking-[0.15em] mb-6">{plan.subtitle}</p>
+
+                <div className="w-full bg-gradient-to-r from-blue-600 to-blue-500 text-white text-center py-3.5 rounded-xl font-bold text-xl tracking-tight mb-6 shadow-lg shadow-blue-500/20">
+                  ${plan.price}
+                  <span className="text-white/70 text-sm font-normal ml-1">/{plan.period}</span>
+                </div>
+
+                <div className="flex items-center justify-between mb-6">
+                  <div className="flex items-center gap-2.5">
+                    <MessageCircle className="w-5 h-5 text-blue-400" />
+                    <span className="font-bold text-sm text-white tracking-wide">{plan.messageLimit} MESAJ</span>
                   </div>
-                ) : (
-                  <a href={`https://wa.me/905442566476?text=${encodeURIComponent(plan.waMsg)}`} className={'block w-full py-3 rounded-2xl text-center text-sm font-semibold transition-all ' + (plan.popular ? 'bg-gradient-to-r from-blue-600 to-blue-500 text-white hover:shadow-lg hover:shadow-blue-500/25' : 'glass text-white hover:bg-white/10')}>Başlayın</a>
-                )}
+                  <div className="flex items-center gap-2">
+                    <svg viewBox="0 0 40 40" className="w-9 h-9 shrink-0">
+                      <defs>
+                        <linearGradient id="s1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#3b82f6"/><stop offset="1" stopColor="#1d4ed8"/></linearGradient>
+                        <linearGradient id="s2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#8b5cf6"/><stop offset="1" stopColor="#6d28d9"/></linearGradient>
+                        <linearGradient id="s3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#f59e0b"/><stop offset="1" stopColor="#d97706"/></linearGradient>
+                        <linearGradient id="s4" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#10b981"/><stop offset="1" stopColor="#059669"/></linearGradient>
+                        <linearGradient id="s5" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#ef4444"/><stop offset="1" stopColor="#dc2626"/></linearGradient>
+                        <linearGradient id="s6" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#ec4899"/><stop offset="1" stopColor="#be185d"/></linearGradient>
+                      </defs>
+                      <g style={{transformOrigin: '20px 20px'}} className="transition-transform duration-[3000ms] group-hover:rotate-[360deg]">
+                        <path d="M20 20 L20 2 A18 18 0 0 1 35.588 11 Z" fill="url(#s1)"/>
+                        <path d="M20 20 L35.588 11 A18 18 0 0 1 35.588 29 Z" fill="url(#s2)"/>
+                        <path d="M20 20 L35.588 29 A18 18 0 0 1 20 38 Z" fill="url(#s3)"/>
+                        <path d="M20 20 L20 38 A18 18 0 0 1 4.412 29 Z" fill="url(#s4)"/>
+                        <path d="M20 20 L4.412 29 A18 18 0 0 1 4.412 11 Z" fill="url(#s5)"/>
+                        <path d="M20 20 L4.412 11 A18 18 0 0 1 20 2 Z" fill="url(#s6)"/>
+                      </g>
+                      <circle cx="20" cy="20" r="3.5" fill="#0f172a" stroke="#334155" strokeWidth="1"/>
+                      <polygon points="20,0 17.5,6 22.5,6" fill="#fbbf24" stroke="#d97706" strokeWidth="0.5"/>
+                    </svg>
+                    <span className="text-[10px] text-gray-500 leading-tight text-right">
+                      Her hafta mesaj<br />hakkı kazanma şansı!
+                    </span>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-x-4 gap-y-1.5 text-sm mb-6 flex-1">
+                  <div className="space-y-1.5">
+                    {featuresLeft.map((f, j) => (
+                      <div key={j} className="flex items-start gap-2 text-gray-300 group/feat">
+                        <CheckCircle className="w-3.5 h-3.5 text-blue-400 shrink-0 mt-0.5 transition-transform duration-200 group-hover/feat:scale-110" />
+                        <span className="text-[13px] leading-snug">{f}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="space-y-1.5">
+                    {featuresRight.map((f, j) => (
+                      <div key={j} className="flex items-start gap-2 text-gray-300 group/feat">
+                        <CheckCircle className="w-3.5 h-3.5 text-blue-400 shrink-0 mt-0.5 transition-transform duration-200 group-hover/feat:scale-110" />
+                        <span className="text-[13px] leading-snug">{f}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="space-y-3 mt-auto">
+                  <a
+                    href={`https://wa.me/905442566476?text=${encodeURIComponent(plan.waMsg)}`}
+                    className="w-full bg-gradient-to-r from-blue-600 to-blue-500 text-white text-center py-3.5 rounded-xl font-semibold text-sm hover:from-blue-500 hover:to-blue-400 transition-all duration-300 flex items-center justify-center gap-2.5 shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30"
+                  >
+                    <ShoppingCart className="w-4 h-4" />
+                    Satın Al
+                  </a>
+                  <div className="text-center">
+                    <a
+                      href={`https://wa.me/905442566476?text=${encodeURIComponent(plan.waMsg)}`}
+                      className="text-xs text-gray-500 hover:text-blue-400 transition-colors underline underline-offset-4 decoration-white/10 hover:decoration-blue-400/30"
+                    >
+                      WhatsApp'tan detaylı bilgi al
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-gradient-to-r from-[#0F2C59] to-[#1a3a6a] rounded-b-2xl px-6 lg:px-8 py-5 text-center border-t border-white/5">
+                <div className="text-white font-bold text-sm tracking-wide">{plan.platformLabel}</div>
+                <div className="text-blue-200/60 text-[11px] mt-1">{plan.platformDesc}</div>
               </div>
             </div>
           ))}

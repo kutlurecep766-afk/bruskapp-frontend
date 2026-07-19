@@ -19,7 +19,7 @@ export default function Hero() {
               ile Otomatikleştirin
             </h1>
             <p className="text-lg sm:text-xl text-gray-400 leading-relaxed max-w-xl">
-              Web chat, sesli AI asistan, dijital QR menü, sipariş ve müşteri yönetimini tek platformdan yönetin.
+              8 platformda AI chatbot, sipariş ve müşteri yönetimini tek panelden yönetin.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <a href="#demo" className="group px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-2xl text-base font-semibold hover:shadow-xl hover:shadow-blue-500/25 transition-all flex items-center justify-center gap-2">
@@ -30,29 +30,7 @@ export default function Hero() {
                 Ücretsiz Başla
               </a>
             </div>
-            <div className="flex flex-wrap items-center gap-2 pt-4">
-              {[
-                {label:'Sanal POS',cls:'hover:border-blue-500/50 hover:text-blue-400',icon:'💳'},
-                {label:'Web Tasarim',cls:'hover:border-amber-500/50 hover:text-amber-400',icon:'🎨'},
-                {label:'Trendyol',cls:'hover:border-orange-500/50 hover:text-orange-400',icon:'🛒'},
-                {label:'Hepsiburada',cls:'hover:border-purple-500/50 hover:text-purple-400',icon:'📦'},
-                {label:'Web Chat & Sohbet',cls:'hover:border-emerald-500/50 hover:text-emerald-400',icon:'💬'},
-                {label:'Sesli AI Asistan',cls:'hover:border-cyan-500/50 hover:text-cyan-400',icon:'🎙️'},
-                {label:'AI Satın Alma Danışmanı',cls:'hover:border-violet-500/50 hover:text-violet-400',icon:'🤖'},
-                {label:'Dijital QR Menu',cls:'hover:border-pink-500/50 hover:text-pink-400',icon:'📱'},
-                {label:'CRM Yönetimi',cls:'hover:border-indigo-500/50 hover:text-indigo-400',icon:'👥'},
-                {label:'Kasa Takip',cls:'hover:border-yellow-500/50 hover:text-yellow-400',icon:'💰'},
-                {label:'Personel Yönetimi',cls:'hover:border-teal-500/50 hover:text-teal-400',icon:'👤'},
-                {label:'API',cls:'hover:border-rose-500/50 hover:text-rose-400',icon:'🔌'},
-              ].map((item,i)=>(
-                <span key={item.label} className={'group relative px-2 sm:px-3 py-1 sm:py-1.5 text-[10px] sm:text-xs font-medium rounded-full bg-[#0d1117]/80 border border-[#1a2332] text-gray-500 hover:scale-105 hover:-translate-y-0.5 transition-all duration-300 cursor-default animate-fade-in '+item.cls} style={{animationDelay:i*60+'ms'}}>
-                  <span className="relative flex items-center gap-1.5">
-                    <span>{item.icon}</span>
-                    <span>{item.label}</span>
-                  </span>
-                </span>
-              ))}
-            </div>
+
           </div>
           <div className="relative flex justify-center lg:justify-end">
             <div className="relative w-56 sm:w-64 lg:w-72 h-[460px] sm:h-[520px] lg:h-[580px] rounded-[40px] glass neon-glow p-3 animate-float">
