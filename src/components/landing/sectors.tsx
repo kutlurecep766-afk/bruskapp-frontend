@@ -23,13 +23,13 @@ const services = [
     title: 'Sipariş & Rezervasyon',
     icon: ClipboardList,
     color: 'from-orange-500 to-red-500',
-    items: ['Sipariş yönetimi paneli', 'Randevu & rezervasyon sistemi', 'Otomatik hatırlatma şablonları'],
+    items: ['Sipariş yönetimi paneli', 'Randevu & rezervasyon sistemi', { text: 'Hatırlatma Şablonları', badge: 'Çok Yakında' }],
   },
   {
     title: 'Kampanya & Bildirim',
     icon: Bell,
     color: 'from-pink-500 to-rose-500',
-    items: ['Chatbot kampanya modülü', 'Telegram anlık bildirim', 'Toplu mesaj ve duyuru'],
+    items: ['Chatbot kampanya modülü', 'Telegram anlık bildirim', { text: 'Toplu Mesaj Kampanyası + Dönüşüm Analizi', badge: 'Çok Yakında' }],
   },
   {
     title: 'Analiz & Raporlama',
@@ -58,7 +58,12 @@ export default function Sectors() {
                 {s.items.map((item, j) => (
                   <li key={j} className="text-gray-500 text-sm flex items-start gap-2">
                     <span className="w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5 flex-shrink-0" />
-                    {item}
+                    {typeof item === 'string' ? item : (
+                      <span className="flex items-center gap-2">
+                        {item.text}
+                        <span className="text-[10px] font-semibold text-amber-400 bg-amber-500/10 border border-amber-500/20 px-1.5 py-0.5 rounded-full whitespace-nowrap">{item.badge}</span>
+                      </span>
+                    )}
                   </li>
                 ))}
               </ul>
