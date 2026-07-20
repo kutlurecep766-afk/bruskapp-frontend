@@ -39,7 +39,7 @@ const plans = [
       '7/24 Kurulum & Öncelikli Destek',
     ],
     waMsg: 'Merhaba, BruskGo paketi (2.499 TL/ay) hakkında bilgi almak istiyorum.',
-    checkoutUrl: null,
+    checkoutUrl: 'https://checkout.dodopayments.com/buy/pdt_0NjOdM6HPnbGRUhgtzSUn?quantity=1',
   },
   {
     nameBase: 'Brusk',
@@ -68,7 +68,7 @@ const plans = [
       '7/24 Kurulum & VIP Öncelikli Destek',
     ],
     waMsg: 'Merhaba, BruskPro paketi (4.999 TL/ay) hakkında bilgi almak istiyorum.',
-    checkoutUrl: null,
+    checkoutUrl: 'https://checkout.dodopayments.com/buy/pdt_0NjOdiJVI4tljWwUnydC0?quantity=1',
   },
   {
     nameBase: 'Brusk',
@@ -97,7 +97,7 @@ const plans = [
       '7/24 Birebir Özel Danışmanlık & VIP Destek',
     ],
     waMsg: 'Merhaba, BruskMax paketi (7.999 TL/ay) hakkında bilgi almak istiyorum.',
-    checkoutUrl: null,
+    checkoutUrl: 'https://checkout.dodopayments.com/buy/pdt_0NjOe8Y862bLT2aOXsAmN?quantity=1',
   },
 ]
 
@@ -201,7 +201,9 @@ export default function Pricing() {
 
                 <div className="space-y-3 mt-auto">
                   <a
-                    href={`https://wa.me/905442566476?text=${encodeURIComponent(plan.waMsg)}`}
+                    href={plan.checkoutUrl || `https://wa.me/905442566476?text=${encodeURIComponent(plan.waMsg)}`}
+                    target={plan.checkoutUrl ? '_blank' : undefined}
+                    rel={plan.checkoutUrl ? 'noopener noreferrer' : undefined}
                     className={"w-full text-white text-center py-3.5 rounded-xl font-semibold text-sm transition-all duration-300 flex items-center justify-center gap-2.5 shadow-lg " + (plan.popular ? 'bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 shadow-blue-500/20 hover:shadow-blue-500/30' : 'bg-gradient-to-r from-gray-700 to-gray-600 hover:from-gray-600 hover:to-gray-500 shadow-black/20 hover:shadow-black/30')}
                   >
                     <ShoppingCart className="w-4 h-4" />
