@@ -17,58 +17,60 @@ const plans = [
     nameBase: 'Brusk',
     nameSuffix: 'Go',
     subtitle: 'BAŞLANGIÇ PAKETİ',
-    price: '49.99',
+    price: '2.499',
     period: 'AYLIK',
+    priceNote: 'vergiler dahil',
     messageLimit: '20.000',
     platformLabel: '2 PLATFORM SEÇİM HAKKI',
     platformDesc: '8 platform arasından 2 tanesini seçebilirsiniz.',
-    waMsg: 'Merhaba, BruskGo paketi ($49.99/ay) hakkında bilgi almak istiyorum.',
+    waMsg: 'Merhaba, BruskGo paketi (2.499 TL/ay) hakkında bilgi almak istiyorum.',
     checkoutUrl: null,
   },
   {
     nameBase: 'Brusk',
     nameSuffix: 'Pro',
     subtitle: 'PROFESYONEL PAKETİ',
-    price: '99.99',
+    price: '4.999',
     period: 'AYLIK',
+    priceNote: '',
     messageLimit: '50.000',
     platformLabel: '4 PLATFORM SEÇİM HAKKI',
     platformDesc: '8 platform arasından 4 tanesini seçebilirsiniz.',
-    waMsg: 'Merhaba, BruskPro paketi ($99.99/ay) hakkında bilgi almak istiyorum.',
+    waMsg: 'Merhaba, BruskPro paketi (4.999 TL/ay) hakkında bilgi almak istiyorum.',
     checkoutUrl: null,
   },
   {
     nameBase: 'Brusk',
     nameSuffix: 'Max',
     subtitle: 'SINIRSIZ GÜÇ PAKETİ',
-    price: '169.99',
+    price: '7.999',
     period: 'AYLIK',
+    priceNote: '',
     messageLimit: '150.000',
     platformLabel: '8 PLATFORM TÜMÜ',
     platformDesc: 'Tüm platformları sınırsız kullanabilirsiniz.',
-    waMsg: 'Merhaba, BruskMax paketi ($169.99/ay) hakkında bilgi almak istiyorum.',
+    waMsg: 'Merhaba, BruskMax paketi (7.999 TL/ay) hakkında bilgi almak istiyorum.',
     checkoutUrl: null,
   },
 ]
 
 const featuresLeft = [
-  'Raporlama & Analiz',
   'Chatbot Bilgi Havuzu',
   'Lead Yönetimi & CRM',
-  'Chatbot Kampanya Modülü',
   'Anlık Bildirim (Telegram)',
-  'Gün Sonu Rapor & Analiz',
+  'Telegram Mesajları Tek Ekrandan Yönetme',
+  'Sipariş, Randevu, Rezervasyon Modülü',
+  'Gün Sonu Raporu & Analiz',
+  'Çoklu Dil Desteği',
 ]
 
 const featuresRight = [
-  'Sipariş, Randevu, Rezervasyon Modülü',
-  'Hatırlatma Şablonları',
-  'Toplu Mesaj Kampanyası + Dönüşüm Analizi',
-  'Yorum Yönetimi',
-  'Mesajları Tek Ekrandan Yönetme',
-  'Öncelikli Destek',
+  'Canlı Sohbet Devralma',
+  'Kişiselleştirilmiş Müşteri Karşılama Modülü',
+  'Yapay Zeka Mesajlaşma Motoru',
+  'Yapay Zeka Eğitim Kurulum Desteği',
   '7/24 Kurulum Desteği',
-  'Çoklu Dil Desteği (Otomatik Algılar)',
+  'Öncelikli Destek',
 ]
 
 export default function Pricing() {
@@ -113,10 +115,11 @@ export default function Pricing() {
                 </div>
                 <p className="text-[11px] text-gray-500 tracking-[0.15em] mb-6">{plan.subtitle}</p>
 
-                <div className="w-full bg-gradient-to-r from-blue-600 to-blue-500 text-white text-center py-3.5 rounded-xl font-bold text-xl tracking-tight mb-6 shadow-lg shadow-blue-500/20">
-                  ${plan.price}
+                <div className="w-full bg-gradient-to-r from-blue-600 to-blue-500 text-white text-center py-3.5 rounded-xl font-bold text-xl tracking-tight mb-1 shadow-lg shadow-blue-500/20">
+                  {plan.price} <span className="text-lg">TL</span>
                   <span className="text-white/70 text-sm font-normal ml-1">/{plan.period}</span>
                 </div>
+                {plan.priceNote && <p className="text-[11px] text-blue-300/70 text-center mb-6 -mt-4">{plan.priceNote}</p>}
 
                 <div className="flex items-center justify-between mb-6">
                   <div className="flex items-center gap-2.5">
