@@ -1,31 +1,28 @@
-import { MessageCircle, CheckCircle, ShoppingCart, ShoppingBag, Package, Store, Star } from 'lucide-react'
-import type { ElementType } from 'react'
+import { MessageCircle, CheckCircle, ShoppingCart, Star } from 'lucide-react'
 
-const platforms: { name: string; img?: string; icon?: ElementType }[] = [
+const platforms = [
   { name: 'Instagram', img: 'https://cdn.simpleicons.org/instagram/ffffff' },
   { name: 'WhatsApp', img: 'https://cdn.simpleicons.org/whatsapp/ffffff' },
   { name: 'Messenger', img: 'https://cdn.simpleicons.org/messenger/ffffff' },
   { name: 'Telegram', img: 'https://cdn.simpleicons.org/telegram/ffffff' },
   { name: 'Web Chat', img: 'https://cdn.simpleicons.org/googlechat/ffffff' },
-  { name: 'Trendyol', icon: ShoppingBag },
-  { name: 'Hepsiburada', icon: Package },
-  { name: 'n11', icon: Store },
 ]
 
 const plans = [
   {
     nameBase: 'Brusk',
     nameSuffix: 'Go',
-    subtitle: 'BAŞLANGIÇ PAKETİ',
+    subtitle: 'İşini Otomasyona Taşımak İsteyen Küçük İşletmeler İçin',
     price: '2.499',
     priceDecimal: ',00',
     period: 'Ay',
     popular: false,
     messageLimit: '20.000',
     platformLabel: '2 Platform Seçim Hakkı',
-    platformDesc: 'WhatsApp, Instagram, Messenger, Telegram vb. 8 platform arasından 2 tanesini seçebilirsiniz.',
+    platformDesc: 'WhatsApp, Instagram, Messenger, Telegram, Web Chat arasından seçilen 2 kanal',
     features: [
-      'Haftalık Çark ile Ekstra Mesaj Hakkı',
+      'Kişiselleştirilmiş Müşteri Karşılama Modülü (İsimle Hitap & Otomatik Selamlama)',
+      'Haftalık Çark ile Ekstra Mesaj Hakkı Kazanma Şansı',
       'Chatbot Bilgi Havuzu',
       'Lead Yönetimi & CRM',
       'Mesajları Tek Ekrandan Yönetme',
@@ -33,9 +30,7 @@ const plans = [
       'Gün Sonu Raporu & Analiz',
       'Çoklu Dil Desteği (Otomatik Algılar)',
       'Canlı Sohbet Devralma',
-      'Kişiselleştirilmiş Müşteri Karşılama',
       'Yapay Zeka Mesajlaşma Motoru',
-      'Yapay Zeka Eğitim & Kurulum Desteği',
       '7/24 Kurulum & Öncelikli Destek',
     ],
     waMsg: 'Merhaba, BruskGo paketi (2.499 TL/ay) hakkında bilgi almak istiyorum.',
@@ -44,17 +39,18 @@ const plans = [
   {
     nameBase: 'Brusk',
     nameSuffix: 'Pro',
-    subtitle: 'PROFESYONEL PAKET',
+    subtitle: 'Tüm Kanalları Otopilota Alıp Satışlarını Katlamak İsteyenler İçin',
     price: '4.999',
     priceDecimal: ',00',
     period: 'Ay',
     popular: true,
     messageLimit: '50.000',
-    platformLabel: 'Tüm Platformlar Dahil',
-    platformDesc: 'WhatsApp, Instagram, Messenger, Telegram, Pazaryerleri & Web Chat',
+    platformLabel: 'Tüm Platformlar Dahil (5/5)',
+    platformDesc: 'WhatsApp + Instagram + Messenger + Telegram + Web Chat',
     features: [
-      'Anlık Telegram Bildirim Modülü',
-      'Haftalık Çark ile Ekstra Mesaj Hakkı',
+      'Anlık Telegram Bildirim Modülü (Sıcak Lead / Satış Alarmı)',
+      'Kişiselleştirilmiş Müşteri Karşılama Modülü (İsimle Hitap & Özel Senaryolar)',
+      'Haftalık Çark ile Ekstra Mesaj Hakkı Kazanma Şansı',
       'Chatbot Bilgi Havuzu',
       'Lead Yönetimi & CRM',
       'Mesajları Tek Ekrandan Yönetme',
@@ -62,9 +58,7 @@ const plans = [
       'Gün Sonu Raporu & Analiz',
       'Çoklu Dil Desteği (Otomatik Algılar)',
       'Canlı Sohbet Devralma',
-      'Kişiselleştirilmiş Müşteri Karşılama',
       'Yapay Zeka Mesajlaşma Motoru',
-      'Yapay Zeka Eğitim & Kurulum Desteği',
       '7/24 Kurulum & VIP Öncelikli Destek',
     ],
     waMsg: 'Merhaba, BruskPro paketi (4.999 TL/ay) hakkında bilgi almak istiyorum.',
@@ -73,17 +67,18 @@ const plans = [
   {
     nameBase: 'Brusk',
     nameSuffix: 'Max',
-    subtitle: 'SINIRSIZ GÜÇ PAKETİ',
+    subtitle: 'Yüksek Mesaj Hacmi ve VIP Birebir Danışmanlık İsteyen Markalar İçin',
     price: '7.999',
     priceDecimal: ',00',
     period: 'Ay',
     popular: false,
     messageLimit: '150.000',
-    platformLabel: 'Tüm Platformlar',
-    platformDesc: 'Tüm platformları sınırsız kullanabilirsiniz.',
+    platformLabel: 'Tüm Platformlar Dahil (5/5)',
+    platformDesc: 'WhatsApp + Instagram + Messenger + Telegram + Web Chat',
     features: [
-      'Anlık Telegram Bildirim Modülü',
-      'Haftalık Çark ile Ekstra Mesaj Hakkı',
+      'Anlık Telegram Bildirim Modülü (Sıcak Lead / Satış Alarmı)',
+      'Kişiselleştirilmiş Müşteri Karşılama Modülü (İsimle Hitap & Derin Müşteri Hafızası)',
+      'Haftalık Çark ile Ekstra Mesaj Hakkı Kazanma Şansı',
       'Chatbot Bilgi Havuzu',
       'Lead Yönetimi & CRM',
       'Mesajları Tek Ekrandan Yönetme',
@@ -91,9 +86,7 @@ const plans = [
       'Gün Sonu Raporu & Analiz',
       'Çoklu Dil Desteği (Otomatik Algılar)',
       'Canlı Sohbet Devralma',
-      'Kişiselleştirilmiş Müşteri Karşılama',
       'Yapay Zeka Mesajlaşma Motoru',
-      'Yapay Zeka Eğitim & Kurulum Desteği',
       '7/24 Birebir Özel Danışmanlık & VIP Destek',
     ],
     waMsg: 'Merhaba, BruskMax paketi (7.999 TL/ay) hakkında bilgi almak istiyorum.',
@@ -123,7 +116,7 @@ export default function Pricing() {
               key={i}
               className="flex items-center gap-2.5 bg-white/[0.04] border border-white/[0.06] rounded-xl px-4 py-2.5 hover:bg-white/[0.08] hover:border-blue-500/20 transition-all duration-300 hover:scale-105"
             >
-                    {p.img ? <img src={p.img} alt={p.name} className="w-5 h-5" /> : p.icon && <p.icon className="w-5 h-5 text-white" />}
+                    <img src={p.img} alt={p.name} className="w-5 h-5" />
               <span className="text-sm font-medium text-gray-300">{p.name}</span>
             </div>
           ))}
