@@ -21,6 +21,7 @@ const plans = [
     platformLabel: '2 Platform Seçim Hakkı',
     platformDesc: 'WhatsApp, Instagram, Messenger, Telegram, Web Chat arasından seçilen 2 kanal',
     features: [
+      'Anlık Telegram Bildirim Modülü (Sıcak Lead / Satış Alarmı)',
       'Kişiselleştirilmiş Müşteri Karşılama Modülü (İsimle Hitap & Otomatik Selamlama)',
       'Haftalık Çark ile Ekstra Mesaj Hakkı Kazanma Şansı',
       'Chatbot Bilgi Havuzu',
