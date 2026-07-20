@@ -1,4 +1,4 @@
-import { MessageCircle, CheckCircle, ShoppingCart, ShoppingBag, Package, Store } from 'lucide-react'
+import { MessageCircle, CheckCircle, ShoppingCart, ShoppingBag, Package, Store, Star } from 'lucide-react'
 import type { ElementType } from 'react'
 
 const platforms: { name: string; img?: string; icon?: ElementType }[] = [
@@ -18,24 +18,55 @@ const plans = [
     nameSuffix: 'Go',
     subtitle: 'BAŞLANGIÇ PAKETİ',
     price: '2.499',
-    period: 'AYLIK',
-    priceNote: 'vergiler dahil',
+    priceDecimal: ',00',
+    period: 'Ay',
+    popular: false,
     messageLimit: '20.000',
-    platformLabel: '2 PLATFORM SEÇİM HAKKI',
-    platformDesc: '8 platform arasından 2 tanesini seçebilirsiniz.',
+    platformLabel: '2 Platform Seçim Hakkı',
+    platformDesc: 'WhatsApp, Instagram, Messenger, Telegram vb. 8 platform arasından 2 tanesini seçebilirsiniz.',
+    features: [
+      'Haftalık Çark ile Ekstra Mesaj Hakkı',
+      'Chatbot Bilgi Havuzu',
+      'Lead Yönetimi & CRM',
+      'Mesajları Tek Ekrandan Yönetme',
+      'Sipariş, Randevu & Rezervasyon Modülü',
+      'Gün Sonu Raporu & Analiz',
+      'Çoklu Dil Desteği (Otomatik Algılar)',
+      'Canlı Sohbet Devralma',
+      'Kişiselleştirilmiş Müşteri Karşılama',
+      'Yapay Zeka Mesajlaşma Motoru',
+      'Yapay Zeka Eğitim & Kurulum Desteği',
+      '7/24 Kurulum & Öncelikli Destek',
+    ],
     waMsg: 'Merhaba, BruskGo paketi (2.499 TL/ay) hakkında bilgi almak istiyorum.',
     checkoutUrl: null,
   },
   {
     nameBase: 'Brusk',
     nameSuffix: 'Pro',
-    subtitle: 'PROFESYONEL PAKETİ',
+    subtitle: 'PROFESYONEL PAKET',
     price: '4.999',
-    period: 'AYLIK',
-    priceNote: '',
+    priceDecimal: ',00',
+    period: 'Ay',
+    popular: true,
     messageLimit: '50.000',
-    platformLabel: '4 PLATFORM SEÇİM HAKKI',
-    platformDesc: '8 platform arasından 4 tanesini seçebilirsiniz.',
+    platformLabel: 'Tüm Platformlar Dahil',
+    platformDesc: 'WhatsApp, Instagram, Messenger, Telegram, Pazaryerleri & Web Chat',
+    features: [
+      'Anlık Telegram Bildirim Modülü',
+      'Haftalık Çark ile Ekstra Mesaj Hakkı',
+      'Chatbot Bilgi Havuzu',
+      'Lead Yönetimi & CRM',
+      'Mesajları Tek Ekrandan Yönetme',
+      'Sipariş, Randevu & Rezervasyon Modülü',
+      'Gün Sonu Raporu & Analiz',
+      'Çoklu Dil Desteği (Otomatik Algılar)',
+      'Canlı Sohbet Devralma',
+      'Kişiselleştirilmiş Müşteri Karşılama',
+      'Yapay Zeka Mesajlaşma Motoru',
+      'Yapay Zeka Eğitim & Kurulum Desteği',
+      '7/24 Kurulum & VIP Öncelikli Destek',
+    ],
     waMsg: 'Merhaba, BruskPro paketi (4.999 TL/ay) hakkında bilgi almak istiyorum.',
     checkoutUrl: null,
   },
@@ -44,33 +75,30 @@ const plans = [
     nameSuffix: 'Max',
     subtitle: 'SINIRSIZ GÜÇ PAKETİ',
     price: '7.999',
-    period: 'AYLIK',
-    priceNote: '',
+    priceDecimal: ',00',
+    period: 'Ay',
+    popular: false,
     messageLimit: '150.000',
-    platformLabel: '8 PLATFORM TÜMÜ',
+    platformLabel: 'Tüm Platformlar',
     platformDesc: 'Tüm platformları sınırsız kullanabilirsiniz.',
+    features: [
+      'Anlık Telegram Bildirim Modülü',
+      'Haftalık Çark ile Ekstra Mesaj Hakkı',
+      'Chatbot Bilgi Havuzu',
+      'Lead Yönetimi & CRM',
+      'Mesajları Tek Ekrandan Yönetme',
+      'Sipariş, Randevu & Rezervasyon Modülü',
+      'Gün Sonu Raporu & Analiz',
+      'Çoklu Dil Desteği (Otomatik Algılar)',
+      'Canlı Sohbet Devralma',
+      'Kişiselleştirilmiş Müşteri Karşılama',
+      'Yapay Zeka Mesajlaşma Motoru',
+      'Yapay Zeka Eğitim & Kurulum Desteği',
+      '7/24 Birebir Özel Danışmanlık & VIP Destek',
+    ],
     waMsg: 'Merhaba, BruskMax paketi (7.999 TL/ay) hakkında bilgi almak istiyorum.',
     checkoutUrl: null,
   },
-]
-
-const featuresLeft = [
-  'Chatbot Bilgi Havuzu',
-  'Lead Yönetimi & CRM',
-  'Anlık Bildirim (Telegram)',
-  'Telegram Mesajları Tek Ekrandan Yönetme',
-  'Sipariş, Randevu, Rezervasyon Modülü',
-  'Gün Sonu Raporu & Analiz',
-  'Çoklu Dil Desteği',
-]
-
-const featuresRight = [
-  'Canlı Sohbet Devralma',
-  'Kişiselleştirilmiş Müşteri Karşılama Modülü',
-  'Yapay Zeka Mesajlaşma Motoru',
-  'Yapay Zeka Eğitim Kurulum Desteği',
-  '7/24 Kurulum Desteği',
-  'Öncelikli Destek',
 ]
 
 export default function Pricing() {
@@ -105,9 +133,16 @@ export default function Pricing() {
           {plans.map((plan, i) => (
             <div
               key={i}
-              className="group bg-[#0d1117]/80 backdrop-blur-xl border border-[#1a2332] rounded-2xl hover:-translate-y-2 hover:border-blue-500/30 hover:shadow-2xl hover:shadow-blue-500/5 transition-all duration-500 animate-fade-in flex flex-col"
+              className={'relative group bg-[#0d1117]/80 backdrop-blur-xl border rounded-2xl hover:-translate-y-2 hover:shadow-2xl transition-all duration-500 animate-fade-in flex flex-col ' + (plan.popular ? 'border-blue-500/40 hover:border-blue-500/60 hover:shadow-blue-500/10 scale-[1.02] md:scale-105' : 'border-[#1a2332] hover:border-blue-500/30 hover:shadow-blue-500/5')}
               style={{ animationDelay: `${0.2 + i * 0.15}s` }}
             >
+              {plan.popular && (
+                <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 z-10">
+                  <div className="flex items-center gap-1.5 bg-gradient-to-r from-blue-600 to-blue-500 text-white text-[10px] font-bold px-4 py-1.5 rounded-full tracking-[0.15em] shadow-lg shadow-blue-500/30">
+                    <Star className="w-3 h-3 fill-white" /> EN POPÜLER
+                  </div>
+                </div>
+              )}
               <div className="p-6 lg:p-8 flex flex-col flex-1">
                 <div className="flex items-baseline gap-0.5 mb-1">
                   <span className="text-2xl lg:text-3xl font-bold text-white tracking-tight">{plan.nameBase}</span>
@@ -115,11 +150,13 @@ export default function Pricing() {
                 </div>
                 <p className="text-[11px] text-gray-500 tracking-[0.15em] mb-6">{plan.subtitle}</p>
 
-                <div className="w-full bg-gradient-to-r from-blue-600 to-blue-500 text-white text-center py-3.5 rounded-xl font-bold text-xl tracking-tight mb-1 shadow-lg shadow-blue-500/20">
-                  {plan.price} <span className="text-lg">TL</span>
-                  <span className="text-white/70 text-sm font-normal ml-1">/{plan.period}</span>
+                <div className="w-full bg-gradient-to-r from-blue-600 to-blue-500 text-white text-center py-4 rounded-xl shadow-lg shadow-blue-500/20 mb-3">
+                  <div className="flex items-baseline justify-center gap-0.5">
+                    <span className="text-lg font-semibold text-white/80">₺</span>
+                    <span className="font-bold text-2xl tracking-tight">{plan.price}{plan.priceDecimal}</span>
+                  </div>
+                  <p className="text-white/70 text-xs font-normal mt-0.5">/{plan.period} · Vergiler Dahil</p>
                 </div>
-                {plan.priceNote && <p className="text-[11px] text-blue-300/70 text-center mb-6 -mt-4">{plan.priceNote}</p>}
 
                 <div className="flex items-center justify-between mb-6">
                   <div className="flex items-center gap-2.5">
@@ -153,29 +190,19 @@ export default function Pricing() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-x-4 gap-y-1.5 text-sm mb-6 flex-1">
-                  <div className="space-y-1.5">
-                    {featuresLeft.map((f, j) => (
-                      <div key={j} className="flex items-start gap-2 text-gray-300 group/feat">
-                        <CheckCircle className="w-3.5 h-3.5 text-blue-400 shrink-0 mt-0.5 transition-transform duration-200 group-hover/feat:scale-110" />
-                        <span className="text-[13px] leading-snug">{f}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="space-y-1.5">
-                    {featuresRight.map((f, j) => (
-                      <div key={j} className="flex items-start gap-2 text-gray-300 group/feat">
-                        <CheckCircle className="w-3.5 h-3.5 text-blue-400 shrink-0 mt-0.5 transition-transform duration-200 group-hover/feat:scale-110" />
-                        <span className="text-[13px] leading-snug">{f}</span>
-                      </div>
-                    ))}
-                  </div>
+                <div className="space-y-1.5 mb-6 flex-1">
+                  {plan.features.map((f, j) => (
+                    <div key={j} className="flex items-start gap-2 text-gray-300 group/feat">
+                      <CheckCircle className="w-3.5 h-3.5 text-blue-400 shrink-0 mt-0.5 transition-transform duration-200 group-hover/feat:scale-110" />
+                      <span className="text-[13px] leading-snug">{f}</span>
+                    </div>
+                  ))}
                 </div>
 
                 <div className="space-y-3 mt-auto">
                   <a
                     href={`https://wa.me/905442566476?text=${encodeURIComponent(plan.waMsg)}`}
-                    className="w-full bg-gradient-to-r from-blue-600 to-blue-500 text-white text-center py-3.5 rounded-xl font-semibold text-sm hover:from-blue-500 hover:to-blue-400 transition-all duration-300 flex items-center justify-center gap-2.5 shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30"
+                    className={"w-full text-white text-center py-3.5 rounded-xl font-semibold text-sm transition-all duration-300 flex items-center justify-center gap-2.5 shadow-lg " + (plan.popular ? 'bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 shadow-blue-500/20 hover:shadow-blue-500/30' : 'bg-gradient-to-r from-gray-700 to-gray-600 hover:from-gray-600 hover:to-gray-500 shadow-black/20 hover:shadow-black/30')}
                   >
                     <ShoppingCart className="w-4 h-4" />
                     Satın Al
