@@ -38,7 +38,7 @@ export default function MenuPage({ params }: { params: { slug: string } }) {
       {/* Banner - tam görünür */}
       {data.bannerUrl ? (
         <div className="relative w-full h-52 md:h-80 lg:h-96 overflow-hidden bg-[#e8e4db]">
-          <img src={data.bannerUrl} className="w-full h-full object-contain md:object-cover" alt="" />
+          <img src={data.bannerUrl} className="w-full h-full object-cover" alt="" />
         </div>
       ) : (
         <div className="w-full h-40 md:h-56 bg-gradient-to-br from-amber-100 to-amber-50 flex items-center justify-center">
