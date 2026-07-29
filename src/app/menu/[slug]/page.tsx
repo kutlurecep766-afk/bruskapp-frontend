@@ -62,55 +62,55 @@ export default function MenuPage({ params }: { params: { slug: string } }) {
       )}
 
       {/* Ürünler */}
-      <div className="max-w-2xl mx-auto px-3 md:px-4 py-4 md:py-6 space-y-2.5 md:space-y-3 pb-16">
+      <div className="max-w-2xl mx-auto px-3 md:px-4 py-4 md:py-6 pb-16">
         {filtered.length === 0 && (
           <div className="text-center py-12 md:py-16">
             <p className="text-amber-800/60 text-xs md:text-sm">Bu kategoride ürün bulunamadı</p>
           </div>
         )}
-        {filtered.map((p: any) => {
-          const isDiscounted = p.originalPrice && parseFloat(p.originalPrice) > parseFloat(p.price)
-          return (
-            <div key={p.id} onClick={() => setSelectedProduct(p)} className="flex items-center gap-4 md:gap-5 p-4 md:p-5 rounded-xl md:rounded-2xl bg-white border border-amber-100/60 shadow-sm hover:shadow-md transition-shadow cursor-pointer active:scale-[0.99] transition-transform">
-              {p.image && (
-                <div className="w-36 h-36 md:w-52 md:h-52 rounded-xl md:rounded-2xl overflow-hidden flex-shrink-0 bg-[#f8f6f1] shadow-inner">
-                  <img src={p.image} className="w-full h-full object-cover" alt={p.name} />
-                </div>
-              )}
-              <div className="flex-1 min-w-0">
-                <div className="flex items-start justify-between gap-2 md:gap-3">
-                  <div className="min-w-0">
-                    <h3 className="text-amber-950 font-semibold text-sm md:text-base leading-tight">{p.name}</h3>
-                    <div className="flex items-center gap-2 mt-1.5 flex-wrap">
-                      {p.weight && (
-                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 text-[10px] md:text-[11px] font-semibold border border-amber-200/60 shadow-sm">
-                          <span className="w-1.5 h-1.5 rounded-full bg-amber-400/70" />
-                          {p.weight.replace(/\D/g, '')} gram
-                        </span>
-                      )}
-                      {isDiscounted && (
-                        <span className="px-2 py-0.5 rounded-full bg-red-50 text-red-500 text-[9px] md:text-[10px] font-semibold border border-red-200/50">İndirimli</span>
+        <div className="grid grid-cols-2 gap-2.5 md:gap-4">
+          {filtered.map((p: any) => {
+            const isDiscounted = p.originalPrice && parseFloat(p.originalPrice) > parseFloat(p.price)
+            return (
+              <div key={p.id} onClick={() => setSelectedProduct(p)} className="flex flex-col rounded-xl md:rounded-2xl bg-white border border-amber-100/60 shadow-sm hover:shadow-md transition-shadow cursor-pointer active:scale-[0.98] transition-transform overflow-hidden">
+                {p.image && (
+                  <div className="w-full aspect-square overflow-hidden bg-[#f8f6f1]">
+                    <img src={p.image} className="w-full h-full object-cover hover:scale-105 transition-transform duration-300" alt={p.name} />
+                  </div>
+                )}
+                <div className="p-2.5 md:p-4 flex-1 flex flex-col">
+                  <div className="flex items-start justify-between gap-1.5">
+                    <h3 className="text-amber-950 font-semibold text-[11px] md:text-sm leading-tight flex-1">{p.name}</h3>
+                    <div className="text-right flex-shrink-0">
+                      {isDiscounted ? (
+                        <div className="flex flex-col items-end">
+                          <span className="text-amber-900 font-bold text-[11px] md:text-sm whitespace-nowrap">₺{p.price}</span>
+                          <span className="text-amber-400 line-through text-[9px] md:text-[11px] whitespace-nowrap">₺{p.originalPrice}</span>
+                        </div>
+                      ) : (
+                        <span className="text-amber-900 font-bold text-[11px] md:text-sm whitespace-nowrap">₺{p.price}</span>
                       )}
                     </div>
                   </div>
-                  <div className="text-right flex-shrink-0">
-                    {isDiscounted ? (
-                      <div className="flex flex-col items-end">
-                        <span className="text-amber-900 font-bold text-sm md:text-base whitespace-nowrap">₺{p.price}</span>
-                        <span className="text-amber-400 line-through text-[10px] md:text-xs whitespace-nowrap">₺{p.originalPrice}</span>
-                      </div>
-                    ) : (
-                      <span className="text-amber-900 font-bold text-sm md:text-base whitespace-nowrap">₺{p.price}</span>
+                  <div className="flex items-center gap-1.5 mt-1.5 flex-wrap">
+                    {p.weight && (
+                      <span className="inline-flex items-center gap-1 px-1.5 md:px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 text-[8px] md:text-[10px] font-semibold border border-amber-200/60">
+                        <span className="w-1 h-1 rounded-full bg-amber-400/70" />
+                        {p.weight.replace(/\D/g, '')} gram
+                      </span>
+                    )}
+                    {isDiscounted && (
+                      <span className="px-1.5 py-0.5 rounded-full bg-red-50 text-red-500 text-[8px] md:text-[10px] font-semibold border border-red-200/50">İndirimli</span>
                     )}
                   </div>
+                  {p.description && (
+                    <p className="text-[9px] md:text-[11px] text-amber-800/70 mt-1.5 leading-relaxed line-clamp-2">{p.description}</p>
+                  )}
                 </div>
-                {p.description && (
-                  <p className="text-[11px] md:text-[13px] text-amber-800/80 mt-2 leading-relaxed pl-2.5 border-l-2 border-amber-300/30 font-medium italic">{p.description}</p>
-                )}
               </div>
-            </div>
-          )
-        })}
+            )
+          })}
+        </div>
       </div>
 
       {/* Ürün Detay Modal */}
