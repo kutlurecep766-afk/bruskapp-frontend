@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react'
-import { ShoppingCart, Minus, Plus, Phone, MapPin, Clock, Store } from 'lucide-react'
+import { Minus, Plus } from 'lucide-react'
 
 export default function MenuPage({ params }: { params: { slug: string } }) {
   const [data, setData] = useState<any>(null)
@@ -20,7 +20,7 @@ export default function MenuPage({ params }: { params: { slug: string } }) {
 
   const primary = data.primaryColor || '#10b981'
   const secondary = data.secondaryColor || '#065f46'
-  const categories = [...new Set((data.products || []).map((p: any) => p.category).filter(Boolean))] as string[]
+  const categories = Array.from(new Set((data.products || []).map((p: any) => p.category).filter(Boolean))) as string[]
   const filtered = selectedCategory ? data.products.filter((p: any) => p.category === selectedCategory) : data.products
   const totalItems = Object.values(cart).reduce((a, b) => a + b, 0)
 
