@@ -5,6 +5,7 @@ export default function MenuPage({ params }: { params: { slug: string } }) {
   const [data, setData] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [selectedCategory, setSelectedCategory] = useState('')
+  const [selectedProduct, setSelectedProduct] = useState<any>(null)
 
   useEffect(() => {
     fetch(`/api/storefront/${params.slug}`, { cache: 'no-store' }).then(r => r.ok ? r.json() : null).then(d => {
@@ -70,9 +71,9 @@ export default function MenuPage({ params }: { params: { slug: string } }) {
         {filtered.map((p: any) => {
           const isDiscounted = p.originalPrice && parseFloat(p.originalPrice) > parseFloat(p.price)
           return (
-            <div key={p.id} className="flex items-center gap-4 md:gap-5 p-4 md:p-5 rounded-xl md:rounded-2xl bg-white border border-amber-100/60 shadow-sm hover:shadow-md transition-shadow">
+            <div key={p.id} onClick={() => setSelectedProduct(p)} className="flex items-center gap-4 md:gap-5 p-4 md:p-5 rounded-xl md:rounded-2xl bg-white border border-amber-100/60 shadow-sm hover:shadow-md transition-shadow cursor-pointer active:scale-[0.99] transition-transform">
               {p.image && (
-                <div className="w-32 h-32 md:w-44 md:h-44 rounded-xl md:rounded-2xl overflow-hidden flex-shrink-0 bg-[#f8f6f1]">
+                <div className="w-36 h-36 md:w-52 md:h-52 rounded-xl md:rounded-2xl overflow-hidden flex-shrink-0 bg-[#f8f6f1] shadow-inner">
                   <img src={p.image} className="w-full h-full object-cover" alt={p.name} />
                 </div>
               )}
@@ -111,6 +112,53 @@ export default function MenuPage({ params }: { params: { slug: string } }) {
           )
         })}
       </div>
+
+      {/* Ürün Detay Modal */}
+      {selectedProduct && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={() => setSelectedProduct(null)}>
+          <div className="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl overflow-hidden transition-all duration-200" onClick={e => e.stopPropagation()}>
+            <button onClick={() => setSelectedProduct(null)} className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-white/80 backdrop-blur flex items-center justify-center text-amber-800 hover:bg-white shadow-sm transition-all">
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+            {selectedProduct.image && (
+              <div className="w-full aspect-square bg-[#f8f6f1]">
+                <img src={selectedProduct.image} className="w-full h-full object-cover" alt={selectedProduct.name} />
+              </div>
+            )}
+            <div className="p-5 md:p-6">
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <h2 className="text-amber-950 font-bold text-lg md:text-xl leading-tight">{selectedProduct.name}</h2>
+                  <div className="flex items-center gap-2 mt-2 flex-wrap">
+                    {selectedProduct.weight && (
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-100 text-amber-700 text-xs font-semibold">
+                        <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+                        {selectedProduct.weight.replace(/\D/g, '')} gram
+                      </span>
+                    )}
+                    {(selectedProduct.originalPrice && parseFloat(selectedProduct.originalPrice) > parseFloat(selectedProduct.price)) && (
+                      <span className="px-2.5 py-1 rounded-full bg-red-50 text-red-500 text-xs font-semibold border border-red-200/50">İndirimli</span>
+                    )}
+                  </div>
+                </div>
+                <div className="text-right flex-shrink-0">
+                  {(selectedProduct.originalPrice && parseFloat(selectedProduct.originalPrice) > parseFloat(selectedProduct.price)) ? (
+                    <div className="flex flex-col items-end">
+                      <span className="text-amber-900 font-bold text-lg md:text-xl whitespace-nowrap">₺{selectedProduct.price}</span>
+                      <span className="text-amber-400 line-through text-sm whitespace-nowrap">₺{selectedProduct.originalPrice}</span>
+                    </div>
+                  ) : (
+                    <span className="text-amber-900 font-bold text-lg md:text-xl whitespace-nowrap">₺{selectedProduct.price}</span>
+                  )}
+                </div>
+              </div>
+              {selectedProduct.description && (
+                <p className="text-sm md:text-base text-amber-800/80 mt-3 leading-relaxed pl-3 border-l-2 border-amber-300/40 font-medium italic">{selectedProduct.description}</p>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
