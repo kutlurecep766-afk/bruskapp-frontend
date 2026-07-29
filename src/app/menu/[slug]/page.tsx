@@ -82,7 +82,7 @@ export default function MenuPage({ params }: { params: { slug: string } }) {
                     <h3 className="text-amber-950 font-medium text-xs md:text-sm leading-tight">{p.name}</h3>
                     <div className="flex items-center gap-1.5 mt-1 flex-wrap">
                       {p.weight && (
-                        <span className="px-1.5 md:px-2 py-0.5 rounded-md bg-[#f8f6f1] text-amber-700 text-[9px] md:text-[10px] font-medium">{p.weight}</span>
+                        <span className="px-2 md:px-3 py-1 rounded-lg bg-amber-100 text-amber-800 text-[11px] md:text-xs font-bold border border-amber-200">{p.weight.replace(/\D/g, '')} gram</span>
                       )}
                       {isDiscounted && (
                         <span className="px-1.5 md:px-2 py-0.5 rounded-md bg-red-100 text-red-600 text-[9px] md:text-[10px] font-semibold">İndirimli</span>
@@ -101,7 +101,7 @@ export default function MenuPage({ params }: { params: { slug: string } }) {
                   </div>
                 </div>
                 {p.description && (
-                  <p className="text-[11px] md:text-xs text-amber-800/60 mt-1 md:mt-1.5 line-clamp-2 leading-relaxed">{p.description}</p>
+                  <p className="text-xs md:text-sm text-amber-900/90 mt-1.5 md:mt-2 font-medium leading-relaxed">{p.description}</p>
                 )}
               </div>
             </div>
