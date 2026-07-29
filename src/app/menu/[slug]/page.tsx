@@ -30,7 +30,6 @@ export default function MenuPage({ params }: { params: { slug: string } }) {
     </div>
   )
 
-  const primary = data.primaryColor || '#d97706'
   const categories = Array.from(new Set((data.products || []).map((p: any) => p.category).filter(Boolean))) as string[]
   const filtered = selectedCategory ? data.products.filter((p: any) => p.category === selectedCategory) : data.products
 
@@ -52,12 +51,10 @@ export default function MenuPage({ params }: { params: { slug: string } }) {
         <div className="sticky top-0 z-10 bg-[#f8f6f1]/95 backdrop-blur-xl border-b border-amber-100/50 px-3 md:px-4 py-2.5 md:py-3 overflow-x-auto">
           <div className="flex gap-1.5 md:gap-2 max-w-2xl mx-auto">
             <button onClick={() => setSelectedCategory('')}
-              className={'px-3 md:px-5 py-1.5 md:py-2 rounded-full text-[11px] md:text-xs font-semibold transition-all whitespace-nowrap ' + (!selectedCategory ? 'text-white shadow-md' : 'text-amber-800 hover:text-amber-900 bg-amber-100/70 hover:bg-amber-200/70')}
-              style={!selectedCategory ? { background: primary } : {}}>Tümü</button>
+              className={'px-3 md:px-5 py-1.5 md:py-2 rounded-full text-[11px] md:text-xs font-semibold transition-all whitespace-nowrap ' + (!selectedCategory ? 'bg-amber-600 text-white shadow-md' : 'text-amber-800 hover:text-amber-900 bg-amber-100/70 hover:bg-amber-200/70')}>Tümü</button>
             {categories.map(c => (
               <button key={c} onClick={() => setSelectedCategory(c)}
-                className={'px-3 md:px-5 py-1.5 md:py-2 rounded-full text-[11px] md:text-xs font-semibold transition-all whitespace-nowrap ' + (selectedCategory === c ? 'text-white shadow-md' : 'text-amber-800 hover:text-amber-900 bg-amber-100/70 hover:bg-amber-200/70')}
-                style={selectedCategory === c ? { background: primary } : {}}>{c}</button>
+                className={'px-3 md:px-5 py-1.5 md:py-2 rounded-full text-[11px] md:text-xs font-semibold transition-all whitespace-nowrap ' + (selectedCategory === c ? 'bg-amber-600 text-white shadow-md' : 'text-amber-800 hover:text-amber-900 bg-amber-100/70 hover:bg-amber-200/70')}>{c}</button>
             ))}
           </div>
         </div>
@@ -75,7 +72,7 @@ export default function MenuPage({ params }: { params: { slug: string } }) {
           return (
             <div key={p.id} className="flex items-center gap-3 md:gap-4 p-3 md:p-4 rounded-xl md:rounded-2xl bg-white border border-amber-100/60 shadow-sm hover:shadow-md transition-shadow">
               {p.image && (
-                <div className="w-14 h-14 md:w-20 md:h-20 rounded-lg md:rounded-xl overflow-hidden flex-shrink-0 bg-[#f8f6f1]">
+                <div className="w-20 h-20 md:w-28 md:h-28 rounded-xl md:rounded-2xl overflow-hidden flex-shrink-0 bg-[#f8f6f1]">
                   <img src={p.image} className="w-full h-full object-cover" alt={p.name} />
                 </div>
               )}
