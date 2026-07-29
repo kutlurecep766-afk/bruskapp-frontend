@@ -79,29 +79,32 @@ export default function MenuPage({ params }: { params: { slug: string } }) {
               <div className="flex-1 min-w-0">
                 <div className="flex items-start justify-between gap-2 md:gap-3">
                   <div className="min-w-0">
-                    <h3 className="text-amber-950 font-medium text-xs md:text-sm leading-tight">{p.name}</h3>
-                    <div className="flex items-center gap-1.5 mt-1 flex-wrap">
+                    <h3 className="text-amber-950 font-semibold text-sm md:text-base leading-tight">{p.name}</h3>
+                    <div className="flex items-center gap-2 mt-1.5 flex-wrap">
                       {p.weight && (
-                        <span className="px-2 md:px-3 py-1 rounded-lg bg-amber-100 text-amber-800 text-[11px] md:text-xs font-bold border border-amber-200">{p.weight.replace(/\D/g, '')} gram</span>
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-50 text-amber-700 text-[10px] md:text-[11px] font-semibold border border-amber-200/60 shadow-sm">
+                          <span className="w-1.5 h-1.5 rounded-full bg-amber-400/70" />
+                          {p.weight.replace(/\D/g, '')} gram
+                        </span>
                       )}
                       {isDiscounted && (
-                        <span className="px-1.5 md:px-2 py-0.5 rounded-md bg-red-100 text-red-600 text-[9px] md:text-[10px] font-semibold">İndirimli</span>
+                        <span className="px-2 py-0.5 rounded-full bg-red-50 text-red-500 text-[9px] md:text-[10px] font-semibold border border-red-200/50">İndirimli</span>
                       )}
                     </div>
                   </div>
                   <div className="text-right flex-shrink-0">
                     {isDiscounted ? (
                       <div className="flex flex-col items-end">
-                        <span className="text-amber-900 font-bold text-xs md:text-sm whitespace-nowrap">₺{p.price}</span>
+                        <span className="text-amber-900 font-bold text-sm md:text-base whitespace-nowrap">₺{p.price}</span>
                         <span className="text-amber-400 line-through text-[10px] md:text-xs whitespace-nowrap">₺{p.originalPrice}</span>
                       </div>
                     ) : (
-                      <span className="text-amber-900 font-bold text-xs md:text-sm whitespace-nowrap">₺{p.price}</span>
+                      <span className="text-amber-900 font-bold text-sm md:text-base whitespace-nowrap">₺{p.price}</span>
                     )}
                   </div>
                 </div>
                 {p.description && (
-                  <p className="text-xs md:text-sm text-amber-900/90 mt-1.5 md:mt-2 font-medium leading-relaxed">{p.description}</p>
+                  <p className="text-[11px] md:text-[13px] text-amber-800/80 mt-2 leading-relaxed pl-2.5 border-l-2 border-amber-300/30 font-medium italic">{p.description}</p>
                 )}
               </div>
             </div>
