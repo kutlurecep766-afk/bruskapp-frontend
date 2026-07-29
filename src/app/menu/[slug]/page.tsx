@@ -37,8 +37,8 @@ export default function MenuPage({ params }: { params: { slug: string } }) {
     <div className="min-h-screen bg-[#f8f6f1]">
       {/* Banner - tam görünür */}
       {data.bannerUrl ? (
-        <div className="relative w-full bg-[#f8f6f1]">
-          <img src={data.bannerUrl} className="w-full h-auto block" alt="" />
+        <div className="relative w-full md:h-80 lg:h-96 overflow-hidden bg-[#f8f6f1]">
+          <img src={data.bannerUrl} className="w-full h-auto md:h-full md:object-cover block" alt="" />
         </div>
       ) : (
         <div className="w-full h-40 md:h-56 bg-gradient-to-br from-amber-100 to-amber-50 flex items-center justify-center">
@@ -72,7 +72,7 @@ export default function MenuPage({ params }: { params: { slug: string } }) {
           return (
             <div key={p.id} className="flex items-center gap-4 md:gap-5 p-4 md:p-5 rounded-xl md:rounded-2xl bg-white border border-amber-100/60 shadow-sm hover:shadow-md transition-shadow">
               {p.image && (
-                <div className="w-28 h-28 md:w-40 md:h-40 rounded-xl md:rounded-2xl overflow-hidden flex-shrink-0 bg-[#f8f6f1]">
+                <div className="w-32 h-32 md:w-44 md:h-44 rounded-xl md:rounded-2xl overflow-hidden flex-shrink-0 bg-[#f8f6f1]">
                   <img src={p.image} className="w-full h-full object-cover" alt={p.name} />
                 </div>
               )}
