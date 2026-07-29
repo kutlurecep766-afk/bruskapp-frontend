@@ -70,9 +70,9 @@ export default function MenuPage({ params }: { params: { slug: string } }) {
         {filtered.map((p: any) => {
           const isDiscounted = p.originalPrice && parseFloat(p.originalPrice) > parseFloat(p.price)
           return (
-            <div key={p.id} className="flex items-center gap-3 md:gap-4 p-3 md:p-4 rounded-xl md:rounded-2xl bg-white border border-amber-100/60 shadow-sm hover:shadow-md transition-shadow">
+            <div key={p.id} className="flex items-center gap-4 md:gap-5 p-4 md:p-5 rounded-xl md:rounded-2xl bg-white border border-amber-100/60 shadow-sm hover:shadow-md transition-shadow">
               {p.image && (
-                <div className="w-20 h-20 md:w-28 md:h-28 rounded-xl md:rounded-2xl overflow-hidden flex-shrink-0 bg-[#f8f6f1]">
+                <div className="w-28 h-28 md:w-40 md:h-40 rounded-xl md:rounded-2xl overflow-hidden flex-shrink-0 bg-[#f8f6f1]">
                   <img src={p.image} className="w-full h-full object-cover" alt={p.name} />
                 </div>
               )}
