@@ -1,11 +1,11 @@
-import { Send, BarChart3, Database, MessageSquare, Users, Bell, Clock } from 'lucide-react'
+import { BarChart3, Database, MessageSquare, Users, QrCode, UtensilsCrossed } from 'lucide-react'
 
 const services = [
   {
     title: '7/24 AI Chatbot',
     icon: MessageSquare,
     color: 'from-blue-500 to-cyan-500',
-    items: ['WhatsApp, Instagram, Messenger', 'Telegram, Trendyol, Hepsiburada', 'n11, Web Chat entegrasyonu'],
+    items: ['WhatsApp, Instagram, Messenger', 'Telegram ve Web Chat entegrasyonu', '7/24 otomatik müşteri yanıtı'],
   },
   {
     title: 'Akıllı Bilgi Havuzu',
@@ -20,16 +20,16 @@ const services = [
     items: ['Otomatik müşteri takibi', 'Lead toplama ve segmentasyon', 'Müşteri geçmişi kaydı'],
   },
   {
-    title: 'Toplu Mesaj & Dönüşüm',
-    icon: Send,
+    title: 'QR Menü',
+    icon: QrCode,
     color: 'from-orange-500 to-red-500',
-    items: [{ text: 'Toplu Mesaj Kampanyası', badge: 'Çok Yakında' }, { text: 'Dönüşüm Analizi', badge: 'Çok Yakında' }, 'Hedef kitle segmentasyonu'],
+    items: ['Masa QR kodu ile dijital menü', 'Ürün fotoğrafı ve fiyat listesi', 'Anında menü güncelleme'],
   },
   {
-    title: 'Kampanya & Bildirim',
-    icon: Bell,
+    title: 'Masaya Özel Sipariş',
+    icon: UtensilsCrossed,
     color: 'from-pink-500 to-rose-500',
-    items: ['Chatbot kampanya modülü', 'Telegram anlık bildirim', { text: 'Hatırlatma Şablonları', badge: 'Çok Yakında' }],
+    items: ['Masadan direkt sipariş verme', 'Garson niyetine masaya özel sipariş', 'Sipariş mutfağa anında iletilir'],
   },
   {
     title: 'Analiz & Raporlama',
@@ -58,12 +58,7 @@ export default function Sectors() {
                 {s.items.map((item, j) => (
                   <li key={j} className="text-gray-500 text-sm flex items-start gap-2">
                     <span className="w-1.5 h-1.5 rounded-full bg-blue-400 mt-1.5 flex-shrink-0" />
-                    {typeof item === 'string' ? item : (
-                      <span className="flex items-center gap-2">
-                        {item.text}
-                        <span className="text-[10px] font-semibold text-amber-400 bg-amber-500/10 border border-amber-500/20 px-1.5 py-0.5 rounded-full whitespace-nowrap">{item.badge}</span>
-                      </span>
-                    )}
+                    {item}
                   </li>
                 ))}
               </ul>

@@ -16,8 +16,8 @@ export default function KosullarPage() {
         <h2 className="text-lg font-semibold text-white">Hizmet Tanımı</h2>
         <p>
           BRUSKAPP, işletmelere yapay zeka destekli web chat, WhatsApp/Instagram
-          entegrasyonu, sesli asistan, QR menü, sipariş yönetimi, pazaryeri
-          entegrasyonu ve diğer otomasyon araçlarını sağlayan bir SaaS platformudur.
+          entegrasyonu, sesli asistan, QR menü, masa sipariş yönetimi ve diğer
+          otomasyon araçlarını sağlayan bir SaaS platformudur.
         </p>
         <h2 className="text-lg font-semibold text-white">Hesap ve Abonelik</h2>
         <p>

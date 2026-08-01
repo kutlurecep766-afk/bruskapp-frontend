@@ -19,7 +19,7 @@ export default function Hero() {
               ile Otomatikleştirin
             </h1>
             <p className="text-lg sm:text-xl text-gray-400 leading-relaxed max-w-xl">
-              8 platformda AI chatbot, sipariş ve müşteri yönetimini tek panelden yönetin.
+              5 platformda AI chatbot, QR menü, sipariş ve müşteri yönetimini tek panelden yönetin.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <a href="#demo" className="group px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-2xl text-base font-semibold hover:shadow-xl hover:shadow-blue-500/25 transition-all flex items-center justify-center gap-2">
