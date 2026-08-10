@@ -24,6 +24,7 @@ function MenuContent({ params }: { params: { slug: string } }) {
   const [orderResult, setOrderResult] = useState<any>(null)
   const [justAdded, setJustAdded] = useState<string | null>(null)
   const [cartBump, setCartBump] = useState(0)
+  const [flyItems, setFlyItems] = useState<{ id: string; x: number; y: number; img: string; left: number; top: number }[]>([])
 
   useEffect(() => {
     fetch(`/api/storefront/${params.slug}`, { cache: 'no-store' }).then(r => r.ok ? r.json() : null).then(d => {
@@ -32,13 +33,22 @@ function MenuContent({ params }: { params: { slug: string } }) {
     }).catch(() => setLoading(false))
   }, [params.slug])
 
-  const addToCart = (product: any, count = 1) => {
+  const addToCart = (product: any, count = 1, rect?: DOMRect) => {
     if (product.status === 'soldout' || product.status === 'preparing') return
     setCart(prev => {
       const found = prev.find(i => i.product.id === product.id)
       if (found) return prev.map(i => i.product.id === product.id ? { ...i, qty: i.qty + count } : i)
       return [...prev, { product, qty: count }]
     })
+    if (rect && product.image) {
+      const w = typeof window !== 'undefined' ? window.innerWidth : 0
+      const h = typeof window !== 'undefined' ? window.innerHeight : 0
+      const id = Math.random().toString(36).slice(2)
+      const x = (w / 2) - (rect.left + rect.width / 2)
+      const y = (h - 96) - (rect.top + rect.height / 2)
+      setFlyItems(prev => [...prev, { id, x, y, img: product.image, left: rect.left + rect.width / 2 - 20, top: rect.top + rect.height / 2 - 20 }])
+      setTimeout(() => setFlyItems(prev => prev.filter(i => i.id !== id)), 750)
+    }
     setJustAdded(product.id)
     setCartBump(b => b + 1)
     setTimeout(() => setJustAdded(null), 1400)
@@ -134,6 +144,67 @@ function MenuContent({ params }: { params: { slug: string } }) {
           <div className="flex flex-col items-center gap-2">
             <svg className="w-12 h-12 text-white/80 animate-breathe" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6h16M4 12h16M4 18h16" /></svg>
             <span className="text-white/70 text-[11px] md:text-sm font-semibold tracking-wide animate-fade-in-up" style={{ animationDuration: '0.7s' }}>Menümüz</span>
+          </div>
+        </div>
+      )}
+
+      {/* Uçan ürün efekti */}
+      {flyItems.map(f => (
+        <img key={f.id} src={f.img}
+          style={{ left: f.left, top: f.top, ['--fly-x' as any]: `${f.x}px`, ['--fly-y' as any]: `${f.y}px` }}
+          className="fixed z-[60] w-10 h-10 rounded-xl object-cover border-2 border-white shadow-xl pointer-events-none animate-fly-to-cart" />
+      ))}
+
+      {/* Dükkan Bilgi Kartı */}
+      {(data.shopName || data.address || data.phone || (data.workingHours && data.workingHours.length) || (data.paymentMethods && data.paymentMethods.length)) && (
+        <div className="max-w-2xl mx-auto px-3 md:px-4 -mt-5 relative z-10">
+          <div className="bg-white border border-blue-100 rounded-2xl shadow-lg shadow-blue-600/5 p-4 md:p-5 animate-slide-up" style={{ animationDuration: '0.5s' }}>
+            <div className="flex items-start justify-between gap-3">
+              <div className="min-w-0">
+                <h1 className="text-lg md:text-xl font-bold text-gray-900 leading-tight">{data.shopName || data.name}</h1>
+                {data.address && (
+                  <p className="flex items-start gap-1.5 text-xs md:text-sm text-gray-500 mt-1.5">
+                    <svg className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                    {data.address}
+                  </p>
+                )}
+                {data.phone && (
+                  <p className="flex items-center gap-1.5 text-xs md:text-sm text-gray-500 mt-1">
+                    <svg className="w-4 h-4 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
+                    {data.phone}
+                  </p>
+                )}
+              </div>
+              {data.logoUrl && (
+                <img src={data.logoUrl} className="w-14 h-14 md:w-16 md:h-16 rounded-xl object-cover border border-blue-100 flex-shrink-0 shadow-sm" alt={data.shopName || data.name} />
+              )}
+            </div>
+            {data.workingHours && data.workingHours.length > 0 && (
+              <div className="mt-3 pt-3 border-t border-blue-50">
+                <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider mb-1.5">Çalışma Saatleri</p>
+                <div className="space-y-1">
+                  {data.workingHours.map((wh: string, i: number) => (
+                    <p key={i} className="flex items-center gap-1.5 text-xs text-gray-600">
+                      <svg className="w-3.5 h-3.5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                      {wh}
+                    </p>
+                  ))}
+                </div>
+              </div>
+            )}
+            {data.paymentMethods && data.paymentMethods.length > 0 && (
+              <div className="mt-3 pt-3 border-t border-blue-50">
+                <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider mb-1.5">Ödeme Yöntemleri</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {data.paymentMethods.map((pm: string, i: number) => (
+                    <span key={i} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 text-[10px] md:text-xs font-semibold border border-blue-100">
+                      <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h2m4 0h2m-8 4h6a2 2 0 002-2v-7a2 2 0 00-2-2H7a2 2 0 00-2 2v7a2 2 0 002 2z" /></svg>
+                      {pm}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -260,7 +331,7 @@ function MenuContent({ params }: { params: { slug: string } }) {
                     </button>
                   ) : (
                     <button
-                      onClick={(e) => { e.stopPropagation(); addToCart(p) }}
+                      onClick={(e) => { e.stopPropagation(); addToCart(p, 1, e.currentTarget.getBoundingClientRect()) }}
                       className="mt-2.5 w-full py-2 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 active:scale-[0.98] transition-all text-white text-[11px] md:text-xs font-semibold flex items-center justify-center gap-1.5 shadow-md shadow-blue-600/30 shine">
                       <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.3 4.6a1 1 0 00.9 1.4H20M10 21a1 1 0 100-2 1 1 0 000 2zm8 0a1 1 0 100-2 1 1 0 000 2z" /></svg>
                       Sepete Ekle
@@ -431,7 +502,10 @@ function MenuContent({ params }: { params: { slug: string } }) {
             {orderResult ? (
               <div className="p-8 text-center">
                 <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4 animate-pop-in">
-                  <svg className="w-8 h-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                  <svg className="w-8 h-8 text-green-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+                    <circle className="check-circle" cx="12" cy="12" r="9" />
+                    <path className="check-path" d="M8 12.5l2.5 2.5L16 9" />
+                  </svg>
                 </div>
                 <h2 className="text-gray-900 font-bold text-xl animate-fade-in-up">Siparişiniz Alındı!</h2>
                 <p className="text-gray-500 text-sm mt-2">Sipariş numaranız: <span className="font-bold text-blue-700">#{orderResult.id}</span></p>
