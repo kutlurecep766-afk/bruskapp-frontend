@@ -166,6 +166,40 @@ body {
   50% { box-shadow: 0 0 30px rgba(0, 102, 255, 0.5), 0 0 60px rgba(0, 102, 255, 0.2); }
 }
 
+@keyframes bump {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.15); }
+  50% { transform: scale(0.95); }
+  70% { transform: scale(1.06); }
+  100% { transform: scale(1); }
+}
+
+@keyframes pop-in {
+  0% { transform: scale(0); opacity: 0; }
+  70% { transform: scale(1.12); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes shine-sweep {
+  0% { left: -160%; }
+  55%, 100% { left: 160%; }
+}
+
+.animate-bump { animation: bump 0.6s ease-out; }
+.animate-pop-in { animation: pop-in 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+
+.shine { position: relative; overflow: hidden; }
+.shine::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -160%;
+  width: 50%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.28), transparent);
+  transform: skewX(-20deg);
+  animation: shine-sweep 2.8s ease-in-out infinite;
+  pointer-events: none;
+}
+
 .animate-ring-expand { animation: ring-expand 2s ease-out infinite; }
 .animate-voice-ring { animation: voice-ring 3s ease-in-out infinite; }
 .animate-fade-in-up { animation: fade-in-up 0.6s ease-out forwards; }
