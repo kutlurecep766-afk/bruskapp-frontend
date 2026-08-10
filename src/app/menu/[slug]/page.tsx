@@ -175,7 +175,7 @@ function MenuContent({ params }: { params: { slug: string } }) {
 
       {/* Kategoriler */}
       {categories.length > 0 && (
-        <div className="sticky top-0 z-10 bg-white/90 backdrop-blur-xl border-b border-blue-100 px-3 md:px-4 py-2.5 md:py-3 overflow-x-auto mt-2 animate-fade-in shadow-sm" style={{ animationDuration: '0.5s' }}>
+        <div className="sticky top-0 z-10 bg-white/90 backdrop-blur-xl border-b border-blue-100 px-3 md:px-4 py-2.5 md:py-3 overflow-x-auto no-scrollbar mt-2 animate-fade-in shadow-sm" style={{ animationDuration: '0.5s' }}>
           <div className="flex gap-1.5 md:gap-2 max-w-2xl mx-auto">
             <button onClick={() => setSelectedCategory('')}
               className={'px-3 md:px-5 py-1.5 md:py-2 rounded-full text-[11px] md:text-xs font-semibold transition-all whitespace-nowrap ' + (!selectedCategory ? 'bg-blue-600 text-white shadow-md shadow-blue-600/30' : 'bg-white text-blue-700 border border-blue-200 hover:bg-blue-50 hover:border-blue-300')}>Tümü</button>
@@ -541,6 +541,16 @@ function MenuContent({ params }: { params: { slug: string } }) {
           </div>
         </div>
       )}
+      {/* Footer */}
+      <footer className="w-full py-6 md:py-8 mt-2">
+        <div className="max-w-2xl mx-auto px-3 md:px-4 flex flex-col items-center gap-2 animate-fade-in-up" style={{ animationDuration: '0.8s' }}>
+          <div className="flex items-center gap-2">
+            <img src="/logo.svg" alt="BRUSKAPP" className="h-5 md:h-6" />
+            <span className="text-sm md:text-base font-bold text-gray-800 tracking-wide">bruskapp <span className="text-blue-600">QR</span></span>
+          </div>
+          <p className="text-[10px] md:text-[11px] text-gray-400 font-medium">QR Menü ile dijital sipariş</p>
+        </div>
+      </footer>
     </div>
   )
 }
