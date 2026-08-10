@@ -163,16 +163,19 @@ function MenuContent({ params }: { params: { slug: string } }) {
               <div className="min-w-0">
                 <h1 className="text-lg md:text-xl font-bold text-gray-900 leading-tight">{data.shopName || data.name}</h1>
                 {data.address && (
-                  <p className="flex items-start gap-1.5 text-xs md:text-sm text-gray-500 mt-1.5">
+                  <a href={data.locationUrl || '#'}
+                    className={'flex items-start gap-1.5 text-xs md:text-sm text-gray-500 mt-1.5 ' + (data.locationUrl ? 'hover:text-blue-600 transition-colors' : 'cursor-default')}
+                    onClick={data.locationUrl ? undefined : e => e.preventDefault()}>
                     <svg className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
                     {data.address}
-                  </p>
+                  </a>
                 )}
                 {data.phone && (
-                  <p className="flex items-center gap-1.5 text-xs md:text-sm text-gray-500 mt-1">
+                  <a href={`tel:${data.phone.replace(/[^+\d]/g, '')}`}
+                    className="flex items-center gap-1.5 text-xs md:text-sm text-gray-500 mt-1 hover:text-blue-600 transition-colors">
                     <svg className="w-4 h-4 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
                     {data.phone}
-                  </p>
+                  </a>
                 )}
               </div>
               {data.logoUrl && (
@@ -198,7 +201,17 @@ function MenuContent({ params }: { params: { slug: string } }) {
                 <div className="flex flex-wrap gap-1.5">
                   {data.paymentMethods.map((pm: string, i: number) => (
                     <span key={i} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 text-[10px] md:text-xs font-semibold border border-blue-100">
-                      <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h2m4 0h2m-8 4h6a2 2 0 002-2v-7a2 2 0 00-2-2H7a2 2 0 00-2 2v7a2 2 0 002 2z" /></svg>
+                      {/kart|kredi|bank/i.test(pm) ? (
+                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h2m4 0h2m-8 4h6a2 2 0 002-2v-7a2 2 0 00-2-2H7a2 2 0 00-2 2v7a2 2 0 002 2z" /></svg>
+                      ) : /kap[ıi]da|nakit|teslim/i.test(pm) ? (
+                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                      ) : /havale|eft|iban/i.test(pm) ? (
+                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" /></svg>
+                      ) : /qr/i.test(pm) ? (
+                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h8v8H3V3zm10 0h8v8h-8V3zM3 13h8v8H3v-8zm10 0h8v8h-8v-8z" /></svg>
+                      ) : (
+                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h2m4 0h2m-8 4h6a2 2 0 002-2v-7a2 2 0 00-2-2H7a2 2 0 00-2 2v7a2 2 0 002 2z" /></svg>
+                      )}
                       {pm}
                     </span>
                   ))}
@@ -226,6 +239,13 @@ function MenuContent({ params }: { params: { slug: string } }) {
             )}
           </div>
           <div className="flex items-center gap-2">
+            {data.locationUrl && (
+              <a href={data.locationUrl} target="_blank" rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-full bg-white border border-blue-100 text-gray-700 text-xs font-semibold shadow-sm hover:shadow-md hover:-translate-y-0.5 hover:border-blue-300 transition-all active:scale-95">
+                <svg className="w-4 h-4" viewBox="0 0 24 24"><path fill="#4285F4" d="M12 2C8.13 2 5 5.13 5 8.998c0 5.25 6.11 10.8 6.42 11.08.3.27.86.27 1.16 0 .31-.28 6.42-5.83 6.42-11.08C19 5.13 15.87 2 12 2zm0 9.6a2.6 2.6 0 110-5.2 2.6 2.6 0 010 5.2z" /></svg>
+                Konum
+              </a>
+            )}
             {data.googleReviewUrl && (
               <a href={data.googleReviewUrl} target="_blank" rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 px-3 py-2 rounded-full bg-white border border-blue-100 text-gray-700 text-xs font-semibold shadow-sm hover:shadow-md hover:-translate-y-0.5 hover:border-blue-300 transition-all active:scale-95">
