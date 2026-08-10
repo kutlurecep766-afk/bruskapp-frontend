@@ -544,10 +544,10 @@ function MenuContent({ params }: { params: { slug: string } }) {
       {/* Footer */}
       <footer className="w-full py-6 md:py-8 mt-2">
         <div className="max-w-2xl mx-auto px-3 md:px-4 flex flex-col items-center gap-2 animate-fade-in-up" style={{ animationDuration: '0.8s' }}>
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center">
             <img src="/logo.svg" alt="BRUSKAPP" className="h-5 md:h-6" />
-            <span className="text-sm md:text-base font-black tracking-tight leading-none">
-              <span className="text-gray-900">brusk</span><span className="text-blue-600">app</span><span className="text-blue-600">QR</span>
+            <span className="text-sm md:text-base font-black tracking-tight leading-none whitespace-nowrap">
+              <span className="text-gray-900">BRUSK</span><span className="text-blue-600">APP QR</span>
             </span>
           </div>
           <p className="text-[10px] md:text-[11px] text-gray-400 font-medium">QR Menü ile dijital sipariş</p>
