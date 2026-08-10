@@ -118,18 +118,18 @@ function MenuContent({ params }: { params: { slug: string } }) {
     <div className="min-h-screen bg-[#f8f6f1] pb-24">
       {/* Banner - tam görünür */}
       {data.bannerUrl ? (
-        <div className="relative w-full md:h-80 lg:h-96 overflow-hidden bg-[#f8f6f1]">
-          <img src={data.bannerUrl} className="w-full h-auto md:h-full md:object-cover block" alt="" />
+        <div className="relative w-full md:h-80 lg:h-96 overflow-hidden bg-[#f8f6f1] animate-fade-in">
+          <img src={data.bannerUrl} className="w-full h-auto md:h-full md:object-cover block animate-fade-in-up" style={{ animationDuration: '0.9s' }} alt="" />
         </div>
       ) : (
-        <div className="w-full h-40 md:h-56 bg-gradient-to-br from-amber-100 to-amber-50 flex items-center justify-center">
-          <svg className="w-12 h-12 text-amber-300/60" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 6h16M4 12h16M4 18h16" /></svg>
+        <div className="w-full h-40 md:h-56 bg-gradient-to-br from-amber-100 to-amber-50 flex items-center justify-center animate-fade-in">
+          <svg className="w-12 h-12 text-amber-300/60 animate-breathe" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 6h16M4 12h16M4 18h16" /></svg>
         </div>
       )}
 
       {/* Masa + Sosyal Rozet */}
       {(masa || data.googleReviewUrl || data.instagramUrl) && (
-        <div className="max-w-2xl mx-auto px-3 md:px-4 pt-4 flex items-center justify-between gap-3 flex-wrap">
+        <div className="max-w-2xl mx-auto px-3 md:px-4 pt-4 flex items-center justify-between gap-3 flex-wrap animate-fade-in-up" style={{ animationDuration: '0.6s' }}>
           <div className="flex items-center gap-2">
             {masa ? (
               <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-950 text-amber-50 text-xs md:text-sm font-bold shadow-md">
@@ -164,7 +164,7 @@ function MenuContent({ params }: { params: { slug: string } }) {
 
       {/* Kategoriler */}
       {categories.length > 0 && (
-        <div className="sticky top-0 z-10 bg-[#f8f6f1]/95 backdrop-blur-xl border-b border-amber-100/50 px-3 md:px-4 py-2.5 md:py-3 overflow-x-auto mt-2">
+        <div className="sticky top-0 z-10 bg-[#f8f6f1]/95 backdrop-blur-xl border-b border-amber-100/50 px-3 md:px-4 py-2.5 md:py-3 overflow-x-auto mt-2 animate-fade-in" style={{ animationDuration: '0.5s' }}>
           <div className="flex gap-1.5 md:gap-2 max-w-2xl mx-auto">
             <button onClick={() => setSelectedCategory('')}
               className={'px-3 md:px-5 py-1.5 md:py-2 rounded-full text-[11px] md:text-xs font-semibold transition-all whitespace-nowrap ' + (!selectedCategory ? 'bg-amber-600 text-white shadow-md' : 'text-amber-800 hover:text-amber-900 bg-amber-100/70 hover:bg-amber-200/70')}>Tümü</button>
@@ -184,12 +184,12 @@ function MenuContent({ params }: { params: { slug: string } }) {
           </div>
         )}
         <div className="grid grid-cols-2 gap-2.5 md:gap-4">
-          {filtered.map((p: any) => {
+          {filtered.map((p: any, idx: number) => {
             const isDiscounted = p.originalPrice && parseFloat(p.originalPrice) > parseFloat(p.price)
             const isSoldout = p.status === 'soldout'
             const isPreparing = p.status === 'preparing'
             return (
-              <div key={p.id} onClick={() => { if (!isSoldout && !isPreparing) { setSelectedProduct(p); setQty(1) } }} className={'flex flex-col rounded-xl md:rounded-2xl bg-white border shadow-sm transition-all overflow-hidden ' + (isSoldout || isPreparing ? 'opacity-75 border-amber-200/40 cursor-not-allowed' : 'border-amber-100/60 hover:shadow-md cursor-pointer active:scale-[0.98] transition-transform')}>
+              <div key={p.id} style={{ animationDelay: `${Math.min(idx, 8) * 60}ms` }} onClick={() => { if (!isSoldout && !isPreparing) { setSelectedProduct(p); setQty(1) } }} className={'animate-fade-in-up flex flex-col rounded-xl md:rounded-2xl bg-white border shadow-sm transition-all overflow-hidden ' + (isSoldout || isPreparing ? 'opacity-75 border-amber-200/40 cursor-not-allowed' : 'border-amber-100/60 hover:shadow-md hover:-translate-y-0.5 cursor-pointer active:scale-[0.98] transition-all')}>
                 <div className="relative">
                   {p.image && (
                     <div className="w-full aspect-square overflow-hidden bg-[#f8f6f1]">
@@ -258,7 +258,7 @@ function MenuContent({ params }: { params: { slug: string } }) {
       {/* Ürün Detay Modal */}
       {selectedProduct && (
         <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center p-0 md:p-4 bg-black/60 backdrop-blur-sm" onClick={() => setSelectedProduct(null)}>
-          <div className="relative w-full md:max-w-lg bg-white rounded-t-3xl md:rounded-3xl shadow-2xl overflow-hidden transition-all duration-200" onClick={e => e.stopPropagation()}>
+          <div className="relative w-full md:max-w-lg bg-white rounded-t-3xl md:rounded-3xl shadow-2xl overflow-hidden transition-all duration-200 animate-slide-up" onClick={e => e.stopPropagation()}>
             <div className="md:hidden h-1.5 w-12 bg-amber-200 rounded-full mx-auto mt-3" />
             <button onClick={() => setSelectedProduct(null)} className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-white/80 backdrop-blur flex items-center justify-center text-amber-800 hover:bg-white shadow-sm transition-all">
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
@@ -341,7 +341,7 @@ function MenuContent({ params }: { params: { slug: string } }) {
       {/* Sepet Modal */}
       {showCart && (
         <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center p-0 md:p-4 bg-black/60 backdrop-blur-sm" onClick={() => setShowCart(false)}>
-          <div className="relative w-full md:max-w-lg bg-white rounded-t-3xl md:rounded-3xl shadow-2xl overflow-hidden max-h-[85vh] flex flex-col transition-all duration-200" onClick={e => e.stopPropagation()}>
+          <div className="relative w-full md:max-w-lg bg-white rounded-t-3xl md:rounded-3xl shadow-2xl overflow-hidden max-h-[85vh] flex flex-col transition-all duration-200 animate-slide-up" onClick={e => e.stopPropagation()}>
             <div className="md:hidden h-1.5 w-12 bg-amber-200 rounded-full mx-auto mt-3" />
             <div className="flex items-center justify-between px-5 md:px-6 pt-4 pb-3 border-b border-amber-100/60">
               <h2 className="text-amber-950 font-bold text-lg">Sepetim</h2>
@@ -401,7 +401,7 @@ function MenuContent({ params }: { params: { slug: string } }) {
       {/* Ödeme Modal */}
       {checkoutOpen && (
         <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center p-0 md:p-4 bg-black/60 backdrop-blur-sm">
-          <div className="relative w-full md:max-w-lg bg-white rounded-t-3xl md:rounded-3xl shadow-2xl overflow-hidden max-h-[92vh] flex flex-col transition-all duration-200">
+          <div className="relative w-full md:max-w-lg bg-white rounded-t-3xl md:rounded-3xl shadow-2xl overflow-hidden max-h-[92vh] flex flex-col transition-all duration-200 animate-slide-up">
             {orderResult ? (
               <div className="p-8 text-center">
                 <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
