@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation'
 interface CartItem {
   product: any
   qty: number
+  note?: string
 }
 
 function MenuContent({ params }: { params: { slug: string } }) {
@@ -25,6 +26,10 @@ function MenuContent({ params }: { params: { slug: string } }) {
   const [justAdded, setJustAdded] = useState<string | null>(null)
   const [cartBump, setCartBump] = useState(0)
   const [flyItems, setFlyItems] = useState<{ id: string; x: number; y: number; img: string; left: number; top: number }[]>([])
+  const [waiterOpen, setWaiterOpen] = useState(false)
+  const [waiterNote, setWaiterNote] = useState('')
+  const [waiterSending, setWaiterSending] = useState(false)
+  const [waiterSent, setWaiterSent] = useState(false)
 
   useEffect(() => {
     fetch(`/api/storefront/${params.slug}`, { cache: 'no-store' }).then(r => r.ok ? r.json() : null).then(d => {
@@ -38,7 +43,7 @@ function MenuContent({ params }: { params: { slug: string } }) {
     setCart(prev => {
       const found = prev.find(i => i.product.id === product.id)
       if (found) return prev.map(i => i.product.id === product.id ? { ...i, qty: i.qty + count } : i)
-      return [...prev, { product, qty: count }]
+      return [...prev, { product, qty: count, note: '' }]
     })
     if (rect && product.image) {
       const w = typeof window !== 'undefined' ? window.innerWidth : 0
@@ -71,6 +76,10 @@ function MenuContent({ params }: { params: { slug: string } }) {
     }))
   }
 
+  const updateNote = (productId: string, note: string) => {
+    setCart(prev => prev.map(i => i.product.id === productId ? { ...i, note } : i))
+  }
+
   const cartCount = cart.reduce((a, i) => a + i.qty, 0)
   const cartTotal = cart.reduce((a, i) => a + (parseFloat(i.product.price) || 0) * i.qty, 0)
 
@@ -93,7 +102,7 @@ function MenuContent({ params }: { params: { slug: string } }) {
           platform: masa ? 'Masa' : 'QR Menü',
           customerName: form.name.trim(),
           customerContact: form.phone.trim(),
-          products: cart.map(i => ({ name: i.product.name, price: parseFloat(i.product.price) || 0, quantity: i.qty })),
+          products: cart.map(i => ({ name: i.product.name, price: parseFloat(i.product.price) || 0, quantity: i.qty, ...(i.note ? { note: i.note } : {}) })),
           totalAmount: Math.round(cartTotal * 100) / 100,
           note: 'Ödeme: ' + form.payment + (masa ? '' : ' | Adres: ' + form.address.trim()),
           tableNumber: masa ? parseInt(masa) : null,
@@ -108,6 +117,37 @@ function MenuContent({ params }: { params: { slug: string } }) {
       alert('Sipariş gönderilemedi: ' + (e?.message || 'Lütfen tekrar deneyin'))
     } finally {
       setSubmitting(false)
+    }
+  }
+
+  const callWaiter = async () => {
+    setWaiterSending(true)
+    try {
+      const res = await fetch('/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          tenantId: data.id,
+          platform: 'Garson Çağrı',
+          customerName: masa ? `Masa ${masa}` : 'Masa',
+          products: [],
+          totalAmount: 0,
+          note: waiterNote.trim() ? 'Garson notu: ' + waiterNote.trim() : 'Garson çağrısı',
+          tableNumber: masa ? parseInt(masa) : null,
+        }),
+      })
+      const order = await res.json()
+      if (!res.ok) throw new Error(order?.message || 'Çağrı gönderilemedi')
+      setWaiterSent(true)
+      setTimeout(() => {
+        setWaiterOpen(false)
+        setWaiterSent(false)
+        setWaiterNote('')
+      }, 1800)
+    } catch (e: any) {
+      alert('Garson çağrısı gönderilemedi: ' + (e?.message || 'Lütfen tekrar deneyin'))
+    } finally {
+      setWaiterSending(false)
     }
   }
 
@@ -242,7 +282,7 @@ function MenuContent({ params }: { params: { slug: string } }) {
             {data.locationUrl && (
               <a href={data.locationUrl} target="_blank" rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 px-3 py-2 rounded-full bg-white border border-blue-100 text-gray-700 text-xs font-semibold shadow-sm hover:shadow-md hover:-translate-y-0.5 hover:border-blue-300 transition-all active:scale-95">
-                <svg className="w-4 h-4" viewBox="0 0 24 24"><path fill="#4285F4" d="M12 2C8.13 2 5 5.13 5 8.998c0 5.25 6.11 10.8 6.42 11.08.3.27.86.27 1.16 0 .31-.28 6.42-5.83 6.42-11.08C19 5.13 15.87 2 12 2zm0 9.6a2.6 2.6 0 110-5.2 2.6 2.6 0 010 5.2z" /></svg>
+                <svg className="w-4 h-4" viewBox="0 0 24 24"><path fill="#EA4335" d="M12 0C7.46 0 4 3.46 4 8c0 1.7.53 3.28 1.44 4.6l5.4 10.32c.32.6 1.14.6 1.46 0l5.4-10.32C19.47 11.28 20 9.7 20 8c0-4.54-3.46-8-8-8z" /><path fill="#fff" d="M12 4.6a3.4 3.4 0 100 6.8 3.4 3.4 0 000-6.8z" /></svg>
                 Konum
               </a>
             )}
@@ -435,6 +475,67 @@ function MenuContent({ params }: { params: { slug: string } }) {
         </div>
       )}
 
+      {/* Garson Çağır Butonu (masa modülü) */}
+      {masa && (
+        <div className="fixed bottom-24 md:bottom-28 right-3 md:right-6 z-40 animate-fade-in-up" style={{ animationDuration: '0.6s' }}>
+          <button onClick={() => { setWaiterOpen(true); setWaiterSent(false) }}
+            className="flex items-center gap-2 pl-4 pr-5 py-3 rounded-full bg-gradient-to-r from-blue-600 to-blue-700 text-white text-sm font-semibold shadow-lg shadow-blue-600/40 hover:from-blue-700 hover:to-blue-800 hover:scale-105 active:scale-95 transition-all shine">
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
+            Garson Çağır
+          </button>
+        </div>
+      )}
+
+      {/* Garson Çağrı Modal */}
+      {waiterOpen && (
+        <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center p-0 md:p-4 bg-blue-950/50 backdrop-blur-sm animate-fade-in" onClick={() => { if (!waiterSending) setWaiterOpen(false) }}>
+          <div className="relative w-full md:max-w-sm bg-white rounded-t-3xl md:rounded-3xl shadow-2xl overflow-hidden transition-all duration-200 animate-slide-up" onClick={e => e.stopPropagation()}>
+            <div className="md:hidden h-1.5 w-12 bg-blue-200 rounded-full mx-auto mt-3" />
+            {waiterSent ? (
+              <div className="p-8 text-center">
+                <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4 animate-pop-in">
+                  <svg className="w-8 h-8 text-green-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
+                    <circle className="check-circle" cx="12" cy="12" r="9" />
+                    <path className="check-path" d="M8 12.5l2.5 2.5L16 9" />
+                  </svg>
+                </div>
+                <h2 className="text-gray-900 font-bold text-lg">Garson Çağrıldı!</h2>
+                <p className="text-gray-500 text-sm mt-2">Masa {masa}'ya garsonumuz en kısa sürede yönlenecek.</p>
+              </div>
+            ) : (
+              <>
+                <div className="flex items-center justify-between px-5 md:px-6 pt-5 pb-3">
+                  <h2 className="text-gray-900 font-bold text-lg">Garson Çağır</h2>
+                  <button onClick={() => setWaiterOpen(false)} disabled={waiterSending} className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-blue-700 hover:bg-blue-100 transition-all active:scale-90">
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                  </button>
+                </div>
+                <div className="px-5 md:px-6 pb-6">
+                  <p className="text-xs text-gray-500 mb-3 flex items-center gap-1.5">
+                    <svg className="w-4 h-4 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h2m4 0h2m-8 4h6a2 2 0 002-2v-7a2 2 0 00-2-2H7a2 2 0 00-2 2v7a2 2 0 002 2z" /></svg>
+                    Masa {masa}
+                  </p>
+                  <textarea value={waiterNote} onChange={e => setWaiterNote(e.target.value)} rows={3}
+                    placeholder="Garsona not bırakın (ör: buz, peçete, hesap)..."
+                    className="w-full px-4 py-3 rounded-xl bg-white border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none text-gray-900 text-sm placeholder:text-gray-400 transition-all resize-none" />
+                  <button onClick={callWaiter} disabled={waiterSending}
+                    className="mt-4 w-full py-3.5 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 active:scale-[0.99] transition-all text-white font-semibold text-sm flex items-center justify-center gap-2 shadow-md shadow-blue-600/30 disabled:opacity-40 disabled:cursor-not-allowed shine">
+                    {waiterSending ? (
+                      <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    ) : (
+                      <>
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
+                        Garsonu Çağır
+                      </>
+                    )}
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Sepet Çubuğu */}
       {cart.length > 0 && (
         <div className="fixed bottom-0 left-0 right-0 z-40 px-3 md:px-4 pb-3 md:pb-4 pointer-events-none animate-fade-in-up" style={{ animationDuration: '0.4s' }}>
@@ -472,7 +573,8 @@ function MenuContent({ params }: { params: { slug: string } }) {
                 <div className="text-center py-10 text-gray-400 text-sm">Sepetiniz boş</div>
               )}
               {cart.map((item) => (
-                <div key={item.product.id} className="flex items-center gap-3 bg-gradient-to-r from-blue-50/80 to-white border border-blue-100 rounded-2xl p-3 animate-fade-in-up" style={{ animationDuration: '0.35s' }}>
+                <div key={item.product.id} className="bg-gradient-to-r from-blue-50/80 to-white border border-blue-100 rounded-2xl p-3 animate-fade-in-up" style={{ animationDuration: '0.35s' }}>
+                  <div className="flex items-center gap-3">
                   {item.product.image ? (
                     <img src={item.product.image} className="w-14 h-14 rounded-xl object-cover flex-shrink-0 border border-blue-100" alt={item.product.name} />
                   ) : (
@@ -492,6 +594,13 @@ function MenuContent({ params }: { params: { slug: string } }) {
                   <div className="text-right flex-shrink-0 w-16">
                     <p className="text-blue-700 font-bold text-sm">₺{((parseFloat(item.product.price) || 0) * item.qty).toFixed(2)}</p>
                     <button onClick={() => removeFromCart(item.product.id)} className="text-gray-400 hover:text-red-500 text-[10px] font-medium mt-0.5 transition-colors">Kaldır</button>
+                  </div>
+                  </div>
+                  <div className="flex items-center gap-1.5 mt-2">
+                    <svg className="w-3.5 h-3.5 text-blue-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+                    <input value={item.note || ''} onChange={e => updateNote(item.product.id, e.target.value)}
+                      placeholder="Ürüne not ekle (opsiyonel)..."
+                      className="flex-1 min-w-0 bg-white border border-blue-100 rounded-lg px-2.5 py-1.5 text-xs text-gray-800 placeholder:text-gray-400 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all" />
                   </div>
                 </div>
               ))}
@@ -553,9 +662,12 @@ function MenuContent({ params }: { params: { slug: string } }) {
                     <p className="text-blue-700 text-[11px] font-semibold uppercase tracking-wide mb-2">Sipariş Özeti</p>
                     <div className="space-y-1.5">
                       {cart.map((item) => (
-                        <div key={item.product.id} className="flex justify-between text-sm">
-                          <span className="text-gray-700">{item.qty} × {item.product.name}</span>
-                          <span className="text-gray-900 font-semibold">₺{((parseFloat(item.product.price) || 0) * item.qty).toFixed(2)}</span>
+                        <div key={item.product.id} className="text-sm">
+                          <div className="flex justify-between">
+                            <span className="text-gray-700">{item.qty} × {item.product.name}</span>
+                            <span className="text-gray-900 font-semibold">₺{((parseFloat(item.product.price) || 0) * item.qty).toFixed(2)}</span>
+                          </div>
+                          {item.note && <p className="text-blue-500 text-[11px] mt-0.5 italic">"{item.note}"</p>}
                         </div>
                       ))}
                     </div>
