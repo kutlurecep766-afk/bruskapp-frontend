@@ -86,7 +86,7 @@ function TrackContent() {
             <span className="w-2 h-2 rounded-full bg-current" />
           )}
         </div>
-        <p className={'mt-2 text-center text-[9px] md:text-xs font-bold leading-tight ' + (cancelled ? 'text-red-500' : done ? 'text-blue-700' : active ? 'text-blue-700' : 'text-gray-400')}>{meta.label}</p>
+        <p className={'mt-1.5 text-center text-[9px] md:text-xs font-bold leading-tight truncate w-full ' + (cancelled ? 'text-red-500' : done ? 'text-blue-700' : active ? 'text-blue-700' : 'text-gray-400')}>{meta.label}</p>
       </div>
     )
   }
@@ -95,8 +95,8 @@ function TrackContent() {
   const trackColor2 = result?.secondaryColor || '#1d4ed8'
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#dbe9ff] via-[#eef4ff] to-[#e3eeff] pb-24">
-      <div className="max-w-xl mx-auto px-4 pt-8 md:pt-12" style={{ ['--tc' as any]: trackColor }}>
+    <div className="min-h-screen bg-gradient-to-b from-[#dbe9ff] via-[#eef4ff] to-[#e3eeff] pb-24 overflow-x-hidden">
+      <div className="max-w-xl mx-auto px-3 md:px-4 pt-8 md:pt-12" style={{ ['--tc' as any]: trackColor }}>
         <div className="text-center mb-8">
           <div className="w-16 h-16 mx-auto rounded-3xl" style={{ background: `linear-gradient(135deg, ${trackColor}, ${trackColor2})` }}>
             <svg className="w-8 h-8 mx-auto mt-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z" /><circle cx="12" cy="12" r="3" /></svg>
@@ -115,10 +115,10 @@ function TrackContent() {
               placeholder="Örn: 452819"
               inputMode="numeric"
               maxLength={6}
-              className="flex-1 text-center text-xl tracking-[0.35em] font-bold text-gray-900 bg-blue-50/60 border border-blue-200 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 placeholder:text-gray-300 placeholder:text-base placeholder:tracking-normal"
+              className="flex-1 min-w-0 text-center text-xl tracking-[0.35em] font-bold text-gray-900 bg-blue-50/60 border border-blue-200 rounded-xl px-2 md:px-4 py-3 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 placeholder:text-gray-300 placeholder:text-base placeholder:tracking-normal"
             />
             <button type="submit" disabled={loading}
-              className="px-6 py-3 rounded-xl text-white text-sm font-bold shadow-md transition-all hover:scale-105 active:scale-95 disabled:opacity-60"
+              className="flex-shrink-0 px-4 md:px-6 py-3 rounded-xl text-white text-sm font-bold shadow-md transition-all hover:scale-105 active:scale-95 disabled:opacity-60"
               style={{ background: `linear-gradient(135deg, ${trackColor}, ${trackColor2})`, boxShadow: `0 10px 25px -5px ${trackColor}66` }}>
               {loading ? (
                 <span className="inline-block w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />
@@ -156,16 +156,16 @@ function TrackContent() {
         {result && !error && (
           <div className="mt-5 space-y-4 animate-fade-in-up" style={{ animationDuration: '0.4s' }}>
             <div className="bg-white border border-blue-100 rounded-2xl shadow-lg shadow-blue-600/5 overflow-hidden">
-              <div className="p-4 md:p-5 flex items-center justify-between" style={{ background: `linear-gradient(135deg, ${trackColor}, ${trackColor2})` }}>
-                <div className="text-center flex-1 min-w-0">
+              <div className="p-4 md:p-5 flex items-center justify-between overflow-hidden" style={{ background: `linear-gradient(135deg, ${trackColor}, ${trackColor2})` }}>
+                <div className="text-center flex-1 min-w-0 px-1">
                   <p className="text-[10px] text-white/70 uppercase tracking-wider font-semibold">İşletme</p>
                   <p className="text-white font-bold text-xs md:text-sm mt-0.5 truncate">{result.businessName || 'İşletme'}</p>
                 </div>
-                <div className="text-center flex-1 min-w-0 border-x border-white/20">
+                <div className="text-center flex-1 min-w-0 px-1 border-x border-white/20">
                   <p className="text-[10px] text-white/70 uppercase tracking-wider font-semibold">Sipariş No</p>
                   <p className="text-white font-bold text-xs md:text-sm mt-0.5 truncate">#{result.id}</p>
                 </div>
-                <div className="text-center flex-1 min-w-0">
+                <div className="text-center flex-1 min-w-0 px-1">
                   <p className="text-[10px] text-white/70 uppercase tracking-wider font-semibold">Takip Kodu</p>
                   <p className="text-white font-bold text-sm md:text-base mt-0.5 tracking-widest">{result.trackingCode}</p>
                 </div>
@@ -178,7 +178,7 @@ function TrackContent() {
                     {['pending', 'preparing'].map(step => (
                       <div key={step} className="flex items-center flex-1">
                         <StepBadge step={step} done={result && STATUS_ORDER.indexOf(result.status) > STATUS_ORDER.indexOf(step)} />
-                        <div className="w-6 md:w-10 h-0.5 bg-gradient-to-r from-blue-600/40 to-red-300" />
+                        <div className="flex-1 min-w-2 h-0.5 bg-gradient-to-r from-blue-600/40 to-red-300" />
                       </div>
                     ))}
                     <StepBadge step="cancelled" cancelled />
@@ -189,7 +189,7 @@ function TrackContent() {
                       <div key={step} className="flex items-center flex-1 last:flex-none">
                         <StepBadge step={step} done={i < currentIndex || (isTerminal && i === currentIndex)} active={!isTerminal && i === currentIndex} />
                         {i < steps.length - 1 && (
-                          <div className="w-6 md:w-10 h-0.5 mx-1 rounded-full transition-all duration-500" style={{ background: i < currentIndex ? trackColor : '#e5e7eb' }} />
+                          <div className="flex-1 min-w-2 h-0.5 mx-1 rounded-full transition-all duration-500" style={{ background: i < currentIndex ? trackColor : '#e5e7eb' }} />
                         )}
                       </div>
                     ))}
@@ -219,9 +219,9 @@ function TrackContent() {
                     <div className="space-y-2">
                       {(result.products as any[]).map((p: any, i: number) => (
                         <div key={i} className="flex items-center justify-between gap-3 text-sm">
-                          <span className="text-gray-700 flex items-center gap-2">
-                            <span className="w-6 h-6 rounded-full bg-blue-600 text-white text-[10px] font-bold flex items-center justify-center">{p.quantity || 1}×</span>
-                            {p.name}
+                          <span className="text-gray-700 flex items-center gap-2 min-w-0">
+                            <span className="w-6 h-6 rounded-full bg-blue-600 text-white text-[10px] font-bold flex items-center justify-center flex-shrink-0">{p.quantity || 1}×</span>
+                            <span className="truncate">{p.name}</span>
                           </span>
                         </div>
                       ))}
