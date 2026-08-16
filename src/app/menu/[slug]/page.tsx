@@ -111,6 +111,10 @@ function MenuContent({ params }: { params: { slug: string } }) {
       if (!form.address.trim()) return
       normalizedPhone = phone
     }
+    if (form.payment === 'Online Ödeme' && !data?.posConfigured) {
+      alert('SanalPOS\'unuz aktif değil. Online ödeme almak için işletmenin SanalPOS bağlaması gerekir.')
+      return
+    }
     setSubmitting(true)
     try {
       const res = await fetch('/api/orders', {
@@ -189,7 +193,7 @@ function MenuContent({ params }: { params: { slug: string } }) {
 
   const categories = Array.from(new Set((data.products || []).map((p: any) => p.category).filter(Boolean))) as string[]
   const filtered = selectedCategory ? data.products.filter((p: any) => p.category === selectedCategory) : data.products
-  const payments = masa ? ['Kasada Nakit', 'Kasada Kart', 'Online Ödeme'] : ['Kapıda Ödeme', 'Kapıda Banka/Kredi Kartı']
+  const payments = masa ? ['Kasada Nakit', 'Kasada Kart', 'Online Ödeme'] : ['Kapıda Ödeme', 'Online Ödeme']
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#dbe9ff] via-[#eef4ff] to-[#e3eeff] pb-24">
@@ -719,9 +723,10 @@ function MenuContent({ params }: { params: { slug: string } }) {
                           <span className="flex items-center px-3 rounded-l-xl bg-blue-50 border border-r-0 border-blue-200 text-gray-700 text-sm font-semibold">+90</span>
                           <input
                             value={form.phone}
-                            onChange={e => setForm({ ...form, phone: e.target.value })}
+                            onChange={e => setForm({ ...form, phone: e.target.value.replace(/\D/g, '').slice(0, 10) })}
                             placeholder="530 123 45 67 *"
                             inputMode="tel"
+                            maxLength={10}
                             className="w-full px-4 py-3 rounded-r-xl bg-white border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none text-gray-900 text-sm placeholder:text-gray-400 transition-all"
                           />
                         </div>
