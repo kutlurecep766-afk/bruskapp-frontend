@@ -91,12 +91,13 @@ function TrackContent() {
   }
 
   const trackColor = result?.primaryColor || '#2563eb'
+  const trackColor2 = result?.secondaryColor || '#1d4ed8'
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#dbe9ff] via-[#eef4ff] to-[#e3eeff] pb-24">
       <div className="max-w-xl mx-auto px-4 pt-8 md:pt-12" style={{ ['--tc' as any]: trackColor }}>
         <div className="text-center mb-8">
-          <div className="w-16 h-16 mx-auto rounded-3xl" style={{ background: `linear-gradient(135deg, ${trackColor}, #1d4ed8)` }}>
+          <div className="w-16 h-16 mx-auto rounded-3xl" style={{ background: `linear-gradient(135deg, ${trackColor}, ${trackColor2})` }}>
             <svg className="w-8 h-8 mx-auto mt-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z" /><circle cx="12" cy="12" r="3" /></svg>
           </div>
           <h1 className="text-2xl font-bold text-gray-900 mt-4">Sipariş Takibi</h1>
@@ -117,7 +118,7 @@ function TrackContent() {
             />
             <button type="submit" disabled={loading}
               className="px-6 py-3 rounded-xl text-white text-sm font-bold shadow-md transition-all hover:scale-105 active:scale-95 disabled:opacity-60"
-              style={{ background: `linear-gradient(135deg, ${trackColor}, #1d4ed8)`, boxShadow: `0 10px 25px -5px ${trackColor}66` }}>
+              style={{ background: `linear-gradient(135deg, ${trackColor}, ${trackColor2})`, boxShadow: `0 10px 25px -5px ${trackColor}66` }}>
               {loading ? (
                 <span className="inline-block w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />
               ) : 'Sorgula'}
@@ -154,18 +155,18 @@ function TrackContent() {
         {result && !error && (
           <div className="mt-5 space-y-4 animate-fade-in-up" style={{ animationDuration: '0.4s' }}>
             <div className="bg-white border border-blue-100 rounded-2xl shadow-lg shadow-blue-600/5 overflow-hidden">
-              <div className="p-5 flex items-center justify-between" style={{ background: `linear-gradient(135deg, ${trackColor}, #1d4ed8)` }}>
-                <div className="text-center flex-1">
+              <div className="p-4 md:p-5 flex items-center justify-between" style={{ background: `linear-gradient(135deg, ${trackColor}, ${trackColor2})` }}>
+                <div className="text-center flex-1 min-w-0">
                   <p className="text-[10px] text-white/70 uppercase tracking-wider font-semibold">İşletme</p>
-                  <p className="text-white font-bold text-sm mt-0.5">{result.businessName || 'İşletme'}</p>
+                  <p className="text-white font-bold text-xs md:text-sm mt-0.5 truncate">{result.businessName || 'İşletme'}</p>
                 </div>
-                <div className="text-center flex-1 border-x border-white/20">
+                <div className="text-center flex-1 min-w-0 border-x border-white/20">
                   <p className="text-[10px] text-white/70 uppercase tracking-wider font-semibold">Sipariş No</p>
-                  <p className="text-white font-bold text-sm mt-0.5">#{result.id}</p>
+                  <p className="text-white font-bold text-xs md:text-sm mt-0.5 truncate">#{result.id}</p>
                 </div>
-                <div className="text-center flex-1">
+                <div className="text-center flex-1 min-w-0">
                   <p className="text-[10px] text-white/70 uppercase tracking-wider font-semibold">Takip Kodu</p>
-                  <p className="text-white font-bold text-sm mt-0.5 tracking-widest">{result.trackingCode}</p>
+                  <p className="text-white font-bold text-sm md:text-base mt-0.5 tracking-widest">{result.trackingCode}</p>
                 </div>
               </div>
 
