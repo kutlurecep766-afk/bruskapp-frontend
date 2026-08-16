@@ -30,6 +30,8 @@ function MenuContent({ params }: { params: { slug: string } }) {
   const [waiterNote, setWaiterNote] = useState('')
   const [waiterSending, setWaiterSending] = useState(false)
   const [waiterSent, setWaiterSent] = useState(false)
+  const [trackOpen, setTrackOpen] = useState(false)
+  const [trackCode, setTrackCode] = useState('')
 
   useEffect(() => {
     fetch(`/api/storefront/${params.slug}`, { cache: 'no-store' }).then(r => r.ok ? r.json() : null).then(d => {
@@ -300,6 +302,11 @@ function MenuContent({ params }: { params: { slug: string } }) {
                 Online Sipariş
               </span>
             )}
+            <button onClick={() => setTrackOpen(v => !v)}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white text-gray-700 text-xs md:text-sm font-bold border border-blue-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 hover:border-blue-300 transition-all active:scale-95">
+              <svg className="w-4 h-4 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z" /><circle cx="12" cy="12" r="3" /></svg>
+              Sipariş Takibi
+            </button>
           </div>
           <div className="flex items-center gap-2">
             {data.locationUrl && (
@@ -323,6 +330,34 @@ function MenuContent({ params }: { params: { slug: string } }) {
                 Instagram
               </a>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* Sipariş Takibi paneli */}
+      {trackOpen && (
+        <div className="max-w-2xl mx-auto px-3 md:px-4 pt-3 animate-slide-up" style={{ animationDuration: '0.25s' }}>
+          <div className="bg-white border border-blue-100 rounded-2xl shadow-lg shadow-blue-600/5 p-4">
+            <div className="flex items-center gap-2 mb-3">
+              <svg className="w-5 h-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z" /><circle cx="12" cy="12" r="3" /></svg>
+              <p className="text-gray-900 font-bold text-sm">Sipariş Takibi</p>
+            </div>
+            <p className="text-xs text-gray-500 mb-3">Sipariş verirken aldığınız <b>6 haneli takip kodunu</b> yazarak siparişinizin durumunu öğrenin.</p>
+            <div className="flex gap-2">
+              <input
+                value={trackCode}
+                onChange={e => setTrackCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                placeholder="Örn: 452819"
+                inputMode="numeric"
+                maxLength={6}
+                className="flex-1 text-center text-lg tracking-[0.3em] font-bold text-gray-900 bg-blue-50/60 border border-blue-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 placeholder:text-gray-300 placeholder:text-sm placeholder:tracking-normal" />
+              <a href={trackCode.length === 6 ? '/siparis-durum?kod=' + trackCode : undefined}
+                onClick={e => { if (trackCode.length !== 6) { e.preventDefault(); alert('Lütfen 6 haneli takip kodunu girin') } }}
+                className={'inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl text-white text-sm font-bold shadow-md transition-all active:scale-95 ' + (trackCode.length === 6 ? 'hover:scale-105' : 'opacity-40 cursor-not-allowed')}
+                style={{ background: 'linear-gradient(135deg, ' + (data.primaryColor || '#2563eb') + ', #1d4ed8)' }}>
+                Sorgula
+              </a>
+            </div>
           </div>
         </div>
       )}
