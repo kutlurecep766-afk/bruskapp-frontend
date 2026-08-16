@@ -63,14 +63,15 @@ function TrackContent() {
     ? ['pending', 'preparing', 'out_for_delivery', 'delivered']
     : ['pending', 'preparing', 'delivered']
   const currentIndex = result ? steps.indexOf(result.status) : -1
+  const isTerminal = result?.status === 'delivered' || result?.status === 'completed'
   const isCancelled = result?.status === 'cancelled'
   const cancelledIndex = STATUS_ORDER.indexOf('cancelled')
 
   const StepBadge = ({ step, done, active, cancelled }: any) => {
     const meta = STATUS_STEPS[step]
     return (
-      <div className="flex flex-col items-center flex-1 min-w-0">
-        <div className={'w-10 h-10 rounded-full border-2 flex items-center justify-center transition-all duration-500 ' + (cancelled
+      <div className="flex flex-col items-center flex-1 min-w-0 px-0.5">
+        <div className={'w-8 h-8 md:w-10 md:h-10 rounded-full border-2 flex items-center justify-center transition-all duration-500 ' + (cancelled
           ? 'border-red-300 bg-red-50'
           : done
             ? 'border-blue-600 bg-blue-600 text-white shadow-lg shadow-blue-600/30'
@@ -80,12 +81,12 @@ function TrackContent() {
           {cancelled ? (
             <svg className="w-4 h-4 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
           ) : done ? (
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+            <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
           ) : (
             <span className="w-2 h-2 rounded-full bg-current" />
           )}
         </div>
-        <p className={'mt-2 text-center text-[10px] md:text-xs font-bold ' + (cancelled ? 'text-red-500' : done ? 'text-blue-700' : active ? 'text-blue-700' : 'text-gray-400')}>{meta.label}</p>
+        <p className={'mt-2 text-center text-[9px] md:text-xs font-bold leading-tight ' + (cancelled ? 'text-red-500' : done ? 'text-blue-700' : active ? 'text-blue-700' : 'text-gray-400')}>{meta.label}</p>
       </div>
     )
   }
@@ -186,7 +187,7 @@ function TrackContent() {
                   <div className="flex items-center">
                     {steps.map((step, i) => (
                       <div key={step} className="flex items-center flex-1 last:flex-none">
-                        <StepBadge step={step} done={i < currentIndex} active={i === currentIndex} />
+                        <StepBadge step={step} done={i < currentIndex || (isTerminal && i === currentIndex)} active={!isTerminal && i === currentIndex} />
                         {i < steps.length - 1 && (
                           <div className="w-6 md:w-10 h-0.5 mx-1 rounded-full transition-all duration-500" style={{ background: i < currentIndex ? trackColor : '#e5e7eb' }} />
                         )}

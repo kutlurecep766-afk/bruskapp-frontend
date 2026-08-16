@@ -290,7 +290,7 @@ function MenuContent({ params }: { params: { slug: string } }) {
       {/* Masa + Sosyal Rozet */}
       {(masa || data.googleReviewUrl || data.instagramUrl) && (
         <div className="max-w-2xl mx-auto px-3 md:px-4 pt-4 flex items-center justify-between gap-3 flex-wrap animate-fade-in-up" style={{ animationDuration: '0.6s' }}>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             {masa ? (
               <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-700 text-white text-xs md:text-sm font-bold shadow-lg shadow-blue-700/20">
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h2m4 0h2m-8 4h6a2 2 0 002-2v-7a2 2 0 00-2-2H7a2 2 0 00-2 2v7a2 2 0 002 2z" /></svg>
