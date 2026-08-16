@@ -89,9 +89,28 @@ function MenuContent({ params }: { params: { slug: string } }) {
     setOrderResult(null)
   }
 
+  const normalizePhone = (raw: string): string | null => {
+    let dig = (raw || '').replace(/\D/g, '')
+    if (dig.startsWith('90') && dig.length === 12) dig = dig.slice(2)
+    if (dig.startsWith('0')) dig = dig.slice(1)
+    if (!/^[5-9]\d{9}$/.test(dig)) return null
+    return '+90' + dig
+  }
+
   const submitOrder = async () => {
-    if (!form.name.trim() || !form.phone.trim()) return
-    if (!masa && !form.address.trim()) return
+    let normalizedPhone = ''
+    if (masa) {
+      if (cart.length === 0) return
+    } else {
+      if (!form.name.trim()) return
+      const phone = normalizePhone(form.phone)
+      if (!phone) {
+        alert('Geçerli bir telefon numarası girin (ör: 530 123 45 67)')
+        return
+      }
+      if (!form.address.trim()) return
+      normalizedPhone = phone
+    }
     setSubmitting(true)
     try {
       const res = await fetch('/api/orders', {
@@ -100,8 +119,8 @@ function MenuContent({ params }: { params: { slug: string } }) {
         body: JSON.stringify({
           tenantId: data.id,
           platform: masa ? 'Masa' : 'QR Menü',
-          customerName: form.name.trim(),
-          customerContact: form.phone.trim(),
+          customerName: masa ? `Masa ${masa}` : form.name.trim(),
+          customerContact: masa ? '' : normalizedPhone,
           products: cart.map(i => ({ name: i.product.name, price: parseFloat(i.product.price) || 0, quantity: i.qty, ...(i.note ? { note: i.note } : {}) })),
           totalAmount: Math.round(cartTotal * 100) / 100,
           note: 'Ödeme: ' + form.payment + (masa ? '' : ' | Adres: ' + form.address.trim()),
@@ -170,7 +189,7 @@ function MenuContent({ params }: { params: { slug: string } }) {
 
   const categories = Array.from(new Set((data.products || []).map((p: any) => p.category).filter(Boolean))) as string[]
   const filtered = selectedCategory ? data.products.filter((p: any) => p.category === selectedCategory) : data.products
-  const payments = ['Kapıda Ödeme', 'Kapıda Banka/Kredi Kartı']
+  const payments = masa ? ['Kasada Nakit', 'Kasada Kart', 'Online Ödeme'] : ['Kapıda Ödeme', 'Kapıda Banka/Kredi Kartı']
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#dbe9ff] via-[#eef4ff] to-[#e3eeff] pb-24">
@@ -678,23 +697,34 @@ function MenuContent({ params }: { params: { slug: string } }) {
                   </div>
 
                   {/* İletişim Bilgileri */}
-                  <div className="animate-fade-in-up" style={{ animationDuration: '0.4s' }}>
-                    <p className="text-blue-700 text-[11px] font-semibold uppercase tracking-wide mb-2">İletişim Bilgileri</p>
-                    <div className="space-y-3">
-                      <input
-                        value={form.name}
-                        onChange={e => setForm({ ...form, name: e.target.value })}
-                        placeholder="Ad Soyad *"
-                        className="w-full px-4 py-3 rounded-xl bg-white border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none text-gray-900 text-sm placeholder:text-gray-400 transition-all"
-                      />
-                      <input
-                        value={form.phone}
-                        onChange={e => setForm({ ...form, phone: e.target.value })}
-                        placeholder="Telefon Numarası *"
-                        inputMode="tel"
-                        className="w-full px-4 py-3 rounded-xl bg-white border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none text-gray-900 text-sm placeholder:text-gray-400 transition-all"
-                      />
-                      {!masa && (
+                  {masa ? (
+                    <div className="animate-fade-in-up" style={{ animationDuration: '0.4s' }}>
+                      <p className="text-blue-700 text-[11px] font-semibold uppercase tracking-wide mb-2">Masa Siparişi</p>
+                      <p className="text-xs text-blue-700 bg-blue-50 border border-blue-200 rounded-xl px-4 py-3 flex items-center gap-2">
+                        <svg className="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h2m4 0h2m-8 4h6a2 2 0 002-2v-7a2 2 0 00-2-2H7a2 2 0 00-2 2v7a2 2 0 002 2z" /></svg>
+                        Siparişiniz Masa {masa}'ya teslim edilecek.
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="animate-fade-in-up" style={{ animationDuration: '0.4s' }}>
+                      <p className="text-blue-700 text-[11px] font-semibold uppercase tracking-wide mb-2">İletişim Bilgileri</p>
+                      <div className="space-y-3">
+                        <input
+                          value={form.name}
+                          onChange={e => setForm({ ...form, name: e.target.value })}
+                          placeholder="Ad Soyad *"
+                          className="w-full px-4 py-3 rounded-xl bg-white border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none text-gray-900 text-sm placeholder:text-gray-400 transition-all"
+                        />
+                        <div className="flex items-stretch">
+                          <span className="flex items-center px-3 rounded-l-xl bg-blue-50 border border-r-0 border-blue-200 text-gray-700 text-sm font-semibold">+90</span>
+                          <input
+                            value={form.phone}
+                            onChange={e => setForm({ ...form, phone: e.target.value })}
+                            placeholder="530 123 45 67 *"
+                            inputMode="tel"
+                            className="w-full px-4 py-3 rounded-r-xl bg-white border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none text-gray-900 text-sm placeholder:text-gray-400 transition-all"
+                          />
+                        </div>
                         <textarea
                           value={form.address}
                           onChange={e => setForm({ ...form, address: e.target.value })}
@@ -702,15 +732,9 @@ function MenuContent({ params }: { params: { slug: string } }) {
                           rows={3}
                           className="w-full px-4 py-3 rounded-xl bg-white border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none text-gray-900 text-sm placeholder:text-gray-400 transition-all resize-none"
                         />
-                      )}
-                      {masa && (
-                        <p className="text-xs text-blue-700 bg-blue-50 border border-blue-200 rounded-xl px-4 py-3 flex items-center gap-2">
-                          <svg className="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h2m4 0h2m-8 4h6a2 2 0 002-2v-7a2 2 0 00-2-2H7a2 2 0 00-2 2v7a2 2 0 002 2z" /></svg>
-                          Siparişiniz Masa {masa}'ya teslim edilecek.
-                        </p>
-                      )}
+                      </div>
                     </div>
-                  </div>
+                  )}
 
                   {/* Ödeme Yöntemi */}
                   <div className="animate-fade-in-up" style={{ animationDuration: '0.45s' }}>
@@ -732,7 +756,7 @@ function MenuContent({ params }: { params: { slug: string } }) {
                 <div className="px-5 md:px-6 py-4 border-t border-blue-100 bg-white">
                   <button
                     onClick={submitOrder}
-                    disabled={submitting || !form.name.trim() || !form.phone.trim() || (!masa && !form.address.trim())}
+                    disabled={submitting || (masa ? cart.length === 0 : !form.name.trim() || !normalizePhone(form.phone) || !form.address.trim())}
                     className="w-full py-3.5 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 active:scale-[0.99] transition-all text-white font-semibold text-sm flex items-center justify-center gap-2 shadow-md shadow-blue-600/30 disabled:opacity-40 disabled:cursor-not-allowed shine">
                     {submitting ? (
                       <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -740,7 +764,7 @@ function MenuContent({ params }: { params: { slug: string } }) {
                       'Siparişi Tamamla — ₺' + cartTotal.toFixed(2)
                     )}
                   </button>
-                  <p className="text-center text-[10px] text-gray-400 mt-2">{masa ? 'Ödeme masada teslim sırasında yapılacaktır.' : 'Ödeme teslimat sırasında yapılacaktır.'}</p>
+                  <p className="text-center text-[10px] text-gray-400 mt-2">{masa ? 'Ödeme; kasada nakit/kart veya online olarak tamamlanabilir.' : 'Ödeme teslimat sırasında yapılacaktır.'}</p>
                 </div>
               </>
             )}
