@@ -196,15 +196,18 @@ function MenuContent({ params }: { params: { slug: string } }) {
   const categories = Array.from(new Set((data.products || []).map((p: any) => p.category).filter(Boolean))) as string[]
   const filtered = selectedCategory ? data.products.filter((p: any) => p.category === selectedCategory) : data.products
   const payments = masa
-    ? (data.paymentMethodsTable?.length ? data.paymentMethodsTable : ['Kasada Nakit', 'Kasada Kart', 'Online Ödeme'])
-    : (data.paymentMethodsOnline?.length ? data.paymentMethodsOnline : ['Kapıda Nakit', 'Kapıda Kart', 'Online Ödeme'])
+    ? (data.paymentMethodsTable?.length ? data.paymentMethodsTable : ['Online Ödeme', 'Kapıda Nakit', 'Kapıda Kart'])
+    : (data.paymentMethodsOnline?.length ? data.paymentMethodsOnline : ['Online Ödeme', 'Kapıda Nakit', 'Kapıda Kart'])
 
   const PAYMENT_ICONS: Record<string, { icon: any; color: string; bg: string }> = {
     'Online Ödeme': { icon: <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15a2 2 0 100-4 2 2 0 000 4zm3.5 0a6.5 6.5 0 01-.99 3.45M8.55 18.45A6.5 6.5 0 018 12.5m3-2.45a6.5 6.5 0 013.51-1m3.5 0A6.5 6.5 0 0119.51 12" /></svg>, color: 'text-blue-600', bg: 'bg-blue-50 border-blue-100' },
     'Kapıda Nakit': { icon: <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" /></svg>, color: 'text-emerald-600', bg: 'bg-emerald-50 border-emerald-100' },
     'Kapıda Kart': { icon: <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h2m4 0h2m-8 4h6a2 2 0 002-2v-7a2 2 0 00-2-2H7a2 2 0 00-2 2v7a2 2 0 002 2z" /></svg>, color: 'text-violet-600', bg: 'bg-violet-50 border-violet-100' },
-    'Kasada Nakit': { icon: <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v10m0 2a2 2 0 100-4m0 4a2 2 0 110-4M4 7h16a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V9a2 2 0 012-2z" /></svg>, color: 'text-amber-600', bg: 'bg-amber-50 border-amber-100' },
-    'Kasada Kart': { icon: <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 6h18a1 1 0 011 1v10a1 1 0 01-1 1H3a1 1 0 01-1-1V7a1 1 0 011-1zm0 5h18M8 16h3" /></svg>, color: 'text-cyan-600', bg: 'bg-cyan-50 border-cyan-100' },
+  }
+  const PAYMENT_DESC: Record<string, string> = {
+    'Online Ödeme': 'SanalPOS ile online',
+    'Kapıda Nakit': 'Adrese teslimde nakit',
+    'Kapıda Kart': 'Adrese teslimde kart',
   }
 
   return (
@@ -821,7 +824,8 @@ function MenuContent({ params }: { params: { slug: string } }) {
                                 {meta.icon}
                               </span>
                               <div className="flex-1 min-w-0">
-                                <span className="text-gray-900 text-sm font-medium">{p}</span>
+                                <span className="text-gray-900 text-sm font-medium block">{p}</span>
+                                {PAYMENT_DESC[p] && <span className="text-[11px] text-gray-400 block">{PAYMENT_DESC[p]}</span>}
                               </div>
                               <span className={'w-4 h-4 rounded-full border-2 flex items-center justify-center transition-all flex-shrink-0 ' + (form.payment === p ? 'border-blue-600' : 'border-gray-300')}>
                                 {form.payment === p && <span className="w-2 h-2 rounded-full bg-blue-600 animate-pop-in" />}
