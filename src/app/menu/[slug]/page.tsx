@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
+import { SmartphoneNfc, Banknote, CreditCard, HandCoins, WalletCards } from 'lucide-react'
 
 interface CartItem {
   product: any
@@ -200,11 +201,11 @@ function MenuContent({ params }: { params: { slug: string } }) {
     : (data.paymentMethodsOnline?.length ? data.paymentMethodsOnline : ['Online Ödeme', 'Kapıda Kart', 'Kapıda Nakit'])
 
   const PAYMENT_ICONS: Record<string, { icon: any; color: string; bg: string }> = {
-    'Online Ödeme': { icon: <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15a2 2 0 100-4 2 2 0 000 4zm3.5 0a6.5 6.5 0 01-.99 3.45M8.55 18.45A6.5 6.5 0 018 12.5m3-2.45a6.5 6.5 0 013.51-1m3.5 0A6.5 6.5 0 0119.51 12" /></svg>, color: 'text-blue-600', bg: 'bg-blue-50 border-blue-100' },
-    'Kapıda Nakit': { icon: <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" /></svg>, color: 'text-emerald-600', bg: 'bg-emerald-50 border-emerald-100' },
-    'Kapıda Kart': { icon: <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h2m4 0h2m-8 4h6a2 2 0 002-2v-7a2 2 0 00-2-2H7a2 2 0 00-2 2v7a2 2 0 002 2z" /></svg>, color: 'text-violet-600', bg: 'bg-violet-50 border-violet-100' },
-    'Kasada Nakit': { icon: <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v10m0 2a2 2 0 100-4m0 4a2 2 0 110-4M4 7h16a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V9a2 2 0 012-2z" /></svg>, color: 'text-amber-600', bg: 'bg-amber-50 border-amber-100' },
-    'Kasada Kart': { icon: <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 6h18a1 1 0 011 1v10a1 1 0 01-1 1H3a1 1 0 01-1-1V7a1 1 0 011-1zm0 5h18M8 16h3" /></svg>, color: 'text-cyan-600', bg: 'bg-cyan-50 border-cyan-100' },
+    'Online Ödeme': { icon: <SmartphoneNfc className="w-4 h-4" />, color: 'text-blue-600', bg: 'bg-blue-50 border-blue-100' },
+    'Kapıda Nakit': { icon: <Banknote className="w-4 h-4" />, color: 'text-emerald-600', bg: 'bg-emerald-50 border-emerald-100' },
+    'Kapıda Kart': { icon: <CreditCard className="w-4 h-4" />, color: 'text-violet-600', bg: 'bg-violet-50 border-violet-100' },
+    'Kasada Nakit': { icon: <HandCoins className="w-4 h-4" />, color: 'text-amber-600', bg: 'bg-amber-50 border-amber-100' },
+    'Kasada Kart': { icon: <WalletCards className="w-4 h-4" />, color: 'text-cyan-600', bg: 'bg-cyan-50 border-cyan-100' },
   }
   const PAYMENT_DESC: Record<string, string> = {
     'Online Ödeme': 'SanalPOS ile online',
@@ -281,22 +282,15 @@ function MenuContent({ params }: { params: { slug: string } }) {
               <div className="mt-3 pt-3 border-t border-blue-50">
                 <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider mb-1.5">Ödeme Yöntemleri</p>
                 <div className="flex flex-wrap gap-1.5">
-                  {payments.map((pm: string, i: number) => (
-                    <span key={i} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 text-[10px] md:text-xs font-semibold border border-blue-100">
-                      {/kart|kredi|bank/i.test(pm) ? (
-                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h2m4 0h2m-8 4h6a2 2 0 002-2v-7a2 2 0 00-2-2H7a2 2 0 00-2 2v7a2 2 0 002 2z" /></svg>
-                      ) : /kap[ıi]da|nakit|teslim|kasada/i.test(pm) ? (
-                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
-                      ) : /havale|eft|iban/i.test(pm) ? (
-                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" /></svg>
-                      ) : /qr/i.test(pm) ? (
-                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h8v8H3V3zm10 0h8v8h-8V3zM3 13h8v8H3v-8zm10 0h8v8h-8v-8z" /></svg>
-                      ) : (
-                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h2m4 0h2m-8 4h6a2 2 0 002-2v-7a2 2 0 00-2-2H7a2 2 0 00-2 2v7a2 2 0 002 2z" /></svg>
-                      )}
-                      {pm}
-                    </span>
-                  ))}
+                  {payments.map((pm: string, i: number) => {
+                    const meta = PAYMENT_ICONS[pm] || PAYMENT_ICONS['Kasada Kart']
+                    return (
+                      <span key={i} className={'inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] md:text-xs font-semibold border ' + meta.bg + ' ' + meta.color}>
+                        {meta.icon}
+                        {pm}
+                      </span>
+                    )
+                  })}
                 </div>
               </div>
             )}
