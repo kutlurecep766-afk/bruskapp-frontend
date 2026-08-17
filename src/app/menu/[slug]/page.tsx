@@ -195,7 +195,17 @@ function MenuContent({ params }: { params: { slug: string } }) {
 
   const categories = Array.from(new Set((data.products || []).map((p: any) => p.category).filter(Boolean))) as string[]
   const filtered = selectedCategory ? data.products.filter((p: any) => p.category === selectedCategory) : data.products
-  const payments = masa ? ['Kasada Nakit', 'Kasada Kart', 'Online Ödeme'] : ['Kapıda Ödeme', 'Online Ödeme']
+  const payments = masa
+    ? (data.paymentMethodsTable?.length ? data.paymentMethodsTable : ['Kasada Nakit', 'Kasada Kart', 'Online Ödeme'])
+    : (data.paymentMethodsOnline?.length ? data.paymentMethodsOnline : ['Kapıda Nakit', 'Kapıda Kart', 'Online Ödeme'])
+
+  const PAYMENT_ICONS: Record<string, { icon: any; color: string; bg: string }> = {
+    'Online Ödeme': { icon: <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15a2 2 0 100-4 2 2 0 000 4zm3.5 0a6.5 6.5 0 01-.99 3.45M8.55 18.45A6.5 6.5 0 018 12.5m3-2.45a6.5 6.5 0 013.51-1m3.5 0A6.5 6.5 0 0119.51 12" /></svg>, color: 'text-blue-600', bg: 'bg-blue-50 border-blue-100' },
+    'Kapıda Nakit': { icon: <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" /></svg>, color: 'text-emerald-600', bg: 'bg-emerald-50 border-emerald-100' },
+    'Kapıda Kart': { icon: <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h2m4 0h2m-8 4h6a2 2 0 002-2v-7a2 2 0 00-2-2H7a2 2 0 00-2 2v7a2 2 0 002 2z" /></svg>, color: 'text-violet-600', bg: 'bg-violet-50 border-violet-100' },
+    'Kasada Nakit': { icon: <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v10m0 2a2 2 0 100-4m0 4a2 2 0 110-4M4 7h16a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V9a2 2 0 012-2z" /></svg>, color: 'text-amber-600', bg: 'bg-amber-50 border-amber-100' },
+    'Kasada Kart': { icon: <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 6h18a1 1 0 011 1v10a1 1 0 01-1 1H3a1 1 0 01-1-1V7a1 1 0 011-1zm0 5h18M8 16h3" /></svg>, color: 'text-cyan-600', bg: 'bg-cyan-50 border-cyan-100' },
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#dbe9ff] via-[#eef4ff] to-[#e3eeff] pb-24">
@@ -221,7 +231,7 @@ function MenuContent({ params }: { params: { slug: string } }) {
       ))}
 
       {/* Dükkan Bilgi Kartı */}
-      {(data.shopName || data.address || data.phone || (data.workingHours && data.workingHours.length) || (data.paymentMethods && data.paymentMethods.length)) && (
+      {(data.shopName || data.address || data.phone || (data.workingHours && data.workingHours.length) || (payments.length > 0)) && (
         <div className="max-w-2xl mx-auto px-3 md:px-4 -mt-5 relative z-10">
           <div className="bg-white border border-blue-100 rounded-2xl shadow-lg shadow-blue-600/5 p-4 md:p-5 animate-slide-up" style={{ animationDuration: '0.5s' }}>
             <div className="flex items-start justify-between gap-3">
@@ -260,15 +270,15 @@ function MenuContent({ params }: { params: { slug: string } }) {
                 </div>
               </div>
             )}
-            {data.paymentMethods && data.paymentMethods.length > 0 && (
+            {payments.length > 0 && (
               <div className="mt-3 pt-3 border-t border-blue-50">
                 <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider mb-1.5">Ödeme Yöntemleri</p>
                 <div className="flex flex-wrap gap-1.5">
-                  {data.paymentMethods.map((pm: string, i: number) => (
+                  {payments.map((pm: string, i: number) => (
                     <span key={i} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-50 text-blue-700 text-[10px] md:text-xs font-semibold border border-blue-100">
                       {/kart|kredi|bank/i.test(pm) ? (
                         <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h2m4 0h2m-8 4h6a2 2 0 002-2v-7a2 2 0 00-2-2H7a2 2 0 00-2 2v7a2 2 0 002 2z" /></svg>
-                      ) : /kap[ıi]da|nakit|teslim/i.test(pm) ? (
+                      ) : /kap[ıi]da|nakit|teslim|kasada/i.test(pm) ? (
                         <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
                       ) : /havale|eft|iban/i.test(pm) ? (
                         <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" /></svg>
@@ -798,21 +808,29 @@ function MenuContent({ params }: { params: { slug: string } }) {
                     </div>
                   )}
 
-                  {/* Ödeme Yöntemi */}
-                  <div className="animate-fade-in-up" style={{ animationDuration: '0.45s' }}>
-                    <p className="text-blue-700 text-[11px] font-semibold uppercase tracking-wide mb-2">Ödeme Yöntemi</p>
-                    <div className="grid grid-cols-1 gap-2">
-                      {payments.map((p) => (
-                        <label key={p} onClick={() => setForm({ ...form, payment: p })}
-                          className={'flex items-center gap-3 px-4 py-3 rounded-xl border cursor-pointer transition-all ' + (form.payment === p ? 'bg-blue-50 border-blue-600 ring-2 ring-blue-100' : 'bg-white border-blue-200 hover:border-blue-300')}>
-                          <span className={'w-4 h-4 rounded-full border-2 flex items-center justify-center transition-all ' + (form.payment === p ? 'border-blue-600' : 'border-gray-300')}>
-                            {form.payment === p && <span className="w-2 h-2 rounded-full bg-blue-600 animate-pop-in" />}
-                          </span>
-                          <span className="text-gray-900 text-sm font-medium">{p}</span>
-                        </label>
-                      ))}
+                    {/* Ödeme Yöntemi */}
+                    <div className="animate-fade-in-up" style={{ animationDuration: '0.45s' }}>
+                      <p className="text-blue-700 text-[11px] font-semibold uppercase tracking-wide mb-2">Ödeme Yöntemi</p>
+                      <div className="grid grid-cols-1 gap-2">
+                        {payments.map((p: string) => {
+                          const meta = PAYMENT_ICONS[p] || PAYMENT_ICONS['Kapıda Nakit']
+                          return (
+                            <label key={p} onClick={() => setForm({ ...form, payment: p })}
+                              className={'flex items-center gap-3 px-4 py-3 rounded-xl border cursor-pointer transition-all ' + (form.payment === p ? 'bg-blue-50 border-blue-600 ring-2 ring-blue-100' : 'bg-white border-blue-200 hover:border-blue-300')}>
+                              <span className={'w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 border ' + meta.bg + ' ' + meta.color}>
+                                {meta.icon}
+                              </span>
+                              <div className="flex-1 min-w-0">
+                                <span className="text-gray-900 text-sm font-medium">{p}</span>
+                              </div>
+                              <span className={'w-4 h-4 rounded-full border-2 flex items-center justify-center transition-all flex-shrink-0 ' + (form.payment === p ? 'border-blue-600' : 'border-gray-300')}>
+                                {form.payment === p && <span className="w-2 h-2 rounded-full bg-blue-600 animate-pop-in" />}
+                              </span>
+                            </label>
+                          )
+                        })}
+                      </div>
                     </div>
-                  </div>
                 </div>
 
                 <div className="px-5 md:px-6 py-4 border-t border-blue-100 bg-white">
