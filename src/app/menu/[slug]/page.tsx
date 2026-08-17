@@ -196,8 +196,8 @@ function MenuContent({ params }: { params: { slug: string } }) {
   const categories = Array.from(new Set((data.products || []).map((p: any) => p.category).filter(Boolean))) as string[]
   const filtered = selectedCategory ? data.products.filter((p: any) => p.category === selectedCategory) : data.products
   const payments = masa
-    ? (data.paymentMethodsTable?.length ? data.paymentMethodsTable : ['Online Ödeme', 'Kasada Nakit', 'Kasada Kart'])
-    : (data.paymentMethodsOnline?.length ? data.paymentMethodsOnline : ['Online Ödeme', 'Kapıda Nakit', 'Kapıda Kart'])
+    ? (data.paymentMethodsTable?.length ? data.paymentMethodsTable : ['Online Ödeme', 'Kasada Kart', 'Kasada Nakit'])
+    : (data.paymentMethodsOnline?.length ? data.paymentMethodsOnline : ['Online Ödeme', 'Kapıda Kart', 'Kapıda Nakit'])
 
   const PAYMENT_ICONS: Record<string, { icon: any; color: string; bg: string }> = {
     'Online Ödeme': { icon: <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15a2 2 0 100-4 2 2 0 000 4zm3.5 0a6.5 6.5 0 01-.99 3.45M8.55 18.45A6.5 6.5 0 018 12.5m3-2.45a6.5 6.5 0 013.51-1m3.5 0A6.5 6.5 0 0119.51 12" /></svg>, color: 'text-blue-600', bg: 'bg-blue-50 border-blue-100' },
