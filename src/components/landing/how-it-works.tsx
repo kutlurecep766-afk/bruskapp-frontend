@@ -6,8 +6,8 @@ const steps = [
     title: 'Menünüz QR ile Canlanır',
     icon: QrCode,
     color: 'from-blue-500 to-cyan-500',
-    desc: 'Kurulum ekibimiz menünüzü, ürün fotoğraflarını ve fiyatlarını hazırlar. Masa ve online QR&apos;larınız oluşturulur, sanalpos entegrasyonu tamamlanır.',
-    items: ['QR menü kurulumu', 'SanalPOS entegrasyonu', 'Panel eğitimi & 7/24 destek'],
+    desc: 'Masa ve online QR&apos;larınız oluşturulur, POS entegrasyonu tamamlanır. Ekibimiz panel kurulumu ve eğitimini üstlenir.',
+    items: ['QR menü kurulumu', 'POS entegrasyonu', 'Panel eğitimi & 7/24 destek'],
   },
   {
     no: '02',
@@ -19,11 +19,11 @@ const steps = [
   },
   {
     no: '03',
-    title: 'Para Kendi Pos&apos;unuza, Fiş Otomatik',
+    title: 'Para Kendi POS&apos;unuza, Fiş Otomatik',
     icon: Banknote,
     color: 'from-emerald-500 to-teal-500',
     desc: 'Ödeme işletmenin kendi sanalposuna düşer, komisyon yok. Sipariş mutfağa/tezgaha anında düşer, fiş ve adisyon otomatik çıkar.',
-    items: ['Kendi pos&apos;unuza tahsilat', 'Mutfak / tezgah bildirimi', 'Otomatik fiş & adisyon'],
+    items: ['Kendi POS&apos;unuza tahsilat', 'Mutfak / tezgah bildirimi', 'Otomatik fiş & adisyon'],
   },
 ]
 

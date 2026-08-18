@@ -31,7 +31,7 @@ const flowSteps = [
 
 const stats = [
   { value: '<5dk', label: 'Sipariş Süresi' },
-  { value: '%100', label: 'Kendi Pos&apos;unuza' },
+  { value: '%100', label: 'Kendi POS&apos;unuza' },
   { value: '7/24', label: 'Canlı Sipariş' },
   { value: 'Otomatik', label: 'Fiş & Adisyon' },
 ]
@@ -90,7 +90,7 @@ export default function QRDemo() {
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mt-4 leading-tight">
             QR Okut, Sipariş Ver,<br />
-            <span className="text-gradient">Para Kendi Pos&apos;unuzda</span>
+            <span className="text-gradient">Para Kendi POS&apos;unuzda</span>
           </h2>
           <p className="text-gray-400 text-lg mt-4 max-w-3xl mx-auto leading-relaxed">
             Müşteri menüyü görür, masadan veya onlineden siparişini oluşturur,
@@ -235,9 +235,34 @@ export default function QRDemo() {
             </div>
           </div>
 
-          <div className="flex items-center justify-center gap-4 mt-6 text-xs text-gray-600">
-            <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-emerald-500/50" />Ödemeler doğrudan kendi banka pos&apos;unuza</span>
-            <span className="hidden sm:flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-blue-500/50" />Panelden anlık takip</span>
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-3xl mx-auto">
+            <div className="flex items-center gap-3 rounded-xl bg-[#0d1117]/60 border border-[#1a2332] px-4 py-3">
+              <span className="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
+                <svg className="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M3 10h18M7 15h2m4 0h2M7 7h2m4 0h2M5 21h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
+              </span>
+              <div>
+                <p className="text-white text-xs font-semibold">Kendi Banka POS&apos;unuza</p>
+                <p className="text-gray-500 text-[11px]">Ödemeler doğrudan size, komisyon yok</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3 rounded-xl bg-[#0d1117]/60 border border-[#1a2332] px-4 py-3">
+              <span className="w-8 h-8 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center">
+                <svg className="w-4 h-4 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+              </span>
+              <div>
+                <p className="text-white text-xs font-semibold">Panelden Anlık Takip</p>
+                <p className="text-gray-500 text-[11px]">Siparişlerinizi gerçek zamanlı izleyin</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3 rounded-xl bg-[#0d1117]/60 border border-[#1a2332] px-4 py-3">
+              <span className="w-8 h-8 rounded-lg bg-purple-500/10 border border-purple-500/20 flex items-center justify-center">
+                <svg className="w-4 h-4 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+              </span>
+              <div>
+                <p className="text-white text-xs font-semibold">Komisyonsuz</p>
+                <p className="text-gray-500 text-[11px]">Her kuruş cebinize düşer</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
