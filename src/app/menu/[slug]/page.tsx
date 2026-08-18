@@ -837,7 +837,7 @@ function MenuContent({ params }: { params: { slug: string } }) {
                                 <span className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-green-600" />
                                 <span className="relative flex items-center gap-2">
                                   <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
-                                  Konum Gönderildi
+                                  Konum Eklendi
                                 </span>
                               </>
                             ) : (
