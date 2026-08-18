@@ -8,12 +8,14 @@ const plan = {
   period: 'Ay',
   setupFee: '7.500',
   popular: true,
-  checkoutUrl: '', // Ödeme linki buraya eklenecek
+  checkoutUrl: '', // Aylık paket ödeme linki buraya eklenecek
+  setupCheckoutUrl: '', // Kurulum ücreti ödeme linki buraya eklenecek (ayrı)
   features: [
     'QR Menü & Dijital Menü (Masa + Online)',
     'Masa Siparişi & Garson Çağır',
     'Online Sipariş + Tek Tıkla Konum',
-    'Kendi SanalPOS&apos;unuza Entegrasyon',
+    'Kendi SanalPOS&apos;unuzu Bağlama Entegrasyonu',
+    '%0 Komisyon — Tüm tahsilat kendi POS&apos;unuza',
     'Otomatik Fiş & Adisyon Çıktısı',
     'Mutfak / Tezgah Anında Bildirim',
     'Instagram, Google Yorum & Konum Modülü',
@@ -23,7 +25,7 @@ const plan = {
   ],
   setup: [
     'QR Menü Kurulumu',
-    'SanalPOS Entegrasyonu',
+    'Kendi SanalPOS&apos;unuzu Bağlama Entegrasyonu',
     'Panel Eğitimi',
     '7/24 Öncelikli Destek',
   ],
@@ -34,7 +36,13 @@ export default function Pricing() {
     plan.checkoutUrl ||
     'https://wa.me/905442566476?text=' +
       encodeURIComponent(
-        'Merhaba, BruskQR paketi (5.999 TL/ay + 7.500 TL kurulum) hakkında bilgi almak istiyorum.'
+        'Merhaba, BruskQR paketi (5.999 TL/ay) hakkında bilgi almak istiyorum.'
+      )
+  const setupCheckoutUrl =
+    plan.setupCheckoutUrl ||
+    'https://wa.me/905442566476?text=' +
+      encodeURIComponent(
+        'Merhaba, BruskQR kurulum ücreti (7.500 TL) için ödeme yapmak istiyorum.'
       )
 
   return (
@@ -80,11 +88,22 @@ export default function Pricing() {
                   <span className="text-white/70 text-sm">/ay</span>
                 </div>
                 <p className="text-white/70 text-xs font-normal mt-1">Tüm özellikler dahil · Vergiler dahil</p>
+                <p className="inline-flex items-center gap-1.5 mt-2.5 px-3 py-1 rounded-full bg-emerald-400/15 border border-emerald-400/30 text-emerald-300 text-[10px] font-bold tracking-widest">
+                  %0 KOMİSYON · TÜM TAHSİLAT SİZE
+                </p>
               </div>
 
               <div className="flex items-center justify-center gap-2 rounded-xl bg-amber-500/10 border border-amber-500/20 px-4 py-3.5 mb-6">
                 <span className="text-amber-300 font-bold text-sm">+ ₺{plan.setupFee}</span>
                 <span className="text-amber-200/70 text-xs">tek seferlik kurulum ücreti</span>
+                <a
+                  href={setupCheckoutUrl}
+                  target={plan.setupCheckoutUrl ? '_blank' : undefined}
+                  rel={plan.setupCheckoutUrl ? 'noopener noreferrer' : undefined}
+                  className="ml-auto px-3.5 py-1.5 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/30 text-amber-200 text-[11px] font-semibold whitespace-nowrap transition-all"
+                >
+                  Ayrıca Öde
+                </a>
               </div>
 
               <div className="space-y-1.5 mb-6">
