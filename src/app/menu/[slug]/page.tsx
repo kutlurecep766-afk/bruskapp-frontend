@@ -26,7 +26,6 @@ function MenuContent({ params }: { params: { slug: string } }) {
   const [orderResult, setOrderResult] = useState<any>(null)
   const [justAdded, setJustAdded] = useState<string | null>(null)
   const [cartBump, setCartBump] = useState(0)
-  const [flyItems, setFlyItems] = useState<{ id: string; x: number; y: number; img: string; left: number; top: number }[]>([])
   const [locationInfo, setLocationInfo] = useState<{ link: string; label: string } | null>(null)
   const [locLoading, setLocLoading] = useState(false)
   const [waiterOpen, setWaiterOpen] = useState(false)
@@ -43,22 +42,13 @@ function MenuContent({ params }: { params: { slug: string } }) {
     }).catch(() => setLoading(false))
   }, [params.slug])
 
-  const addToCart = (product: any, count = 1, rect?: DOMRect) => {
+  const addToCart = (product: any, count = 1) => {
     if (product.status === 'soldout' || product.status === 'preparing') return
     setCart(prev => {
       const found = prev.find(i => i.product.id === product.id)
       if (found) return prev.map(i => i.product.id === product.id ? { ...i, qty: i.qty + count } : i)
       return [...prev, { product, qty: count, note: '' }]
     })
-    if (rect && product.image) {
-      const w = typeof window !== 'undefined' ? window.innerWidth : 0
-      const h = typeof window !== 'undefined' ? window.innerHeight : 0
-      const id = Math.random().toString(36).slice(2)
-      const x = (w / 2) - (rect.left + rect.width / 2)
-      const y = (h - 96) - (rect.top + rect.height / 2)
-      setFlyItems(prev => [...prev, { id, x, y, img: product.image, left: rect.left + rect.width / 2 - 20, top: rect.top + rect.height / 2 - 20 }])
-      setTimeout(() => setFlyItems(prev => prev.filter(i => i.id !== id)), 750)
-    }
     setJustAdded(product.id)
     setCartBump(b => b + 1)
     setTimeout(() => setJustAdded(null), 1400)
@@ -254,13 +244,6 @@ function MenuContent({ params }: { params: { slug: string } }) {
           </div>
         </div>
       )}
-
-      {/* Uçan ürün efekti */}
-      {flyItems.map(f => (
-        <img key={f.id} src={f.img}
-          style={{ left: f.left, top: f.top, ['--fly-x' as any]: `${f.x}px`, ['--fly-y' as any]: `${f.y}px` }}
-          className="fixed z-[60] w-10 h-10 rounded-xl object-cover border-2 border-white shadow-xl pointer-events-none animate-fly-to-cart" />
-      ))}
 
       {/* Dükkan Bilgi Kartı */}
       {(data.shopName || data.address || data.phone || (data.workingHours && data.workingHours.length) || (payments.length > 0)) && (
@@ -493,7 +476,7 @@ function MenuContent({ params }: { params: { slug: string } }) {
                     </button>
                   ) : (
                     <button
-                      onClick={(e) => { e.stopPropagation(); addToCart(p, 1, e.currentTarget.getBoundingClientRect()) }}
+                      onClick={(e) => { e.stopPropagation(); addToCart(p, 1) }}
                       className="mt-2.5 w-full py-2 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 active:scale-[0.98] transition-all text-white text-[11px] md:text-xs font-semibold flex items-center justify-center gap-1.5 shadow-md shadow-blue-600/30 shine">
                       <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.3 4.6a1 1 0 00.9 1.4H20M10 21a1 1 0 100-2 1 1 0 000 2zm8 0a1 1 0 100-2 1 1 0 000 2z" /></svg>
                       Sepete Ekle
