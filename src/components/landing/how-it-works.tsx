@@ -22,7 +22,7 @@ const steps = [
     title: 'Para Kendi POS&apos;unuza, Fiş Otomatik',
     icon: Banknote,
     color: 'from-emerald-500 to-teal-500',
-    desc: 'Ödeme işletmenin kendi sanalposuna düşer, komisyon yok. Sipariş mutfağa/tezgaha anında düşer, fiş ve adisyon otomatik çıkar.',
+    desc: 'Ödeme işletmenin kendi SanalPOS&apos;una düşer, komisyon yok. Sipariş mutfağa/tezgaha anında düşer, fiş ve adisyon otomatik çıkar.',
     items: ['Kendi POS&apos;unuza tahsilat', 'Mutfak / tezgah bildirimi', 'Otomatik fiş & adisyon'],
   },
 ]

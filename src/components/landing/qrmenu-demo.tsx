@@ -24,8 +24,8 @@ const flowSteps = [
     icon: '💳',
     color: 'from-emerald-500 to-teal-500',
     badge: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/10',
-    desc: 'Ödeme işletmenizin kendi sanalposuna düşer. Her sipariş için otomatik fiş ve adisyon çıkar.',
-    items: ['Kendi sanalPOS entegrasyonu', 'Otomatik fiş & adisyon', 'Mutfak / tezgah anında bildirim'],
+    desc: 'Ödeme işletmenizin kendi SanalPOS&apos;una düşer. Her sipariş için otomatik fiş ve adisyon çıkar.',
+    items: ['Kendi SanalPOS entegrasyonu', 'Otomatik fiş & adisyon', 'Mutfak / tezgah anında bildirim'],
   },
 ]
 
@@ -93,8 +93,8 @@ export default function QRDemo() {
             <span className="text-gradient">Para Kendi POS&apos;unuzda</span>
           </h2>
           <p className="text-gray-400 text-lg mt-4 max-w-3xl mx-auto leading-relaxed">
-            Müşteri menüyü görür, masadan veya onlineden siparişini oluşturur,
-            ödemeyi işletmenin kendi sanalposuna yapar. Mutfak bildirimi, fiş ve
+            Müşteri menüyü görür, masadan veya online&apos;dan siparişini oluşturur,
+            ödemeyi işletmenin kendi SanalPOS&apos;una yapar. Mutfak bildirimi, fiş ve
             adisyon otomatik akar.
           </p>
         </div>

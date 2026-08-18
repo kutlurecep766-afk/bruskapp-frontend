@@ -8,8 +8,8 @@ const plan = {
   period: 'Ay',
   setupFee: '7.500',
   popular: true,
-  checkoutUrl: '', // Aylık paket ödeme linki buraya eklenecek
-  setupCheckoutUrl: '', // Kurulum ücreti ödeme linki buraya eklenecek (ayrı)
+  checkoutUrl: 'https://checkout.dodopayments.com/buy/pdt_0Nlfd8inIqMny2xjrDDDW?quantity=1', // Aylık paket ödeme linki
+  setupCheckoutUrl: 'https://checkout.dodopayments.com/buy/pdt_0Nlfb7noh7h4VEN3AWTiB?quantity=1', // Kurulum ücreti ödeme linki
   features: [
     'QR Menü & Dijital Menü (Masa + Online)',
     'Masa Siparişi & Garson Çağır',
@@ -59,7 +59,7 @@ export default function Pricing() {
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mt-4">Her İşletmeye Uygun Plan</h2>
           <p className="text-gray-400 text-lg mt-4 max-w-2xl mx-auto">
-            Komisyonsuz, kendi sanalpos&apos;unuzla sipariş almanın en kolay yolu
+            Komisyonsuz, kendi SanalPOS&apos;unuzla sipariş almanın en kolay yolu
           </p>
         </div>
 
