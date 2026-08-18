@@ -826,21 +826,25 @@ function MenuContent({ params }: { params: { slug: string } }) {
                             type="button"
                             onClick={sendLocation}
                             disabled={locLoading}
-                            className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-blue-50 border border-blue-200 text-blue-700 text-xs font-bold hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all disabled:opacity-50 cursor-pointer">
+                            className="flex-1 relative overflow-hidden flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 text-white text-xs font-bold shadow-lg shadow-blue-600/25 hover:shadow-xl hover:shadow-cyan-600/30 hover:-translate-y-0.5 hover:from-blue-700 hover:to-cyan-700 active:scale-[0.98] transition-all disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0 cursor-pointer">
                             {locLoading ? (
                               <>
-                                <span className="w-4 h-4 border-2 border-blue-300 border-t-blue-600 rounded-full animate-spin" />
-                                Konum alınıyor...
+                                <span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />
+                                Konum Alınıyor...
                               </>
                             ) : locationInfo ? (
                               <>
-                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-                                Konum Gönderildi
+                                <span className="absolute inset-0 bg-gradient-to-r from-emerald-500 to-green-600" />
+                                <span className="relative flex items-center gap-2">
+                                  <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
+                                  Konum Gönderildi
+                                </span>
                               </>
                             ) : (
                               <>
                                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
                                 Konum Gönder
+                                <span className="px-1.5 py-0.5 rounded-md bg-white/15 text-[9px] font-bold tracking-wide">GPS</span>
                               </>
                             )}
                           </button>
@@ -849,15 +853,17 @@ function MenuContent({ params }: { params: { slug: string } }) {
                               type="button"
                               onClick={() => setLocationInfo(null)}
                               title="Konumu kaldır"
-                              className="px-3 py-2.5 rounded-xl bg-gray-100 border border-gray-200 text-gray-500 hover:text-red-500 hover:border-red-200 transition-all cursor-pointer">
+                              className="px-3.5 py-3 rounded-xl bg-white border border-gray-200 text-gray-400 shadow-sm hover:text-red-500 hover:border-red-200 hover:bg-red-50 active:scale-95 transition-all cursor-pointer">
                               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
                             </button>
                           )}
                         </div>
                         {locationInfo && (
-                          <p className="text-[10px] text-emerald-600 bg-emerald-50 border border-emerald-100 rounded-lg px-3 py-2 flex items-start gap-1.5">
-                            <svg className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                            Konumunuz eklendi. Kurye butona tıklayarak Google Maps'te tam konumunuza yönlenecek.
+                          <p className="flex items-start gap-2 text-[11px] text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-xl px-3 py-2.5 animate-pop-in">
+                            <span className="w-5 h-5 flex-shrink-0 rounded-full bg-emerald-500 flex items-center justify-center mt-px">
+                              <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
+                            </span>
+                            Konumunuz eklendi. Kurye, admin panelindeki butona tıklayarak Google Maps'te tam konumunuza yönlenecek.
                           </p>
                         )}
                       </div>
