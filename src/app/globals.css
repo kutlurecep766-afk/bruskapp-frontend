@@ -195,17 +195,9 @@ body {
   100% { opacity: 0; transform: translate(var(--fly-x, 0px), var(--fly-y, 0px)) scale(0.15); }
 }
 
-@keyframes toast-in {
-  0% { opacity: 0; transform: translateY(28px) scale(0.92); }
-  55% { opacity: 1; transform: translateY(-6px) scale(1.03); }
-  80% { transform: translateY(2px) scale(0.99); }
-  100% { opacity: 1; transform: translateY(0) scale(1); }
-}
-
 .animate-bump { animation: bump 0.6s ease-out; }
 .animate-pop-in { animation: pop-in 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
 .animate-fly-to-cart { animation: fly-to-cart 0.7s cubic-bezier(0.2, 0.8, 0.3, 1) forwards; }
-.animate-toast-in { animation: toast-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
 .check-path { stroke-dasharray: 30; stroke-dashoffset: 30; animation: draw-check 0.5s ease-out 0.2s forwards; }
 .check-circle { stroke-dasharray: 160; stroke-dashoffset: 160; animation: draw-check 0.6s ease-out forwards; }
 

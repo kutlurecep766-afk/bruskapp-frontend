@@ -27,7 +27,6 @@ function MenuContent({ params }: { params: { slug: string } }) {
   const [justAdded, setJustAdded] = useState<string | null>(null)
   const [cartBump, setCartBump] = useState(0)
   const [flyItems, setFlyItems] = useState<{ id: string; x: number; y: number; img: string; left: number; top: number }[]>([])
-  const [toast, setToast] = useState<{ id: string; name: string; qty: number; img?: string; total?: number } | null>(null)
   const [locationInfo, setLocationInfo] = useState<{ link: string; label: string } | null>(null)
   const [locLoading, setLocLoading] = useState(false)
   const [waiterOpen, setWaiterOpen] = useState(false)
@@ -46,14 +45,9 @@ function MenuContent({ params }: { params: { slug: string } }) {
 
   const addToCart = (product: any, count = 1, rect?: DOMRect) => {
     if (product.status === 'soldout' || product.status === 'preparing') return
-    let newQty = count
     setCart(prev => {
       const found = prev.find(i => i.product.id === product.id)
-      if (found) {
-        newQty = found.qty + count
-        return prev.map(i => i.product.id === product.id ? { ...i, qty: i.qty + count } : i)
-      }
-      newQty = count
+      if (found) return prev.map(i => i.product.id === product.id ? { ...i, qty: i.qty + count } : i)
       return [...prev, { product, qty: count, note: '' }]
     })
     if (rect && product.image) {
@@ -68,9 +62,6 @@ function MenuContent({ params }: { params: { slug: string } }) {
     setJustAdded(product.id)
     setCartBump(b => b + 1)
     setTimeout(() => setJustAdded(null), 1400)
-    const toastId = Math.random().toString(36).slice(2)
-    setToast({ id: toastId, name: product.name, qty: newQty, img: product.image })
-    setTimeout(() => setToast(prev => prev?.id === toastId ? null : prev), 2600)
     if (selectedProduct) {
       setTimeout(() => { setSelectedProduct(null); setQty(1) }, 450)
     } else {
@@ -271,31 +262,6 @@ function MenuContent({ params }: { params: { slug: string } }) {
           className="fixed z-[60] w-10 h-10 rounded-xl object-cover border-2 border-white shadow-xl pointer-events-none animate-fly-to-cart" />
       ))}
 
-      {/* Sepete eklenme bildirimi */}
-      {toast && (
-        <div key={toast.id} className="fixed bottom-28 left-1/2 -translate-x-1/2 z-[70] w-[92%] max-w-sm animate-toast-in pointer-events-none">
-          <div className="flex items-center gap-3 bg-blue-700 text-white rounded-2xl px-4 py-3 shadow-2xl shadow-blue-900/40 border border-blue-400/40">
-            <div className="relative flex-shrink-0">
-              <span className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-red-500 text-white text-[11px] font-black flex items-center justify-center border-2 border-white animate-pop-in">
-                {toast.qty}
-              </span>
-              {toast.img ? (
-                <img src={toast.img} className="w-12 h-12 rounded-xl object-cover border border-white/30" alt={toast.name} />
-              ) : (
-                <div className="w-12 h-12 rounded-xl bg-blue-500/60 flex items-center justify-center">
-                  <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
-                </div>
-              )}
-            </div>
-            <div className="min-w-0">
-              <p className="text-sm font-bold leading-tight truncate">{toast.name}</p>
-              <p className="text-[11px] text-blue-100 font-medium">sepete eklendi</p>
-            </div>
-            <svg className="w-7 h-7 text-emerald-300 flex-shrink-0 animate-bump ml-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>
-          </div>
-        </div>
-      )}
-
       {/* Dükkan Bilgi Kartı */}
       {(data.shopName || data.address || data.phone || (data.workingHours && data.workingHours.length) || (payments.length > 0)) && (
         <div className="max-w-2xl mx-auto px-3 md:px-4 -mt-5 relative z-10">
@@ -465,6 +431,15 @@ function MenuContent({ params }: { params: { slug: string } }) {
                       <img src={p.image} className={'w-full h-full object-cover ' + (isSoldout ? 'grayscale' : 'hover:scale-105 transition-transform duration-300')} alt={p.name} />
                     </div>
                   )}
+                  {(() => {
+                    const cq = cart.find(i => i.product.id === p.id)?.qty || 0
+                    if (!cq || isSoldout || isPreparing) return null
+                    return (
+                      <span key={cartBump} className="absolute top-2 right-2 w-7 h-7 rounded-full bg-blue-600 text-white text-xs font-black flex items-center justify-center border-2 border-white shadow-lg shadow-blue-600/40 animate-bump">
+                        {cq}
+                      </span>
+                    )
+                  })()}
                   {isSoldout && (
                     <span className="absolute top-2 left-2 px-2.5 py-1 rounded-full bg-blue-900/80 backdrop-blur text-white text-[9px] md:text-[11px] font-bold uppercase tracking-wide">Tükendi</span>
                   )}
@@ -514,7 +489,7 @@ function MenuContent({ params }: { params: { slug: string } }) {
                       onClick={(e) => { e.stopPropagation() }}
                       className="mt-2.5 w-full py-2 rounded-xl bg-green-600 text-white text-[11px] md:text-xs font-semibold flex items-center justify-center gap-1.5 shadow-md shadow-green-600/30 animate-pop-in">
                       <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>
-                      Eklendi
+                      {cart.find(i => i.product.id === p.id)?.qty || 1} adet sepete eklendi
                     </button>
                   ) : (
                     <button
@@ -586,7 +561,7 @@ function MenuContent({ params }: { params: { slug: string } }) {
                   <button
                     className="flex-1 py-3 rounded-xl bg-green-600 text-white text-sm font-semibold flex items-center justify-center gap-2 shadow-md shadow-green-600/30 animate-pop-in">
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>
-                    Eklendi
+                    {cart.find(i => i.product.id === selectedProduct.id)?.qty || qty} adet sepete eklendi
                   </button>
                 ) : (
                   <button
