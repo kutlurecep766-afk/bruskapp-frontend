@@ -8,13 +8,13 @@ export default function Footer() {
             <div className="flex items-center gap-2 mb-4">
               <img src="/logo.svg" alt="BRUSKAPP" className="h-9" />
             </div>
-            <p className="text-gray-500 text-sm max-w-sm leading-relaxed">Yapay zeka destekli işletme otomasyon platformu. Çağrı merkezi, dijital menü ve daha fazlasını tek bir platformda birleştirin.</p>
+            <p className="text-gray-500 text-sm max-w-sm leading-relaxed">QR menü, masa & online sipariş ve kendi sanalpos&apos;unuza tahsilat. Müşterileriniz için dijital menü ve sipariş deneyimini tek platformda birleştirin.</p>
           </div>
           <div>
             <h4 className="text-white font-semibold mb-4">Ürün</h4>
             <ul className="space-y-2">
               <li><a href="#ozellikler" className="text-sm text-gray-500 hover:text-white transition-colors">Özellikler</a></li>
-              <li><a href="#sektorler" className="text-sm text-gray-500 hover:text-white transition-colors">Sektörler</a></li>
+              <li><a href="#nasil-calisir" className="text-sm text-gray-500 hover:text-white transition-colors">Nasıl Çalışır</a></li>
               <li><a href="#fiyatlandirma" className="text-sm text-gray-500 hover:text-white transition-colors">Fiyatlandırma</a></li>
             </ul>
           </div>

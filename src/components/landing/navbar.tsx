@@ -4,7 +4,7 @@ import { useRouter, usePathname } from 'next/navigation'
 
 const navItems = [
   { label: 'Özellikler', section: 'özellikler' },
-  { label: 'Sektörler', section: 'sektörler' },
+  { label: 'Nasıl Çalışır', section: 'nasıl-çalışır' },
   { label: 'Fiyatlandırma', section: 'fiyatlandırma' },
   { label: 'İletişim', section: 'iletişim' },
 ]
