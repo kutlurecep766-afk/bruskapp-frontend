@@ -35,7 +35,8 @@ function TrackContent() {
     setResult(null)
     setSearched(true)
     try {
-      const res = await fetch('/api/orders/tracking/' + c)
+      const slug = params.get('slug')
+      const res = await fetch('/api/orders/tracking/' + c + (slug ? '?slug=' + encodeURIComponent(slug) : ''))
       const data = await res.json()
       if (!res.ok) {
         setError(data?.message || 'Sipariş bulunamadı')

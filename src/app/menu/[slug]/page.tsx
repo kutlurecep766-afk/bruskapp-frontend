@@ -369,7 +369,7 @@ function MenuContent({ params }: { params: { slug: string } }) {
                 inputMode="numeric"
                 maxLength={6}
                 className="flex-1 text-center text-lg tracking-[0.3em] font-bold text-gray-900 bg-blue-50/60 border border-blue-200 rounded-xl px-4 py-2.5 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 placeholder:text-gray-300 placeholder:text-sm placeholder:tracking-normal" />
-              <a href={trackCode.length === 6 ? '/siparis-durum?kod=' + trackCode : undefined}
+              <a href={trackCode.length === 6 ? '/siparis-durum?slug=' + params.slug + '&kod=' + trackCode : undefined}
                 onClick={e => { if (trackCode.length !== 6) { e.preventDefault(); alert('Lütfen 6 haneli takip kodunu girin') } }}
                 className={'inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl text-white text-sm font-bold shadow-md transition-all active:scale-95 ' + (trackCode.length === 6 ? 'hover:scale-105' : 'opacity-40 cursor-not-allowed')}
                 style={{ background: 'linear-gradient(135deg, ' + (data.primaryColor || '#2563eb') + ', #1d4ed8)' }}>
@@ -739,7 +739,7 @@ function MenuContent({ params }: { params: { slug: string } }) {
                       Kodu Kopyala
                     </button>
                     <p className="text-[10px] text-gray-400 mt-3">Bu kod ile siparişinizin durumunu sorgulayabilirsiniz.</p>
-                    <a href={'/siparis-durum?kod=' + orderResult.trackingCode}
+                    <a href={'/siparis-durum?slug=' + params.slug + '&kod=' + orderResult.trackingCode}
                       className="mt-2 inline-flex items-center gap-2 text-blue-600 text-xs font-bold hover:text-blue-700 hover:underline transition-colors">
                       <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z" /><circle cx="12" cy="12" r="3" /></svg>
                       Sipariş durumunu sorgula
