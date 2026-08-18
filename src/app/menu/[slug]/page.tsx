@@ -27,6 +27,9 @@ function MenuContent({ params }: { params: { slug: string } }) {
   const [justAdded, setJustAdded] = useState<string | null>(null)
   const [cartBump, setCartBump] = useState(0)
   const [flyItems, setFlyItems] = useState<{ id: string; x: number; y: number; img: string; left: number; top: number }[]>([])
+  const [toast, setToast] = useState<{ id: string; name: string; qty: number; img?: string; total?: number } | null>(null)
+  const [locationInfo, setLocationInfo] = useState<{ link: string; label: string } | null>(null)
+  const [locLoading, setLocLoading] = useState(false)
   const [waiterOpen, setWaiterOpen] = useState(false)
   const [waiterNote, setWaiterNote] = useState('')
   const [waiterSending, setWaiterSending] = useState(false)
@@ -43,9 +46,14 @@ function MenuContent({ params }: { params: { slug: string } }) {
 
   const addToCart = (product: any, count = 1, rect?: DOMRect) => {
     if (product.status === 'soldout' || product.status === 'preparing') return
+    let newQty = count
     setCart(prev => {
       const found = prev.find(i => i.product.id === product.id)
-      if (found) return prev.map(i => i.product.id === product.id ? { ...i, qty: i.qty + count } : i)
+      if (found) {
+        newQty = found.qty + count
+        return prev.map(i => i.product.id === product.id ? { ...i, qty: i.qty + count } : i)
+      }
+      newQty = count
       return [...prev, { product, qty: count, note: '' }]
     })
     if (rect && product.image) {
@@ -60,6 +68,9 @@ function MenuContent({ params }: { params: { slug: string } }) {
     setJustAdded(product.id)
     setCartBump(b => b + 1)
     setTimeout(() => setJustAdded(null), 1400)
+    const toastId = Math.random().toString(36).slice(2)
+    setToast({ id: toastId, name: product.name, qty: newQty, img: product.image })
+    setTimeout(() => setToast(prev => prev?.id === toastId ? null : prev), 2600)
     if (selectedProduct) {
       setTimeout(() => { setSelectedProduct(null); setQty(1) }, 450)
     } else {
@@ -100,6 +111,27 @@ function MenuContent({ params }: { params: { slug: string } }) {
     return '+90' + dig
   }
 
+  const sendLocation = () => {
+    if (!navigator.geolocation) {
+      alert('Tarayıcınız konum özelliğini desteklemiyor')
+      return
+    }
+    setLocLoading(true)
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const lat = pos.coords.latitude.toFixed(6)
+        const lng = pos.coords.longitude.toFixed(6)
+        setLocationInfo({ link: `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`, label: `${lat}, ${lng}` })
+        setLocLoading(false)
+      },
+      () => {
+        setLocLoading(false)
+        alert('Konum alınamadı. Konum izni vermediyseniz lütfen adresi elle yazın.')
+      },
+      { enableHighAccuracy: true, timeout: 10000 },
+    )
+  }
+
   const submitOrder = async () => {
     let normalizedPhone = ''
     if (masa) {
@@ -130,7 +162,7 @@ function MenuContent({ params }: { params: { slug: string } }) {
           customerContact: masa ? '' : normalizedPhone,
           products: cart.map(i => ({ name: i.product.name, price: parseFloat(i.product.price) || 0, quantity: i.qty, ...(i.note ? { note: i.note } : {}) })),
           totalAmount: Math.round(cartTotal * 100) / 100,
-          note: 'Ödeme: ' + form.payment + (masa ? '' : ' | Adres: ' + form.address.trim()),
+          note: 'Ödeme: ' + form.payment + (masa ? '' : ' | Adres: ' + form.address.trim()) + (locationInfo ? ' | Konum: ' + locationInfo.link : ''),
           tableNumber: masa ? parseInt(masa) : null,
         }),
       })
@@ -138,6 +170,7 @@ function MenuContent({ params }: { params: { slug: string } }) {
       if (!res.ok) throw new Error(order?.message || 'Sipariş alınamadı')
       setOrderResult(order)
       setCart([])
+      setLocationInfo(null)
       setForm({ name: '', phone: '', address: '', payment: 'Kapıda Ödeme' })
     } catch (e: any) {
       alert('Sipariş gönderilemedi: ' + (e?.message || 'Lütfen tekrar deneyin'))
@@ -237,6 +270,31 @@ function MenuContent({ params }: { params: { slug: string } }) {
           style={{ left: f.left, top: f.top, ['--fly-x' as any]: `${f.x}px`, ['--fly-y' as any]: `${f.y}px` }}
           className="fixed z-[60] w-10 h-10 rounded-xl object-cover border-2 border-white shadow-xl pointer-events-none animate-fly-to-cart" />
       ))}
+
+      {/* Sepete eklenme bildirimi */}
+      {toast && (
+        <div key={toast.id} className="fixed bottom-28 left-1/2 -translate-x-1/2 z-[70] w-[92%] max-w-sm animate-toast-in pointer-events-none">
+          <div className="flex items-center gap-3 bg-blue-700 text-white rounded-2xl px-4 py-3 shadow-2xl shadow-blue-900/40 border border-blue-400/40">
+            <div className="relative flex-shrink-0">
+              <span className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-red-500 text-white text-[11px] font-black flex items-center justify-center border-2 border-white animate-pop-in">
+                {toast.qty}
+              </span>
+              {toast.img ? (
+                <img src={toast.img} className="w-12 h-12 rounded-xl object-cover border border-white/30" alt={toast.name} />
+              ) : (
+                <div className="w-12 h-12 rounded-xl bg-blue-500/60 flex items-center justify-center">
+                  <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
+                </div>
+              )}
+            </div>
+            <div className="min-w-0">
+              <p className="text-sm font-bold leading-tight truncate">{toast.name}</p>
+              <p className="text-[11px] text-blue-100 font-medium">sepete eklendi</p>
+            </div>
+            <svg className="w-7 h-7 text-emerald-300 flex-shrink-0 animate-bump ml-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>
+          </div>
+        </div>
+      )}
 
       {/* Dükkan Bilgi Kartı */}
       {(data.shopName || data.address || data.phone || (data.workingHours && data.workingHours.length) || (payments.length > 0)) && (
@@ -805,6 +863,45 @@ function MenuContent({ params }: { params: { slug: string } }) {
                           rows={3}
                           className="w-full px-4 py-3 rounded-xl bg-white border border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none text-gray-900 text-sm placeholder:text-gray-400 transition-all resize-none"
                         />
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={sendLocation}
+                            disabled={locLoading}
+                            className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-blue-50 border border-blue-200 text-blue-700 text-xs font-bold hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all disabled:opacity-50 cursor-pointer">
+                            {locLoading ? (
+                              <>
+                                <span className="w-4 h-4 border-2 border-blue-300 border-t-blue-600 rounded-full animate-spin" />
+                                Konum alınıyor...
+                              </>
+                            ) : locationInfo ? (
+                              <>
+                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                                Konum Gönderildi
+                              </>
+                            ) : (
+                              <>
+                                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                                Konum Gönder
+                              </>
+                            )}
+                          </button>
+                          {locationInfo && (
+                            <button
+                              type="button"
+                              onClick={() => setLocationInfo(null)}
+                              title="Konumu kaldır"
+                              className="px-3 py-2.5 rounded-xl bg-gray-100 border border-gray-200 text-gray-500 hover:text-red-500 hover:border-red-200 transition-all cursor-pointer">
+                              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                            </button>
+                          )}
+                        </div>
+                        {locationInfo && (
+                          <p className="text-[10px] text-emerald-600 bg-emerald-50 border border-emerald-100 rounded-lg px-3 py-2 flex items-start gap-1.5">
+                            <svg className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                            Konumunuz eklendi. Kurye butona tıklayarak Google Maps'te tam konumunuza yönlenecek.
+                          </p>
+                        )}
                       </div>
                     </div>
                   )}
