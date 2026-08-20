@@ -282,9 +282,6 @@ function MenuContent({ params }: { params: { slug: string } }) {
                   </a>
                 )}
               </div>
-              {data.logoUrl && (
-                <img src={data.logoUrl} className="w-14 h-14 md:w-16 md:h-16 rounded-xl object-cover border border-blue-100 flex-shrink-0 shadow-sm" alt={data.shopName || data.name} />
-              )}
             </div>
             {data.workingHours && data.workingHours.length > 0 && (
               <div className="mt-3 pt-3 border-t border-blue-50">
