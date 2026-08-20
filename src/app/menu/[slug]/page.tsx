@@ -259,7 +259,7 @@ function MenuContent({ params }: { params: { slug: string } }) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#dbe9ff] via-[#eef4ff] to-[#e3eeff] pb-24">
+    <div className={'min-h-screen bg-gradient-to-b from-[#dbe9ff] via-[#eef4ff] to-[#e3eeff] pb-24 ' + (storeBlocked ? 'pt-12 md:pt-14' : '')}>
       {/* Banner - tam görünür */}
       {data.bannerUrl ? (
         <div className="relative w-full md:h-80 lg:h-96 overflow-hidden bg-gradient-to-b from-blue-100 to-transparent animate-fade-in">
@@ -274,19 +274,33 @@ function MenuContent({ params }: { params: { slug: string } }) {
         </div>
       )}
 
-      {/* Mağaza Durum Uyarısı */}
+      {/* Mağaza Durum Efekti + Sabit Üst Uyarı */}
       {storeBlocked && (
-        <div className="max-w-2xl mx-auto px-3 md:px-4 pt-3">
-          <div className={'flex items-center gap-3 px-4 py-3 rounded-2xl border shadow-sm animate-slide-up ' + (storeStatus === 'closed' ? 'bg-red-50 border-red-200 text-red-700' : 'bg-amber-50 border-amber-200 text-amber-700')} style={{ animationDuration: '0.4s' }}>
-            <span className="relative flex w-2.5 h-2.5 flex-shrink-0">
-              <span className={'absolute inline-flex w-full h-full rounded-full animate-ping ' + (storeStatus === 'closed' ? 'bg-red-400' : 'bg-amber-400')} />
-              <span className={'relative inline-flex w-2.5 h-2.5 rounded-full ' + (storeStatus === 'closed' ? 'bg-red-500' : 'bg-amber-500')} />
-            </span>
-            <p className="text-xs md:text-sm font-semibold leading-relaxed">
-              {storeBlockMsg}
-            </p>
+        <>
+          <div className={'store-slide-down fixed top-0 inset-x-0 z-[60] shadow-lg shadow-black/20 ' + (storeStatus === 'closed' ? 'bg-gradient-to-r from-red-600 via-red-700 to-red-600' : 'bg-gradient-to-r from-amber-500 via-orange-500 to-amber-500')}>
+            <div className="max-w-2xl mx-auto px-3 md:px-4 py-2.5 md:py-3 flex items-center justify-center gap-2.5">
+              <span className="relative flex w-2.5 h-2.5 flex-shrink-0">
+                <span className="absolute inline-flex w-full h-full rounded-full bg-white/70 animate-ping" />
+                <span className="relative inline-flex w-2.5 h-2.5 rounded-full bg-white" />
+              </span>
+              <p className="text-white text-xs md:text-sm font-bold text-center leading-snug">{storeBlockMsg}</p>
+            </div>
           </div>
-        </div>
+
+          <div className="fixed inset-0 z-30 pointer-events-none overflow-hidden">
+            {storeStatus === 'closed' ? (
+              <>
+                <div className="absolute inset-0 bg-gradient-to-b from-red-950/30 via-red-900/10 to-red-950/30" />
+                <div className="absolute inset-0 store-stripes-red" />
+              </>
+            ) : (
+              <>
+                <div className="absolute inset-0 bg-gradient-to-b from-amber-500/20 via-transparent to-amber-500/20" />
+                <div className="absolute inset-0 store-stripes-amber" />
+              </>
+            )}
+          </div>
+        </>
       )}
 
       {/* Dükkan Bilgi Kartı */}
