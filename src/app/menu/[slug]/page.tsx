@@ -231,7 +231,7 @@ function MenuContent({ params }: { params: { slug: string } }) {
   const PAYMENT_ICONS: Record<string, string> = {
     'Online Ödeme': '📱',
     'Kapıda Nakit': '💸',
-    'Kapıda Kart': '🛵',
+    'Kapıda Kart': '💳',
     'Kasada Nakit': '💵',
     'Kasada Kart': '💳',
   }
