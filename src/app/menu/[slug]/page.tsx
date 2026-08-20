@@ -128,6 +128,10 @@ function MenuContent({ params }: { params: { slug: string } }) {
   }
 
   const submitOrder = async () => {
+    if (data.storeStatus && data.storeStatus !== 'open') {
+      alert(data.storeStatus === 'closed' ? 'Mağaza şu anda kapalı, sipariş alınamıyor.' : 'Mağaza şu anda yoğun, siparişlere ara verildi.')
+      return
+    }
     let normalizedPhone = ''
     if (masa) {
       if (cart.length === 0) return
@@ -255,6 +259,21 @@ function MenuContent({ params }: { params: { slug: string } }) {
           <div className="flex flex-col items-center gap-2">
             <svg className="w-12 h-12 text-white/80 animate-breathe" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6h16M4 12h16M4 18h16" /></svg>
             <span className="text-white/70 text-[11px] md:text-sm font-semibold tracking-wide animate-fade-in-up" style={{ animationDuration: '0.7s' }}>Menümüz</span>
+          </div>
+        </div>
+      )}
+
+      {/* Mağaza Durum Uyarısı */}
+      {data.storeStatus && data.storeStatus !== 'open' && (
+        <div className="max-w-2xl mx-auto px-3 md:px-4 pt-3">
+          <div className={'flex items-center gap-3 px-4 py-3 rounded-2xl border shadow-sm animate-slide-up ' + (data.storeStatus === 'closed' ? 'bg-red-50 border-red-200 text-red-700' : 'bg-amber-50 border-amber-200 text-amber-700')} style={{ animationDuration: '0.4s' }}>
+            <span className="relative flex w-2.5 h-2.5 flex-shrink-0">
+              <span className={'absolute inline-flex w-full h-full rounded-full animate-ping ' + (data.storeStatus === 'closed' ? 'bg-red-400' : 'bg-amber-400')} />
+              <span className={'relative inline-flex w-2.5 h-2.5 rounded-full ' + (data.storeStatus === 'closed' ? 'bg-red-500' : 'bg-amber-500')} />
+            </span>
+            <p className="text-xs md:text-sm font-semibold leading-relaxed">
+              {data.storeStatus === 'closed' ? 'Mağaza şu anda kapalı, sipariş alınamıyor.' : 'Mağaza şu anda yoğun, siparişlere ara verildi.'}
+            </p>
           </div>
         </div>
       )}
