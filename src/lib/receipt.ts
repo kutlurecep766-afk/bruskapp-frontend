@@ -84,7 +84,8 @@ export function openReceiptPdf(d: ReceiptData) {
     .item-meta { font-size: 10px; color: #555; }
     .total { display: flex; justify-content: space-between; font-size: 15px; font-weight: 900; padding-top: 2px; }
     .footer { text-align: center; font-size: 10px; color: #777; margin-top: 4px; }
-  </style></head><body>${rows.join('')}</body></html>`)  w.document.close()
+  </style></head><body>${rows.join('')}</body></html>`)
+  w.document.close()
   w.focus()
   setTimeout(() => { try { w.print() } catch {} }, 500)
 }
