@@ -228,12 +228,12 @@ function MenuContent({ params }: { params: { slug: string } }) {
     ? (data.paymentMethodsTable?.length ? data.paymentMethodsTable : ['Online Ödeme', 'Kasada Kart', 'Kasada Nakit'])
     : (data.paymentMethodsOnline?.length ? data.paymentMethodsOnline : ['Online Ödeme', 'Kapıda Kart', 'Kapıda Nakit'])
 
-  const PAYMENT_ICONS: Record<string, { icon: string; color: string; bg: string }> = {
-    'Online Ödeme': { icon: '📱', color: 'text-blue-600', bg: 'bg-blue-50 border-blue-100' },
-    'Kapıda Nakit': { icon: '💸', color: 'text-emerald-600', bg: 'bg-emerald-50 border-emerald-100' },
-    'Kapıda Kart': { icon: '🛵', color: 'text-violet-600', bg: 'bg-violet-50 border-violet-100' },
-    'Kasada Nakit': { icon: '💵', color: 'text-amber-600', bg: 'bg-amber-50 border-amber-100' },
-    'Kasada Kart': { icon: '💳', color: 'text-cyan-600', bg: 'bg-cyan-50 border-cyan-100' },
+  const PAYMENT_ICONS: Record<string, string> = {
+    'Online Ödeme': '📱',
+    'Kapıda Nakit': '💸',
+    'Kapıda Kart': '🛵',
+    'Kasada Nakit': '💵',
+    'Kasada Kart': '💳',
   }
   const PAYMENT_DESC: Record<string, string> = {
     'Online Ödeme': 'SanalPOS ile online',
@@ -304,10 +304,10 @@ function MenuContent({ params }: { params: { slug: string } }) {
                 <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider mb-1.5">Ödeme Yöntemleri</p>
                 <div className="flex flex-wrap gap-1.5">
                   {payments.map((pm: string, i: number) => {
-                    const meta = PAYMENT_ICONS[pm] || PAYMENT_ICONS['Kasada Kart']
+                    const icon = PAYMENT_ICONS[pm]
                     return (
-                      <span key={i} className={'inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] md:text-xs font-semibold border ' + meta.bg + ' ' + meta.color}>
-                        {meta.icon}
+                      <span key={i} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] md:text-xs font-semibold bg-white border border-blue-100 text-gray-600">
+                        {icon && <span>{icon}</span>}
                         {pm}
                       </span>
                     )
@@ -325,7 +325,7 @@ function MenuContent({ params }: { params: { slug: string } }) {
           <div className="flex items-center gap-2 flex-wrap">
             {masa ? (
               <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-700 text-white text-xs md:text-sm font-bold shadow-lg shadow-blue-700/20">
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h2m4 0h2m-8 4h6a2 2 0 002-2v-7a2 2 0 00-2-2H7a2 2 0 00-2 2v7a2 2 0 002 2z" /></svg>
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M4 11h16M5 11v4M19 11v4M9 11l1.5 4M15 11l-1.5 4" /></svg>
                 Masa {masa}
               </span>
             ) : (
@@ -576,7 +576,7 @@ function MenuContent({ params }: { params: { slug: string } }) {
 
       {/* Garson Çağır Butonu (masa modülü) */}
       {masa && (
-        <div className="fixed bottom-24 md:bottom-28 right-3 md:right-6 z-40 animate-fade-in-up" style={{ animationDuration: '0.6s' }}>
+        <div className="fixed bottom-24 md:bottom-28 right-3 md:right-6 z-40">
           <button onClick={() => { setWaiterOpen(true); setWaiterSent(false) }}
             className="flex items-center gap-2 pl-4 pr-5 py-3 rounded-full bg-gradient-to-r from-blue-600 to-blue-700 text-white text-sm font-semibold shadow-lg shadow-blue-600/40 hover:from-blue-700 hover:to-blue-800 hover:scale-105 active:scale-95 transition-all shine">
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
@@ -587,12 +587,12 @@ function MenuContent({ params }: { params: { slug: string } }) {
 
       {/* Garson Çağrı Modal */}
       {waiterOpen && (
-        <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center p-0 md:p-4 bg-blue-950/50 backdrop-blur-sm animate-fade-in" onClick={() => { if (!waiterSending) setWaiterOpen(false) }}>
-          <div className="relative w-full md:max-w-sm bg-white rounded-t-3xl md:rounded-3xl shadow-2xl overflow-hidden transition-all duration-200 animate-slide-up" onClick={e => e.stopPropagation()}>
+        <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center p-0 md:p-4 bg-blue-950/50 backdrop-blur-sm" onClick={() => { if (!waiterSending) setWaiterOpen(false) }}>
+          <div className="relative w-full md:max-w-sm bg-white rounded-t-3xl md:rounded-3xl shadow-2xl overflow-hidden" onClick={e => e.stopPropagation()}>
             <div className="md:hidden h-1.5 w-12 bg-blue-200 rounded-full mx-auto mt-3" />
             {waiterSent ? (
               <div className="p-8 text-center">
-                <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4 animate-pop-in">
+                <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
                   <svg className="w-8 h-8 text-green-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
                     <circle className="check-circle" cx="12" cy="12" r="9" />
                     <path className="check-path" d="M8 12.5l2.5 2.5L16 9" />
@@ -611,7 +611,7 @@ function MenuContent({ params }: { params: { slug: string } }) {
                 </div>
                 <div className="px-5 md:px-6 pb-6">
                   <p className="text-xs text-gray-500 mb-3 flex items-center gap-1.5">
-                    <svg className="w-4 h-4 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h2m4 0h2m-8 4h6a2 2 0 002-2v-7a2 2 0 00-2-2H7a2 2 0 00-2 2v7a2 2 0 002 2z" /></svg>
+                    <svg className="w-4 h-4 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M4 11h16M5 11v4M19 11v4M9 11l1.5 4M15 11l-1.5 4" /></svg>
                     Masa {masa}
                   </p>
                   <textarea value={waiterNote} onChange={e => setWaiterNote(e.target.value)} rows={3}
@@ -637,15 +637,15 @@ function MenuContent({ params }: { params: { slug: string } }) {
 
       {/* Sepet Çubuğu */}
       {cart.length > 0 && (
-        <div className="fixed bottom-0 left-0 right-0 z-40 px-3 md:px-4 pb-3 md:pb-4 pointer-events-none animate-fade-in-up" style={{ animationDuration: '0.4s' }}>
+        <div className="fixed bottom-0 left-0 right-0 z-40 px-3 md:px-4 pb-3 md:pb-4 pointer-events-none">
           <button
             onClick={() => setShowCart(true)}
             className="pointer-events-auto w-full max-w-2xl mx-auto flex items-center justify-between gap-3 px-4 md:px-5 py-3.5 rounded-2xl bg-gradient-to-r from-blue-800 to-blue-950 text-white shadow-2xl shadow-blue-900/40 hover:from-blue-700 hover:to-blue-900 active:scale-[0.99] transition-all">
             <div className="flex items-center gap-3">
-              <span key={cartBump} className="relative animate-bump">
+              <span className="relative">
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.3 4.6a1 1 0 00.9 1.4H20M10 21a1 1 0 100-2 1 1 0 000 2zm8 0a1 1 0 100-2 1 1 0 000 2z" /></svg>
                 {cartCount > 0 && (
-                  <span key={cartBump} className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-red-500 text-white text-[10px] font-bold flex items-center justify-center animate-bump">{cartCount}</span>
+                  <span className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-red-500 text-white text-[10px] font-bold flex items-center justify-center">{cartCount}</span>
                 )}
               </span>
               <span className="font-semibold text-sm md:text-base">Sepeti Gör</span>
@@ -657,8 +657,8 @@ function MenuContent({ params }: { params: { slug: string } }) {
 
       {/* Sepet Modal */}
       {showCart && (
-        <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center p-0 md:p-4 bg-blue-950/50 backdrop-blur-sm animate-fade-in" onClick={() => setShowCart(false)}>
-          <div className="relative w-full md:max-w-lg bg-white rounded-t-3xl md:rounded-3xl shadow-2xl overflow-hidden max-h-[85vh] flex flex-col transition-all duration-200 animate-slide-up" onClick={e => e.stopPropagation()}>
+        <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center p-0 md:p-4 bg-blue-950/50 backdrop-blur-sm" onClick={() => setShowCart(false)}>
+          <div className="relative w-full md:max-w-lg bg-white rounded-t-3xl md:rounded-3xl shadow-2xl overflow-hidden max-h-[85vh] flex flex-col" onClick={e => e.stopPropagation()}>
             <div className="md:hidden h-1.5 w-12 bg-blue-200 rounded-full mx-auto mt-3" />
             <div className="flex items-center justify-between px-5 md:px-6 pt-4 pb-3 border-b border-blue-100">
               <h2 className="text-gray-900 font-bold text-lg">Sepetim</h2>
@@ -672,7 +672,7 @@ function MenuContent({ params }: { params: { slug: string } }) {
                 <div className="text-center py-10 text-gray-400 text-sm">Sepetiniz boş</div>
               )}
               {cart.map((item) => (
-                <div key={item.product.id} className="bg-gradient-to-r from-blue-50/80 to-white border border-blue-100 rounded-2xl p-3 animate-fade-in-up" style={{ animationDuration: '0.35s' }}>
+                <div key={item.product.id} className="bg-gradient-to-r from-blue-50/80 to-white border border-blue-100 rounded-2xl p-3">
                   <div className="flex items-center gap-3">
                   {item.product.image ? (
                     <img src={item.product.image} className="w-14 h-14 rounded-xl object-cover flex-shrink-0 border border-blue-100" alt={item.product.name} />
@@ -725,8 +725,8 @@ function MenuContent({ params }: { params: { slug: string } }) {
 
       {/* Ödeme Modal */}
       {checkoutOpen && (
-        <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center p-0 md:p-4 bg-blue-950/50 backdrop-blur-sm animate-fade-in">
-          <div className="relative w-full md:max-w-lg bg-white rounded-t-3xl md:rounded-3xl shadow-2xl overflow-hidden max-h-[92vh] flex flex-col transition-all duration-200 animate-slide-up">
+        <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center p-0 md:p-4 bg-blue-950/50 backdrop-blur-sm">
+          <div className="relative w-full md:max-w-lg bg-white rounded-t-3xl md:rounded-3xl shadow-2xl overflow-hidden max-h-[92vh] flex flex-col">
             {orderResult ? (
               <div className="p-8 text-center overflow-y-auto max-h-[85vh]">
                 <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4 animate-pop-in">
@@ -889,19 +889,19 @@ function MenuContent({ params }: { params: { slug: string } }) {
                       <p className="text-blue-700 text-[11px] font-semibold uppercase tracking-wide mb-2">Ödeme Yöntemi</p>
                       <div className="grid grid-cols-1 gap-2">
                         {payments.map((p: string) => {
-                          const meta = PAYMENT_ICONS[p] || PAYMENT_ICONS['Kapıda Nakit']
+                          const icon = PAYMENT_ICONS[p]
                           return (
                             <label key={p} onClick={() => setForm({ ...form, payment: p })}
                               className={'flex items-center gap-3 px-4 py-3 rounded-xl border cursor-pointer transition-all ' + (form.payment === p ? 'bg-blue-50 border-blue-600 ring-2 ring-blue-100' : 'bg-white border-blue-200 hover:border-blue-300')}>
-                              <span className={'w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 border text-base leading-none ' + meta.bg + ' ' + meta.color}>
-                                <span>{meta.icon}</span>
+                              <span className="w-8 h-8 flex items-center justify-center flex-shrink-0 text-xl">
+                                {icon && <span>{icon}</span>}
                               </span>
                               <div className="flex-1 min-w-0">
                                 <span className="text-gray-900 text-sm font-medium block">{p}</span>
                                 {PAYMENT_DESC[p] && <span className="text-[11px] text-gray-400 block">{PAYMENT_DESC[p]}</span>}
                               </div>
                               <span className={'w-4 h-4 rounded-full border-2 flex items-center justify-center transition-all flex-shrink-0 ' + (form.payment === p ? 'border-blue-600' : 'border-gray-300')}>
-                                {form.payment === p && <span className="w-2 h-2 rounded-full bg-blue-600 animate-pop-in" />}
+                                {form.payment === p && <span className="w-2 h-2 rounded-full bg-blue-600" />}
                               </span>
                             </label>
                           )
