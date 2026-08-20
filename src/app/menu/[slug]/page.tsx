@@ -42,7 +42,14 @@ function MenuContent({ params }: { params: { slug: string } }) {
     }).catch(() => setLoading(false))
   }, [params.slug])
 
+  const storeStatus = masa ? (data?.storeStatusTable || data?.storeStatus) : data?.storeStatus
+  const storeBlocked = !!storeStatus && storeStatus !== 'open'
+  const storeBlockMsg = storeStatus === 'closed'
+    ? 'Şu anda sipariş alınamamaktadır. En kısa sürede aktif olacaktır.'
+    : 'Şu anda yoğunluktan dolayı sipariş alınamamaktadır. En kısa sürede aktif olacaktır.'
+
   const addToCart = (product: any, count = 1) => {
+    if (storeBlocked) return
     if (product.status === 'soldout' || product.status === 'preparing') return
     setCart(prev => {
       const found = prev.find(i => i.product.id === product.id)
@@ -79,6 +86,10 @@ function MenuContent({ params }: { params: { slug: string } }) {
   const cartTotal = cart.reduce((a, i) => a + (parseFloat(i.product.price) || 0) * i.qty, 0)
 
   const openCheckout = () => {
+    if (storeBlocked) {
+      alert(storeBlockMsg)
+      return
+    }
     setShowCart(false)
     setCheckoutOpen(true)
     setOrderResult(null)
@@ -128,8 +139,8 @@ function MenuContent({ params }: { params: { slug: string } }) {
   }
 
   const submitOrder = async () => {
-    if (data.storeStatus && data.storeStatus !== 'open') {
-      alert(data.storeStatus === 'closed' ? 'Mağaza şu anda kapalı, sipariş alınamıyor.' : 'Mağaza şu anda yoğun, siparişlere ara verildi.')
+    if (storeBlocked) {
+      alert(storeBlockMsg)
       return
     }
     let normalizedPhone = ''
@@ -264,15 +275,15 @@ function MenuContent({ params }: { params: { slug: string } }) {
       )}
 
       {/* Mağaza Durum Uyarısı */}
-      {data.storeStatus && data.storeStatus !== 'open' && (
+      {storeBlocked && (
         <div className="max-w-2xl mx-auto px-3 md:px-4 pt-3">
-          <div className={'flex items-center gap-3 px-4 py-3 rounded-2xl border shadow-sm animate-slide-up ' + (data.storeStatus === 'closed' ? 'bg-red-50 border-red-200 text-red-700' : 'bg-amber-50 border-amber-200 text-amber-700')} style={{ animationDuration: '0.4s' }}>
+          <div className={'flex items-center gap-3 px-4 py-3 rounded-2xl border shadow-sm animate-slide-up ' + (storeStatus === 'closed' ? 'bg-red-50 border-red-200 text-red-700' : 'bg-amber-50 border-amber-200 text-amber-700')} style={{ animationDuration: '0.4s' }}>
             <span className="relative flex w-2.5 h-2.5 flex-shrink-0">
-              <span className={'absolute inline-flex w-full h-full rounded-full animate-ping ' + (data.storeStatus === 'closed' ? 'bg-red-400' : 'bg-amber-400')} />
-              <span className={'relative inline-flex w-2.5 h-2.5 rounded-full ' + (data.storeStatus === 'closed' ? 'bg-red-500' : 'bg-amber-500')} />
+              <span className={'absolute inline-flex w-full h-full rounded-full animate-ping ' + (storeStatus === 'closed' ? 'bg-red-400' : 'bg-amber-400')} />
+              <span className={'relative inline-flex w-2.5 h-2.5 rounded-full ' + (storeStatus === 'closed' ? 'bg-red-500' : 'bg-amber-500')} />
             </span>
             <p className="text-xs md:text-sm font-semibold leading-relaxed">
-              {data.storeStatus === 'closed' ? 'Mağaza şu anda kapalı, sipariş alınamıyor.' : 'Mağaza şu anda yoğun, siparişlere ara verildi.'}
+              {storeBlockMsg}
             </p>
           </div>
         </div>
@@ -437,7 +448,7 @@ function MenuContent({ params }: { params: { slug: string } }) {
             const isSoldout = p.status === 'soldout'
             const isPreparing = p.status === 'preparing'
             return (
-              <div key={p.id} style={{ animationDelay: `${Math.min(idx, 8) * 60}ms` }} onClick={() => { if (!isSoldout && !isPreparing) { setSelectedProduct(p); setQty(1) } }} className={'animate-fade-in-up flex flex-col rounded-xl md:rounded-2xl bg-white border shadow-sm transition-all overflow-hidden ' + (isSoldout || isPreparing ? 'opacity-60 border-blue-100 cursor-not-allowed' : 'border-blue-100 hover:border-blue-300 hover:shadow-xl hover:shadow-blue-600/10 hover:-translate-y-1 cursor-pointer active:scale-[0.98]')}>
+              <div key={p.id} style={{ animationDelay: `${Math.min(idx, 8) * 60}ms` }} onClick={() => { if (!isSoldout && !isPreparing && !storeBlocked) { setSelectedProduct(p); setQty(1) } }} className={'animate-fade-in-up flex flex-col rounded-xl md:rounded-2xl bg-white border shadow-sm transition-all overflow-hidden ' + (isSoldout || isPreparing || storeBlocked ? 'opacity-60 border-blue-100 cursor-not-allowed' : 'border-blue-100 hover:border-blue-300 hover:shadow-xl hover:shadow-blue-600/10 hover:-translate-y-1 cursor-pointer active:scale-[0.98]')}>
                 <div className="relative">
                   {p.image && (
                     <div className="w-full aspect-square overflow-hidden bg-gradient-to-br from-blue-50 to-blue-100/50">
@@ -652,7 +663,7 @@ function MenuContent({ params }: { params: { slug: string } }) {
       )}
 
       {/* Sepet Çubuğu */}
-      {cart.length > 0 && (
+      {cart.length > 0 && !storeBlocked && (
         <div className="fixed bottom-0 left-0 right-0 z-40 px-3 md:px-4 pb-3 md:pb-4 pointer-events-none">
           <button
             onClick={() => setShowCart(true)}
