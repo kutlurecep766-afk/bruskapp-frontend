@@ -2,6 +2,7 @@
 import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { UtensilsCrossed } from 'lucide-react'
+import { openReceiptPdf, parseNoteAddress, parseNotePayment } from '@/lib/receipt'
 
 interface CartItem {
   product: any
@@ -189,7 +190,26 @@ function MenuContent({ params }: { params: { slug: string } }) {
     }
   }
 
-  const callWaiter = async () => {
+  const showReceipt = () => {
+  if (!orderResult || !data) return
+  openReceiptPdf({
+    businessName: data.shopName || data.name || 'İşletme',
+    address: data.address || '',
+    phone: data.phone || '',
+    orderId: orderResult.id,
+    trackingCode: orderResult.trackingCode || null,
+    tableNumber: orderResult.tableNumber || null,
+    customerName: orderResult.customerName || (masa ? `Masa ${masa}` : ''),
+    customerContact: orderResult.customerContact || '',
+    customerAddress: masa ? (data.address || '') : (parseNoteAddress(orderResult.note) || ''),
+    payment: parseNotePayment(orderResult.note) || '',
+    dateLabel: new Date(orderResult.createdAt || Date.now()).toLocaleString('tr-TR', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
+    items: (orderResult.products || []).map((p: any) => ({ name: p.name, price: Number(p.price) || 0, qty: p.quantity || 1, note: p.note })),
+    total: Number(orderResult.totalAmount) || 0,
+  })
+}
+
+const callWaiter = async () => {
     if (storeBlocked) {
       alert(storeBlockMsg)
       return
@@ -807,8 +827,15 @@ function MenuContent({ params }: { params: { slug: string } }) {
                 )}
 
                 <button
+                  onClick={showReceipt}
+                  className="mt-3 w-full py-3 rounded-xl bg-white border border-blue-200 text-blue-700 text-sm font-bold shadow-sm hover:bg-blue-50 hover:border-blue-300 hover:scale-[1.01] active:scale-[0.99] transition-all inline-flex items-center justify-center gap-2">
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9h6m-6 4h6" /></svg>
+                  Fişi Görüntüle / PDF
+                </button>
+
+                <button
                   onClick={() => { setCheckoutOpen(false); setOrderResult(null) }}
-                  className="mt-6 w-full py-3 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 active:scale-[0.99] transition-all text-white font-semibold text-sm shadow-md shadow-blue-600/30 shine">
+                  className="mt-2 w-full py-3 rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 active:scale-[0.99] transition-all text-white font-semibold text-sm shadow-md shadow-blue-600/30 shine">
                   Menüye Dön
                 </button>
               </div>

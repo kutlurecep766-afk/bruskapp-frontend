@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
+import { openReceiptPdf, parseNoteAddress, parseNotePayment } from '@/lib/receipt'
 
 const STATUS_STEPS: Record<string, { label: string; desc: string }> = {
   pending: { label: 'Sipariş Alındı', desc: 'Siparişiniz işletmeye iletildi' },
@@ -247,6 +248,27 @@ function TrackContent() {
                 </div>
               )}
             </div>
+
+            <button
+              onClick={() => openReceiptPdf({
+                businessName: result.businessName || 'İşletme',
+                address: '',
+                phone: '',
+                orderId: result.id,
+                trackingCode: result.trackingCode,
+                tableNumber: result.tableNumber || null,
+                customerName: result.customerName || '',
+                customerContact: result.customerContact || '',
+                customerAddress: parseNoteAddress(result.note) || '',
+                payment: parseNotePayment(result.note) || '',
+                dateLabel: new Date(result.createdAt || Date.now()).toLocaleString('tr-TR', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
+                items: (result.products || []).map((p: any) => ({ name: p.name, price: Number(p.price) || 0, qty: p.quantity || 1, note: p.note })),
+                total: Number(result.totalAmount) || 0,
+              })}
+              className="mt-3 w-full py-3 rounded-xl bg-blue-50 border border-blue-200 text-blue-700 text-sm font-bold shadow-sm hover:bg-blue-600 hover:text-white hover:border-blue-600 hover:scale-[1.01] active:scale-[0.99] transition-all inline-flex items-center justify-center gap-2">
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9h6m-6 4h6" /></svg>
+              Fişi Görüntüle (PDF)
+            </button>
 
             <button onClick={() => { setResult(null); setSearched(false); setError('') }}
               className="w-full py-3 rounded-xl bg-white border border-blue-200 text-blue-700 text-sm font-bold shadow-sm hover:bg-blue-50 hover:border-blue-300 transition-all active:scale-[0.99]">
