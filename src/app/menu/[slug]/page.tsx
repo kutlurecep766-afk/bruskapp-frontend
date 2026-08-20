@@ -1,7 +1,62 @@
 'use client'
 import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { SmartphoneNfc, Banknote, CreditCard, HandCoins, WalletCards } from 'lucide-react'
+import { UtensilsCrossed } from 'lucide-react'
+
+const strokeProps = { fill: 'none', stroke: 'currentColor', strokeWidth: 1.8, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const }
+
+function IconOnline() {
+  return (
+    <svg viewBox="0 0 24 24" className="w-full h-full" {...strokeProps}>
+      <rect x="8.5" y="2.5" width="8" height="19" rx="2.5" />
+      <path d="M11.5 6.5h2.5" />
+      <path d="M16.5 7a4.5 4.5 0 0 1 0 10" />
+      <path d="M19 5.5a8 8 0 0 1 0 13" />
+    </svg>
+  )
+}
+
+function IconKasadaKart() {
+  return (
+    <svg viewBox="0 0 24 24" className="w-full h-full" {...strokeProps}>
+      <rect x="4.5" y="3" width="15" height="12" rx="2.5" />
+      <path d="M7.5 7h9M7.5 10h5" />
+      <path d="M12 15v2.5M8.5 20.5h7" />
+    </svg>
+  )
+}
+
+function IconKasadaNakit() {
+  return (
+    <svg viewBox="0 0 24 24" className="w-full h-full" {...strokeProps}>
+      <rect x="4.5" y="7" width="15" height="10" rx="2" />
+      <rect x="7.5" y="10" width="9" height="4" rx="1" />
+      <circle cx="12" cy="12" r="1.2" />
+    </svg>
+  )
+}
+
+function IconKapidaKart() {
+  return (
+    <svg viewBox="0 0 24 24" className="w-full h-full" {...strokeProps}>
+      <path d="M4 21V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v16" />
+      <path d="M4 21h16" />
+      <rect x="6.5" y="7.5" width="8" height="5.5" rx="1.2" />
+      <path d="M6.5 10h8" />
+    </svg>
+  )
+}
+
+function IconKapidaNakit() {
+  return (
+    <svg viewBox="0 0 24 24" className="w-full h-full" {...strokeProps}>
+      <path d="M4 21V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v16" />
+      <path d="M4 21h16" />
+      <rect x="6.5" y="7.5" width="8" height="5.5" rx="1.2" />
+      <circle cx="11" cy="10" r="1.1" />
+    </svg>
+  )
+}
 
 interface CartItem {
   product: any
@@ -90,6 +145,20 @@ function MenuContent({ params }: { params: { slug: string } }) {
     if (dig.startsWith('0')) dig = dig.slice(1)
     if (!/^[5-9]\d{9}$/.test(dig)) return null
     return '+90' + dig
+  }
+
+  // Masa numarasına göre Türkçe yönelme/bulunma eki: 4→4'e, 16→16'ya, 9→9'a
+  const masaEk = (m: string | null): string => {
+    const n = parseInt(m || '', 10)
+    if (isNaN(n)) return "'e"
+    switch (n % 10) {
+      case 0: return "'a"
+      case 2: return "'ye"
+      case 6: return "'ya"
+      case 7: return "'ye"
+      case 9: return "'a"
+      default: return "'e"
+    }
   }
 
   const sendLocation = () => {
@@ -215,11 +284,11 @@ function MenuContent({ params }: { params: { slug: string } }) {
     : (data.paymentMethodsOnline?.length ? data.paymentMethodsOnline : ['Online Ödeme', 'Kapıda Kart', 'Kapıda Nakit'])
 
   const PAYMENT_ICONS: Record<string, { icon: any; color: string; bg: string }> = {
-    'Online Ödeme': { icon: <SmartphoneNfc className="w-4 h-4" />, color: 'text-blue-600', bg: 'bg-blue-50 border-blue-100' },
-    'Kapıda Nakit': { icon: <Banknote className="w-4 h-4" />, color: 'text-emerald-600', bg: 'bg-emerald-50 border-emerald-100' },
-    'Kapıda Kart': { icon: <CreditCard className="w-4 h-4" />, color: 'text-violet-600', bg: 'bg-violet-50 border-violet-100' },
-    'Kasada Nakit': { icon: <HandCoins className="w-4 h-4" />, color: 'text-amber-600', bg: 'bg-amber-50 border-amber-100' },
-    'Kasada Kart': { icon: <WalletCards className="w-4 h-4" />, color: 'text-cyan-600', bg: 'bg-cyan-50 border-cyan-100' },
+    'Online Ödeme': { icon: <IconOnline />, color: 'text-blue-600', bg: 'bg-blue-50 border-blue-100' },
+    'Kapıda Nakit': { icon: <IconKapidaNakit />, color: 'text-emerald-600', bg: 'bg-emerald-50 border-emerald-100' },
+    'Kapıda Kart': { icon: <IconKapidaKart />, color: 'text-violet-600', bg: 'bg-violet-50 border-violet-100' },
+    'Kasada Nakit': { icon: <IconKasadaNakit />, color: 'text-amber-600', bg: 'bg-amber-50 border-amber-100' },
+    'Kasada Kart': { icon: <IconKasadaKart />, color: 'text-cyan-600', bg: 'bg-cyan-50 border-cyan-100' },
   }
   const PAYMENT_DESC: Record<string, string> = {
     'Online Ödeme': 'SanalPOS ile online',
@@ -585,7 +654,7 @@ function MenuContent({ params }: { params: { slug: string } }) {
                   </svg>
                 </div>
                 <h2 className="text-gray-900 font-bold text-lg">Garson Çağrıldı!</h2>
-                <p className="text-gray-500 text-sm mt-2">Masa {masa}'ya garsonumuz en kısa sürede yönlenecek.</p>
+                <p className="text-gray-500 text-sm mt-2">Masa {masa}{masaEk(masa)} garsonumuz en kısa sürede yönlenecek.</p>
               </div>
             ) : (
               <>
@@ -723,7 +792,7 @@ function MenuContent({ params }: { params: { slug: string } }) {
                 </div>
                 <h2 className="text-gray-900 font-bold text-xl animate-fade-in-up">Siparişiniz Alındı!</h2>
                 <p className="text-gray-500 text-sm mt-2">Sipariş numaranız: <span className="font-bold text-blue-700">#{orderResult.id}</span></p>
-                {masa && <p className="text-gray-500 text-xs mt-1">Masa {masa} numaralı masanıza en kısa sürede servis edilecektir.</p>}
+                {masa && <p className="text-gray-500 text-xs mt-1">Siparişiniz Masa {masa}{masaEk(masa)} en kısa sürede teslim edilecektir.</p>}
                 {!masa && <p className="text-gray-500 text-xs mt-1">İşletme siparişinizi en kısa sürede hazırlayacaktır.</p>}
 
                 {orderResult.trackingCode && (
@@ -789,8 +858,8 @@ function MenuContent({ params }: { params: { slug: string } }) {
                     <div className="animate-fade-in-up" style={{ animationDuration: '0.4s' }}>
                       <p className="text-blue-700 text-[11px] font-semibold uppercase tracking-wide mb-2">Masa Siparişi</p>
                       <p className="text-xs text-blue-700 bg-blue-50 border border-blue-200 rounded-xl px-4 py-3 flex items-center gap-2">
-                        <svg className="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h2m4 0h2m-8 4h6a2 2 0 002-2v-7a2 2 0 00-2-2H7a2 2 0 00-2 2v7a2 2 0 002 2z" /></svg>
-                        Siparişiniz Masa {masa}'ya teslim edilecek.
+                        <UtensilsCrossed className="w-4 h-4 flex-shrink-0" />
+                        Siparişiniz Masa {masa}{masaEk(masa)} teslim edilecek.
                       </p>
                     </div>
                   ) : (
@@ -879,7 +948,7 @@ function MenuContent({ params }: { params: { slug: string } }) {
                           return (
                             <label key={p} onClick={() => setForm({ ...form, payment: p })}
                               className={'flex items-center gap-3 px-4 py-3 rounded-xl border cursor-pointer transition-all ' + (form.payment === p ? 'bg-blue-50 border-blue-600 ring-2 ring-blue-100' : 'bg-white border-blue-200 hover:border-blue-300')}>
-                              <span className={'w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 border ' + meta.bg + ' ' + meta.color}>
+                              <span className={'w-8 h-8 rounded-lg p-1.5 flex items-center justify-center flex-shrink-0 border ' + meta.bg + ' ' + meta.color}>
                                 {meta.icon}
                               </span>
                               <div className="flex-1 min-w-0">
