@@ -72,7 +72,8 @@ export function openReceiptPdf(d: ReceiptData) {
     return
   }
   w.document.write(`<!doctype html><html lang="tr"><head><meta charset="utf-8"><title>Bilgi Fişi #${esc(d.orderId)}</title><style>
-    body { margin: 0; padding: 24px 12px; background: #fff; color: #111; width: 320px; font-family: ui-monospace, 'Cascadia Mono', 'Segoe UI Mono', 'Courier New', monospace; }
+    @page { size: 80mm auto; margin: 0; }
+    body { margin: 0; padding: 20px 12px; background: #fff; color: #111; width: 300px; font-family: ui-monospace, 'Cascadia Mono', 'Segoe UI Mono', 'Courier New', monospace; }
     .head { text-align: center; font-size: 17px; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; }
     .tag { text-align: center; font-size: 9px; letter-spacing: 2px; color: #666; margin: 3px 0 6px; }
     .sub { text-align: center; font-size: 11px; color: #333; margin-top: 2px; }
@@ -83,8 +84,7 @@ export function openReceiptPdf(d: ReceiptData) {
     .item-meta { font-size: 10px; color: #555; }
     .total { display: flex; justify-content: space-between; font-size: 15px; font-weight: 900; padding-top: 2px; }
     .footer { text-align: center; font-size: 10px; color: #777; margin-top: 4px; }
-  </style></head><body>${rows.join('')}</body></html>`)
-  w.document.close()
+  </style></head><body>${rows.join('')}</body></html>`)  w.document.close()
   w.focus()
   setTimeout(() => { try { w.print() } catch {} }, 500)
 }
