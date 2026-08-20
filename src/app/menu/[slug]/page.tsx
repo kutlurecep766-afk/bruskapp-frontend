@@ -190,6 +190,10 @@ function MenuContent({ params }: { params: { slug: string } }) {
   }
 
   const callWaiter = async () => {
+    if (storeBlocked) {
+      alert(storeBlockMsg)
+      return
+    }
     setWaiterSending(true)
     try {
       const res = await fetch('/api/orders', {
@@ -618,8 +622,8 @@ function MenuContent({ params }: { params: { slug: string } }) {
       {/* Garson Çağır Butonu (masa modülü) */}
       {masa && (
         <div className="fixed bottom-24 md:bottom-28 right-3 md:right-6 z-40">
-          <button onClick={() => { setWaiterOpen(true); setWaiterSent(false) }}
-            className="flex items-center gap-2 pl-4 pr-5 py-3 rounded-full bg-gradient-to-r from-blue-600 to-blue-700 text-white text-sm font-semibold shadow-lg shadow-blue-600/40 hover:from-blue-700 hover:to-blue-800 hover:scale-105 active:scale-95 transition-all shine">
+          <button onClick={() => { if (storeBlocked) { alert(storeBlockMsg); return } setWaiterOpen(true); setWaiterSent(false) }}
+            className={'flex items-center gap-2 pl-4 pr-5 py-3 rounded-full text-sm font-semibold shadow-lg transition-all ' + (storeBlocked ? 'bg-gray-300 text-gray-500 cursor-not-allowed shadow-gray-400/40 opacity-80' : 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-blue-600/40 hover:from-blue-700 hover:to-blue-800 hover:scale-105 active:scale-95 shine')}>
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
             Garson Çağır
           </button>
