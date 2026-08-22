@@ -239,9 +239,9 @@ function TrackContent() {
               {/* Customer note from business */}
               {result.customerNote && (
                 <div className="px-5 pb-5">
-                  <div className="rounded-2xl p-4" style={{ background: trackColor + '14', border: `1px solid ${trackColor}40` }}>
-                    <p className="text-[10px] font-semibold uppercase tracking-wider mb-1.5" style={{ color: trackColor }}>
-                      İşletme Notu
+                  <div className="rounded-2xl p-4" style={{ background: (isCancelled ? '#dc2626' : trackColor) + '14', border: `1px solid ${isCancelled ? '#dc2626' : trackColor}40` }}>
+                    <p className="text-[10px] font-semibold uppercase tracking-wider mb-1.5" style={{ color: isCancelled ? '#dc2626' : trackColor }}>
+                      {isCancelled ? 'İptal Sebebi' : 'İşletme Notu'}
                     </p>
                     <p className="text-sm text-gray-700 leading-relaxed">{result.customerNote}</p>
                   </div>
