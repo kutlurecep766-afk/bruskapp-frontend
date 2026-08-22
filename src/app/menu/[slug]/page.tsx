@@ -570,8 +570,8 @@ const callWaiter = async () => {
 
       {/* Ürün Detay Modal */}
       {selectedProduct && (
-        <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center p-0 md:p-4 bg-blue-950/50 backdrop-blur-sm animate-fade-in" onClick={() => { if (justAdded !== selectedProduct.id) setSelectedProduct(null) }}>
-          <div className="relative w-full md:max-w-lg bg-white rounded-t-3xl md:rounded-3xl shadow-2xl overflow-hidden transition-all duration-200 animate-slide-up" onClick={e => e.stopPropagation()}>
+        <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center p-0 md:p-4 bg-blue-950/50 backdrop-blur-sm animate-fade-in-fast" onClick={() => { if (justAdded !== selectedProduct.id) setSelectedProduct(null) }}>
+          <div className="relative w-full md:max-w-lg bg-white rounded-t-3xl md:rounded-3xl shadow-2xl overflow-hidden animate-slide-up-fast" onClick={e => e.stopPropagation()}>
             <div className="md:hidden h-1.5 w-12 bg-blue-200 rounded-full mx-auto mt-3" />
             <button onClick={() => setSelectedProduct(null)} className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full bg-white/80 backdrop-blur flex items-center justify-center text-blue-700 hover:bg-white shadow-sm transition-all active:scale-90">
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>

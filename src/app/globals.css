@@ -75,6 +75,8 @@ body {
 .animate-pulse-glow { animation: pulse-glow 3s ease-in-out infinite; }
 .animate-slide-up { animation: slide-up 0.8s ease-out forwards; }
 .animate-fade-in { animation: fade-in 1s ease-out forwards; }
+.animate-slide-up-fast { animation: slide-up 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.animate-fade-in-fast { animation: fade-in 0.15s ease-out forwards; }
 .animate-message-in { animation: message-in 0.4s ease-out forwards; }
 .animate-message-out { animation: message-out 0.4s ease-out forwards; }
 .animate-gradient { background-size: 200% 200%; animation: gradient-shift 4s ease infinite; }
