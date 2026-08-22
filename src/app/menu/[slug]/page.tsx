@@ -3,6 +3,7 @@ import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { UtensilsCrossed } from 'lucide-react'
 import { openReceiptPdf, parseNoteAddress, parseNotePayment } from '@/lib/receipt'
+import { getDeviceId } from '@/lib/device'
 
 interface CartItem {
   product: any
@@ -175,6 +176,7 @@ function MenuContent({ params }: { params: { slug: string } }) {
           totalAmount: Math.round(cartTotal * 100) / 100,
           note: 'Ödeme: ' + form.payment + (masa ? '' : ' | Adres: ' + form.address.trim()) + (locationInfo ? ' | Konum: ' + locationInfo.link : ''),
           tableNumber: masa ? parseInt(masa) : null,
+          deviceId: getDeviceId(),
         }),
       })
       const order = await res.json()
@@ -227,6 +229,7 @@ const callWaiter = async () => {
           totalAmount: 0,
           note: waiterNote.trim() ? 'Garson notu: ' + waiterNote.trim() : 'Garson çağrısı',
           tableNumber: masa ? parseInt(masa) : null,
+          deviceId: getDeviceId(),
         }),
       })
       const order = await res.json()
