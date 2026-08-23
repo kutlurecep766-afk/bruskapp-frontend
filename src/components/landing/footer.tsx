@@ -8,7 +8,7 @@ export default function Footer() {
             <div className="flex items-center gap-2 mb-4">
               <img src="/logo.svg" alt="BRUSKAPP" className="h-9" />
             </div>
-            <p className="text-gray-500 text-sm max-w-sm leading-relaxed">QR menü, masa & online sipariş ve kendi SanalPOS&apos;unuza tahsilat. Müşterileriniz için dijital menü ve sipariş deneyimini tek platformda birleştirin.</p>
+            <p className="text-gray-500 text-sm max-w-sm leading-relaxed">QR menü, masa & online sipariş ve kendi SanalPOS'unuza tahsilat. Müşterileriniz için dijital menü ve sipariş deneyimini tek platformda birleştirin.</p>
           </div>
           <div>
             <h4 className="text-white font-semibold mb-4">Ürün</h4>

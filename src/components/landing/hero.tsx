@@ -16,10 +16,10 @@ export default function Hero() {
               QR Menü ile Siparişi{' '}
               <span className="text-gradient">Kendi</span>
               <br />
-              SanalPOS&apos;unuza Alın
+              SanalPOS'unuza Alın
             </h1>
             <p className="text-lg sm:text-xl text-gray-400 leading-relaxed max-w-xl">
-              Müşterileriniz masadan ya da online&apos;dan siparişini verir, ödemeyi işletmenizin kendi SanalPOS&apos;una yapar. Mutfak otomatik bildirim alır, fiş ve adisyon kendiliğinden çıkar.
+              Müşterileriniz masadan ya da online'dan siparişini verir, ödemeyi işletmenizin kendi SanalPOS'una yapar. Mutfak otomatik bildirim alır, fiş ve adisyon kendiliğinden çıkar.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <a href="https://wa.me/905442566476?text=Merhaba%2C%20BruskQR%20hakk%C4%B1nda%20bilgi%20almak%20istiyorum." target="_blank" rel="noopener noreferrer" className="group px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-2xl text-base font-semibold hover:shadow-xl hover:shadow-blue-500/25 transition-all flex items-center justify-center gap-2">
@@ -60,7 +60,7 @@ export default function Hero() {
                     <div className="bg-blue-600 rounded-2xl rounded-br-sm px-4 py-2.5"><p className="text-sm text-white">Masa 5'e sipariş verildi ✓</p></div>
                   </div>
                   <div className="justify-start animate-message-in" style={{animationDelay:'1.4s'}}>
-                    <div className="bg-[#1a2332] rounded-2xl rounded-bl-sm px-4 py-2.5 max-w-[85%]"><p className="text-sm text-gray-300">Fiş & adisyon mutfağa iletildi</p><p className="text-[10px] text-gray-500 mt-1.5">Kendi SanalPOS&apos;unuzdan tahsil edildi</p></div>
+                    <div className="bg-[#1a2332] rounded-2xl rounded-bl-sm px-4 py-2.5 max-w-[85%]"><p className="text-sm text-gray-300">Fiş & adisyon mutfağa iletildi</p><p className="text-[10px] text-gray-500 mt-1.5">Kendi SanalPOS'unuzdan tahsil edildi</p></div>
                   </div>
                   <div className="flex justify-end animate-message-in" style={{animationDelay:'2s'}}>
                     <div className="bg-emerald-600 rounded-2xl rounded-br-sm px-4 py-2 flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-white animate-pulse" /><p className="text-sm text-white">Ödeme Alındı</p></div>

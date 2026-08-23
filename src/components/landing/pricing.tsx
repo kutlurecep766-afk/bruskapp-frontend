@@ -2,7 +2,7 @@ import { QrCode, CheckCircle, Star, Rocket } from 'lucide-react'
 
 const plan = {
   name: 'BruskQR',
-  subtitle: 'QR Menü + Masa & Online Sipariş + Kendi SanalPOS&apos;unuz',
+  subtitle: 'QR Menü + Masa & Online Sipariş + Kendi SanalPOS\'unuz',
   price: '5.999',
   priceDecimal: ',00',
   period: 'Ay',
@@ -14,8 +14,8 @@ const plan = {
     'QR Menü & Dijital Menü (Masa + Online)',
     'Masa Siparişi & Garson Çağır',
     'Online Sipariş + Tek Tıkla Konum',
-    'Kendi SanalPOS&apos;unuzu Bağlama Entegrasyonu',
-    '%0 Komisyon — Tüm tahsilat kendi POS&apos;unuza',
+    'Kendi SanalPOS\'unuzu Bağlama Entegrasyonu',
+    '%0 Komisyon — Tüm tahsilat kendi POS\'unuza',
     'Otomatik Fiş & Adisyon Çıktısı',
     'Mutfak / Tezgah Anında Bildirim',
     'Instagram, Google Yorum & Konum Modülü',
@@ -25,7 +25,7 @@ const plan = {
   ],
   setup: [
     'QR Menü Kurulumu',
-    'Kendi SanalPOS&apos;unuzu Bağlama Entegrasyonu',
+    'Kendi SanalPOS\'unuzu Bağlama Entegrasyonu',
     'Panel Eğitimi',
     '7/24 Öncelikli Destek',
   ],
@@ -59,7 +59,7 @@ export default function Pricing() {
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mt-4">Her İşletmeye Uygun Plan</h2>
           <p className="text-gray-400 text-lg mt-4 max-w-2xl mx-auto">
-            Komisyonsuz, kendi SanalPOS&apos;unuzla sipariş almanın en kolay yolu
+            Komisyonsuz, kendi SanalPOS'unuzla sipariş almanın en kolay yolu
           </p>
         </div>
 
@@ -140,7 +140,7 @@ export default function Pricing() {
                     href="https://wa.me/905442566476?text=Merhaba%2C%20BruskQR%20paketi%20ve%20kurulum%20hakk%C4%B1nda%20bilgi%20almak%20istiyorum."
                     className="text-xs text-gray-500 hover:text-blue-400 transition-colors underline underline-offset-4 decoration-white/10 hover:decoration-blue-400/30"
                   >
-                    WhatsApp&apos;tan detaylı bilgi al
+                    WhatsApp'tan detaylı bilgi al
                   </a>
                 </div>
               </div>

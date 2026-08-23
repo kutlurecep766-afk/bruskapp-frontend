@@ -20,18 +20,18 @@ const flowSteps = [
     items: ['Masa siparişi + garson çağır', 'Online sipariş + GPS konum', 'Sipariş takip kodu'],
   },
   {
-    title: 'Kendi SanalPOS&apos;unuzda Tahsilat',
+    title: 'Kendi SanalPOS\'unuzda Tahsilat',
     icon: '💳',
     color: 'from-emerald-500 to-teal-500',
     badge: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/10',
-    desc: 'Ödeme işletmenizin kendi SanalPOS&apos;una düşer. Her sipariş için otomatik fiş ve adisyon çıkar.',
+    desc: 'Ödeme işletmenizin kendi SanalPOS\'una düşer. Her sipariş için otomatik fiş ve adisyon çıkar.',
     items: ['Kendi SanalPOS entegrasyonu', 'Otomatik fiş & adisyon', 'Mutfak / tezgah anında bildirim'],
   },
 ]
 
 const stats = [
   { value: '<5dk', label: 'Sipariş Süresi' },
-  { value: '%100', label: 'Kendi POS&apos;unuza' },
+  { value: '%100', label: 'Kendi POS\'unuza' },
   { value: '7/24', label: 'Canlı Sipariş' },
   { value: 'Otomatik', label: 'Fiş & Adisyon' },
 ]
@@ -90,11 +90,11 @@ export default function QRDemo() {
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mt-4 leading-tight">
             QR Okut, Sipariş Ver,<br />
-            <span className="text-gradient">Para Kendi POS&apos;unuzda</span>
+            <span className="text-gradient">Para Kendi POS'unuzda</span>
           </h2>
           <p className="text-gray-400 text-lg mt-4 max-w-3xl mx-auto leading-relaxed">
-            Müşteri menüyü görür, masadan veya online&apos;dan siparişini oluşturur,
-            ödemeyi işletmenin kendi SanalPOS&apos;una yapar. Mutfak bildirimi, fiş ve
+            Müşteri menüyü görür, masadan veya online'dan siparişini oluşturur,
+            ödemeyi işletmenin kendi SanalPOS'una yapar. Mutfak bildirimi, fiş ve
             adisyon otomatik akar.
           </p>
         </div>
@@ -201,7 +201,7 @@ export default function QRDemo() {
                         <div className="flex items-center gap-3">
                           <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-emerald-500/20 to-teal-500/5 border border-emerald-500/20 flex items-center justify-center">💳</div>
                           <div>
-                            <p className="text-white text-sm font-semibold">Kendi SanalPOS&apos;unuz</p>
+                            <p className="text-white text-sm font-semibold">Kendi SanalPOS'unuz</p>
                             <p className="text-emerald-400 text-xs mt-0.5 font-bold">₺270,00 tahsil edildi</p>
                           </div>
                         </div>
@@ -241,7 +241,7 @@ export default function QRDemo() {
                 <svg className="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M3 10h18M7 15h2m4 0h2M7 7h2m4 0h2M5 21h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
               </span>
               <div>
-                <p className="text-white text-xs font-semibold">Kendi Banka POS&apos;unuza</p>
+                <p className="text-white text-xs font-semibold">Kendi Banka POS'unuza</p>
                 <p className="text-gray-500 text-[11px]">Ödemeler doğrudan size, komisyon yok</p>
               </div>
             </div>
