@@ -14,6 +14,7 @@ interface CartItem {
 function MenuContent({ params }: { params: { slug: string } }) {
   const searchParams = useSearchParams()
   const masa = searchParams.get('masa')
+  const tableKey = searchParams.get('t')
 
   const [data, setData] = useState<any>(null)
   const [loading, setLoading] = useState(true)
@@ -176,6 +177,7 @@ function MenuContent({ params }: { params: { slug: string } }) {
           totalAmount: Math.round(cartTotal * 100) / 100,
           note: 'Ödeme: ' + form.payment + (masa ? '' : ' | Adres: ' + form.address.trim()) + (locationInfo ? ' | Konum: ' + locationInfo.link : ''),
           tableNumber: masa ? parseInt(masa) : null,
+          tableKey: masa ? (tableKey || '') : undefined,
           deviceId: getDeviceId(),
         }),
       })
@@ -229,6 +231,7 @@ const callWaiter = async () => {
           totalAmount: 0,
           note: waiterNote.trim() ? 'Garson notu: ' + waiterNote.trim() : 'Garson çağrısı',
           tableNumber: masa ? parseInt(masa) : null,
+          tableKey: masa ? (tableKey || '') : undefined,
           deviceId: getDeviceId(),
         }),
       })
